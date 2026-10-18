@@ -2158,6 +2158,10 @@ msgstr "Вот ваш новый код приглашения: <0>{0}</0>"
 msgid "Hide Others"
 msgstr "Скрыть остальных"
 
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Hide the text of encrypted messages"
+msgstr "Скрывать текст зашифрованных сообщений"
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "High Contrast"
 msgstr "Высокий Контраст"
@@ -2886,6 +2890,10 @@ msgstr "Не проверено"
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Notifications"
 msgstr "Уведомления"
+
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Notifications of end-to-end encrypted chats say only \"New message\"."
+msgstr "В уведомлениях из чатов со сквозным шифрованием — только «Новое сообщение»."
 
 #: components/ui/components/features/messaging/composition/MessageReplyPreview.tsx
 msgid "Off"

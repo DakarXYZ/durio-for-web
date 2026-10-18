@@ -2167,6 +2167,10 @@ msgstr "Ini kode undangan baru kamu: <0>{0}</0>"
 msgid "Hide Others"
 msgstr "Sembunyikan yang Lain"
 
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Hide the text of encrypted messages"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "High Contrast"
 msgstr "Kontras Tinggi"
@@ -2898,6 +2902,10 @@ msgstr ""
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Notifications"
 msgstr "Notifikasi"
+
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Notifications of end-to-end encrypted chats say only \"New message\"."
+msgstr ""
 
 #: components/ui/components/features/messaging/composition/MessageReplyPreview.tsx
 msgid "Off"

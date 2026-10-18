@@ -92,6 +92,11 @@ export function NotificationsWorker() {
         break;
     }
 
+    // dur.io (Q65): the decrypted text of an encrypted message may be hidden
+    const hideText =
+      message.isEncrypted &&
+      !!state.settings.getValue("notifications:hide_encrypted_text");
+
     // Find image if applicable (never a decrypted one)
     const image = message.attachments?.find(
       (x) => x.metadata.type === "Image" && !x.e2ee,
@@ -99,7 +104,10 @@ export function NotificationsWorker() {
 
     // Find body/icon
     let body, icon;
-    if (message.content) {
+    if (hideText) {
+      body = t`New message`;
+      icon = message.avatarURL;
+    } else if (message.content) {
       body = message.contentPlain;
       icon = message.avatarURL;
     } else if (message.systemMessage) {

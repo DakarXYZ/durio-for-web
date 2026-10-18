@@ -5,6 +5,7 @@ import { useNotifications } from "@revolt/client";
 import { useState } from "@revolt/state";
 import { CategoryButton, Checkbox, Column, iconSize } from "@revolt/ui";
 
+import MdLock from "@material-design-icons/svg/outlined/lock.svg?component-solid";
 import MdMarkUnreadChatAlt from "@material-design-icons/svg/outlined/mark_unread_chat_alt.svg?component-solid";
 import MdNotifications from "@material-design-icons/svg/outlined/notifications.svg?component-solid";
 import Sounds from "./Sounds";
@@ -45,6 +46,30 @@ export default function Notifications(props: { isDesktop: boolean }) {
               <Trans>Enable Desktop Notifications</Trans>
             </CategoryButton>
           </Show>
+          <CategoryButton
+            action={
+              <Checkbox
+                checked={
+                  !!settings.getValue("notifications:hide_encrypted_text")
+                }
+              />
+            }
+            onClick={() =>
+              settings.setValue(
+                "notifications:hide_encrypted_text",
+                !settings.getValue("notifications:hide_encrypted_text"),
+              )
+            }
+            icon={<MdLock {...iconSize(22)} />}
+            description={
+              <Trans>
+                Notifications of end-to-end encrypted chats say only "New
+                message".
+              </Trans>
+            }
+          >
+            <Trans>Hide the text of encrypted messages</Trans>
+          </CategoryButton>
           <Show when={!props.isDesktop}>
             <CategoryButton
               action={

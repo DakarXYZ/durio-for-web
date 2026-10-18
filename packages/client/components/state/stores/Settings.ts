@@ -39,6 +39,12 @@ interface SettingsDefinition {
   "notifications:push": NotificationPermissionState;
 
   /**
+   * dur.io (Q65): show only "New message" in notifications of encrypted messages,
+   * not their decrypted text (default: show the text)
+   */
+  "notifications:hide_encrypted_text": boolean;
+
+  /**
    * Selected unicode emoji
    */
   "appearance:unicode_emoji": UnicodeEmojiPacks;
@@ -103,6 +109,7 @@ type ValueType<T extends keyof SettingsDefinition> =
 const EXPECTED_TYPES: { [K in keyof SettingsDefinition]: ValueType<K> } = {
   "notifications:desktop": "string",
   "notifications:push": "string",
+  "notifications:hide_encrypted_text": "boolean",
   "appearance:unicode_emoji": "string",
   "appearance:show_send_button": "boolean",
   "appearance:compact_mode": "boolean",
@@ -146,6 +153,7 @@ export class Settings extends AbstractStore<"settings", TypeSettings> {
     return {
       "notifications:desktop": "default",
       "notifications:push": "default",
+      "notifications:hide_encrypted_text": false,
       "appearance:unicode_emoji": "fluent-3d",
       "appearance:show_send_button": true,
       "appearance:compact_mode": false,

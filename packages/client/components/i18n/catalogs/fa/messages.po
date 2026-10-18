@@ -2204,6 +2204,10 @@ msgstr ""
 msgid "Hide Others"
 msgstr ""
 
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Hide the text of encrypted messages"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "High Contrast"
 msgstr ""
@@ -2938,6 +2942,10 @@ msgstr ""
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Notifications"
 msgstr "اعلانات"
+
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Notifications of end-to-end encrypted chats say only \"New message\"."
+msgstr ""
 
 #: components/ui/components/features/messaging/composition/MessageReplyPreview.tsx
 msgid "Off"

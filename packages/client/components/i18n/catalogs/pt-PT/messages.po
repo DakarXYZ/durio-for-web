@@ -2164,6 +2164,10 @@ msgstr "Aqui está o teu novo código de convite: <0>{0}</0>"
 msgid "Hide Others"
 msgstr "Esconder outros"
 
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Hide the text of encrypted messages"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "High Contrast"
 msgstr "Contraste alto"
@@ -2895,6 +2899,10 @@ msgstr ""
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Notifications"
 msgstr "Notificações"
+
+#: components/app/interface/settings/user/notifications/Notifications.tsx
+msgid "Notifications of end-to-end encrypted chats say only \"New message\"."
+msgstr ""
 
 #: components/ui/components/features/messaging/composition/MessageReplyPreview.tsx
 msgid "Off"
