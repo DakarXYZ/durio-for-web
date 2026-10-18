@@ -109,6 +109,11 @@ msgstr "{0} печатает…"
 msgid "{0} joined"
 msgstr "{0} присоединился"
 
+#. placeholder {0}: r().skipped
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "{0} keys of rooms from other apps were left out."
+msgstr "Ключей комнат из других приложений пропущено: {0}."
+
 #. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} left"
@@ -142,10 +147,20 @@ msgstr "{0} закрепил сообщение"
 msgid "{0} renamed the channel"
 msgstr "{0} переименовал канал"
 
+#. placeholder {0}: (message.systemMessage as EncryptionEnabledSystemMessage).by ?.username
+#: components/client/NotificationsWorker.tsx
+msgid "{0} turned on end-to-end encryption"
+msgstr "{0} включил сквозное шифрование"
+
 #. placeholder {0}: (message.systemMessage as MessagePinnedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} unpinned a message"
 msgstr "{0} открепил сообщение"
+
+#. placeholder {0}: otherName()
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "{0} wants to verify your device."
+msgstr "{0} хочет сверить ваше устройство."
 
 #. placeholder {0}: (message.systemMessage as UserModeratedSystemMessage).user?.username
 #. placeholder {1}: (message.systemMessage as UserModeratedSystemMessage).by?.username
@@ -257,6 +272,10 @@ msgid "<0/> transferred group ownership to <1/>"
 msgstr "<0/> передал права группы к <1/>"
 
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
+msgid "<0/> turned on end-to-end encryption (beta). It cannot be turned off."
+msgstr "<0/> включил сквозное шифрование (бета). Выключить его нельзя."
+
+#: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> unpinned <1/>"
 msgstr "<0/> открепил <1/>"
 
@@ -331,6 +350,14 @@ msgstr "24 часа"
 #~ msgid "7 days"
 #~ msgstr "7 дней"
 
+#: components/client/e2ee/ui/E2eeWatcher.tsx
+msgid "A new device signed in to your account. Verify it, so it can read your encrypted chats."
+msgstr "В ваш аккаунт вошло новое устройство. Сверьте его, чтобы оно могло читать зашифрованные чаты."
+
+#: components/client/e2ee/ui/views/Diagnostics.tsx
+msgid "A report for the developers: counts, states and error codes of encryption on this device, app and system version. No messages, keys, server address or other people's IDs. This is everything it contains; you choose where it goes."
+msgstr "Отчёт для разработчиков: счётчики, состояния и коды ошибок шифрования на этом устройстве, версия приложения и системы. Без сообщений, ключей, адреса сервера и чужих ID. Здесь всё его содержимое; куда его отправить, решаете вы."
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Able to access channels on this server"
 msgstr "Возможность заходить в каналы на этом сервере"
@@ -346,6 +373,7 @@ msgstr "Возможность говорить в голосовом канал
 #~ msgid "About"
 #~ msgstr "О нас"
 
+#: components/client/e2ee/ui/views/Verify.tsx
 #: components/modal/modals/SignOutSessions.tsx
 msgid "Accept"
 msgstr "Принять"
@@ -367,6 +395,14 @@ msgstr "Добавить"
 #: src/interface/Friends.tsx
 msgid "Add a new friend"
 msgstr "Добавить нового друга"
+
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
+msgstr "Добавить аккаунт"
+
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an additional account login for fast-switching"
+msgstr "Добавить ещё один аккаунт для быстрого переключения"
 
 #: components/ui/components/features/profiles/ProfileActions.tsx
 msgid "Add Bot"
@@ -414,6 +450,10 @@ msgstr "Расширенные"
 #: src/interface/Friends.tsx
 msgid "All"
 msgstr "Все"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "All encrypted chats"
+msgstr "Все зашифрованные чаты"
 
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
@@ -474,6 +514,14 @@ msgstr "Призошла ошибка."
 msgid "An internal error occurred. ({0})"
 msgstr "Произошла внутренняя ошибка. ({0})"
 
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
+msgstr "Другое ваше устройство хочет сверить это. Принимайте, только если начали сверку сами."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Anyone with this file and its passphrase can read your encrypted chats. Choose a long passphrase (several words) and keep the file somewhere safe. The passphrase cannot be recovered."
+msgstr "Любой, у кого есть этот файл и его пароль, прочитает ваши зашифрованные чаты. Выберите длинный пароль (несколько слов) и храните файл в надёжном месте. Пароль восстановить нельзя."
+
 #: components/app/interface/settings/user/Sync.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Appearance"
@@ -500,6 +548,11 @@ msgstr "Вы уверены, что хотите закрепить это со�
 #: components/modal/modals/RemoveMember.tsx
 msgid "Are you sure you want to remove {0} from {1}?"
 msgstr "Вы уверены, что хотите удалить {0} из {1}?"
+
+#. placeholder {0}: props.user?.username
+#: components/modal/modals/TransferGroup.tsx
+msgid "Are you sure you want to transfer ownership to <0>{0}</0>?"
+msgstr "Передать права владельца <0>{0}</0>?"
 
 #: components/modal/modals/PinMessage.tsx
 msgid "Are you sure you want to unpin this message?"
@@ -537,6 +590,10 @@ msgstr "Аватар"
 #: src/interface/channels/AgeGate.tsx
 msgid "Back"
 msgstr "Назад"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Backup is on. The keys of your encrypted chats are backed up from now on."
+msgstr "Бэкап включён. Ключи ваших зашифрованных чатов теперь сохраняются."
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Badges"
@@ -584,10 +641,20 @@ msgstr "Баннер"
 msgid "Bans"
 msgstr "Баны"
 
+#: components/client/e2ee/ui/parts.tsx
+msgid "beta"
+msgstr "бета"
+
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Block"
+msgstr "Заблокировать"
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Block user"
 msgstr "Заблокировать пользователя"
 
+#: components/client/e2ee/ui/views/Devices.tsx
 #: src/interface/Friends.tsx
 msgid "Blocked"
 msgstr "Заблокированный"
@@ -599,6 +666,10 @@ msgstr "Заблокированный пользователь"
 #: components/app/interface/channels/text/Message.tsx
 msgid "Bot"
 msgstr "Бот"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Both devices are ready. Compare emoji to continue."
+msgstr "Оба устройства готовы. Сравните эмодзи, чтобы продолжить."
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Browser"
@@ -615,6 +686,14 @@ msgstr "Эхоподавление в браузере"
 msgid "Bug Tracker"
 msgstr "Баг трекер"
 
+#: components/client/e2ee/ui/views/Diagnostics.tsx
+msgid "Building the report…"
+msgstr "Собираем отчёт…"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Builds a report for the developers: counts, states and error codes of encryption on this device, app and system version. You see it before it is saved, and you choose where it goes."
+msgstr "Собирает отчёт для разработчиков: счётчики, состояния и коды ошибок шифрования на этом устройстве, версия приложения и системы. Вы увидите его до сохранения и сами решите, куда его отправить."
+
 #: components/ui/components/features/profiles/ProfileStatus.tsx
 #: src/interface/channels/text/MemberSidebar.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -622,12 +701,20 @@ msgid "Busy"
 msgstr "Занят"
 
 #: components/modal/modals/CreateBot.tsx
-msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
-msgstr "Создавая этого бота вы соглашаетесь с <0>Политикой приемлемого использования</0>."
+#~ msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
+#~ msgstr "Создавая этого бота вы соглашаетесь с <0>Политикой приемлемого использования</0>."
+
+#: components/modal/modals/CreateBot.tsx
+msgid "By creating this bot, you agree to the <0>Community Guidelines</0>."
+msgstr "Создавая бота, вы соглашаетесь с <0>правилами сообщества</0>."
 
 #: components/modal/modals/CreateServer.tsx
-msgid "By creating this server, you agree to the <0>Acceptable Use Policy</0>."
-msgstr "Создавая сервер вы соглашаетесь с <0>Политикой приемлемого использования</0>."
+#~ msgid "By creating this server, you agree to the <0>Acceptable Use Policy</0>."
+#~ msgstr "Создавая сервер вы соглашаетесь с <0>Политикой приемлемого использования</0>."
+
+#: components/modal/modals/CreateServer.tsx
+msgid "By creating this server, you agree to the <0>Community Guidelines</0>."
+msgstr "Создавая сервер, вы соглашаетесь с <0>правилами сообщества</0>."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Bypass Slowmode"
@@ -636,6 +723,11 @@ msgstr "Обход медленного режима"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Bypasses slowmode in channels"
 msgstr "Обходит медленный режим в каналах"
+
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: src/interface/channels/E2eeChannelBanner.tsx
+msgid "Calls in this chat are not end-to-end encrypted."
+msgstr "Звонки в этом чате не шифруются сквозным шифрованием."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Can't find the perfect GIF? Head to Gifbox and upload your own for everyone to use."
@@ -646,6 +738,11 @@ msgid "Can't get discover request status right now"
 msgstr "Сейчас не получается проверить статус запроса"
 
 #: components/auth/src/flows/FlowLogin.tsx
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+#: components/client/e2ee/ui/views/Prompts.tsx
+#: components/client/e2ee/ui/views/Recovery.tsx
+#: components/client/e2ee/ui/views/Restore.tsx
+#: components/client/e2ee/ui/views/Verify.tsx
 #: components/modal/modals/AddBot.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
@@ -659,6 +756,7 @@ msgstr "Сейчас не получается проверить статус �
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/EditCategory.tsx
 #: components/modal/modals/EditServerFolder.tsx
+#: components/modal/modals/EnableEncryption.tsx
 #: components/modal/modals/Invite.tsx
 #: components/modal/modals/KickMember.tsx
 #: components/modal/modals/LeaveServer.tsx
@@ -676,6 +774,7 @@ msgstr "Сейчас не получается проверить статус �
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
+#: components/modal/modals/TransferGroup.tsx
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -809,12 +908,20 @@ msgstr "Текстовое поле чата"
 msgid "Check back often to see if your {0} has been approved!"
 msgstr "Проверяйте статус: ваш {0} может быть одобрен в любой момент!"
 
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Check that the other screen shows the same emoji in the same order."
+msgstr "Проверьте, что на другом экране те же эмодзи в том же порядке."
+
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Check your email"
 msgstr "Проверьте почту! (Надеемся, она у вас не голубиная)"
 
 #~ msgid "Check your mail!"
 #~ msgstr "Проверьте свою электронную почту!"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Choose a key file exported from dur.io or another Matrix app and enter its passphrase. Keys you already have are kept; messages waiting for these keys become readable."
+msgstr "Выберите файл ключей из dur.io или другого Matrix-приложения и введите его пароль. Уже имеющиеся ключи сохранятся; сообщения, ждущие этих ключей, станут читаемыми."
 
 #: components/auth/src/flows/FlowConfirmReset.tsx
 msgid "Choose a new password for your Stoat account."
@@ -823,6 +930,10 @@ msgstr "Выберите новый пароль для своей учетно�
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
 msgstr "Введие своё имя пользователя"
+
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr "Выберите аккаунт"
 
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
@@ -852,6 +963,9 @@ msgstr "Нажмите чтобы раскрыть спойлер"
 msgid "Client Settings"
 msgstr "Настройки клиента"
 
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: components/client/e2ee/ui/views/Diagnostics.tsx
+#: components/client/e2ee/ui/views/Verify.tsx
 #: components/modal/modals/AddFriend.tsx
 #: components/modal/modals/AddMembersToGroup.tsx
 #: components/modal/modals/Changelog.tsx
@@ -875,6 +989,7 @@ msgstr "Настройки клиента"
 #: components/modal/modals/LinkWarning.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/ServerInfo.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileRoles.tsx
@@ -902,6 +1017,10 @@ msgstr "Свернуть окно звонка"
 msgid "Coming soon! 👀"
 msgstr "Скоро появится! 👀"
 
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Compare emoji"
+msgstr "Сравнить эмодзи"
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Configure a way to get back into your account in case your 2FA is lost"
 msgstr "Настройте способ входа в акаунт при потери двухфакторной аутентификации"
@@ -912,6 +1031,7 @@ msgstr "Настройте аутентификацию одноразовым �
 
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/modal/modals/MFAFlow.tsx
+#: components/modal/modals/TransferGroup.tsx
 msgid "Confirm"
 msgstr "Подтвердить"
 
@@ -920,6 +1040,7 @@ msgid "Confirm action"
 msgstr "Подтвердить действие"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+#: components/instance/ServerSelect.tsx
 msgid "Connect"
 msgstr "Подключаться"
 
@@ -972,6 +1093,18 @@ msgstr "Файл скопирован в буфер обмена"
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr "Скопировано!"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Copied. The clipboard is cleared in a minute."
+msgstr "Скопировано. Буфер обмена очистится через минуту."
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Copy"
+msgstr "Копировать"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Copy anyway"
+msgstr "Всё равно скопировать"
 
 #: components/app/menus/CategoryContextMenu.tsx
 msgid "Copy category ID"
@@ -1097,6 +1230,10 @@ msgstr "Создать новую группу"
 #~ msgid "Create a new role"
 #~ msgstr "Создать новую роль"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Create a recovery key, so you can read your encrypted messages on a new device too."
+msgstr "Создайте ключ восстановления, чтобы читать зашифрованные сообщения и на новом устройстве."
+
 #: components/modal/modals/CreateWebhook.tsx
 msgid "Create a webhook"
 msgstr "Создать вебхук"
@@ -1148,6 +1285,11 @@ msgstr "Создать Приглашение"
 msgid "Create invites for others to use"
 msgstr "Создать приглашение для других"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Create recovery key"
+msgstr "Создать ключ восстановления"
+
 #: components/modal/modals/CreateRole.tsx
 msgid "Create Role"
 msgstr "Создать Роль"
@@ -1167,6 +1309,10 @@ msgstr "Создать Вебхук"
 #: components/app/interface/settings/user/Sessions.tsx
 msgid "Created <0/>"
 msgstr "Создан <0/>"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Creates a new backup with a new backup key under the same recovery key, for example if you suspect that the backup key leaked. Needs your password."
+msgstr "Создаёт новый бэкап с новым ключом бэкапа под тем же ключом восстановления — например, если вы подозреваете утечку ключа бэкапа. Нужен ваш пароль."
 
 #: components/modal/modals/CropProcess.tsx
 msgid "Crop"
@@ -1261,6 +1407,14 @@ msgstr "Заглушить низкоранговых участников в г
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Deafen Members"
 msgstr "Отключать звук участникам"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Decrypting the file…"
+msgstr "Расшифровываем файл…"
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "Decrypting…"
+msgstr "Расшифровка…"
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
 #: components/ui/components/design/ColourPicker.tsx
@@ -1357,6 +1511,10 @@ msgstr "Удалить роль"
 msgid "Delete Server"
 msgstr "Удалить Сервер"
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Delete session"
+msgstr "Удалить сессию"
+
 #: components/modal/modals/DeleteEmoji.tsx
 msgid "Deleting this emoji will disallow future use. All past uses will remain."
 msgstr "Эмодзи станет недоступен для новых сообщений. В старых он сохранится."
@@ -1373,6 +1531,31 @@ msgstr "ПК"
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Developer Documentation"
 msgstr "Документация Разработчика"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Device key — compare it with the other screen when verifying:"
+msgstr "Ключ устройства — сравните его с другим экраном при сверке:"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Device verified. Your verified devices share the keys of earlier messages with each other."
+msgstr "Устройство проверено. Ваши проверенные устройства передают друг другу ключи прежних сообщений."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Devices and encryption"
+msgstr "Устройства и шифрование"
+
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Devices and encryption (beta)"
+msgstr "Устройства и шифрование (бета)"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+#: components/client/e2ee/ui/views/Diagnostics.tsx
+msgid "Diagnostic report"
+msgstr "Диагностический отчёт"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Diagnostics"
+msgstr "Диагностика"
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
@@ -1403,6 +1586,10 @@ msgstr "Обзор"
 #: src/interface/Home.tsx
 msgid "Discover Stoat"
 msgstr "Исследовать Stoat"
+
+#: src/interface/channels/E2eeChannelBanner.tsx
+msgid "Dismiss"
+msgstr "Скрыть"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Display & Text"
@@ -1452,6 +1639,9 @@ msgstr "Пожертвовать Stoat"
 msgid "Donated to Stoat"
 msgstr "Пожертвовал Stoat"
 
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+#: components/client/e2ee/ui/views/Recovery.tsx
+#: components/client/e2ee/ui/views/Restore.tsx
 #: components/modal/modals/MFARecovery.tsx
 msgid "Done"
 msgstr "Готово"
@@ -1578,9 +1768,79 @@ msgstr "Включить push-уведомления"
 msgid "Enable transparency glass/blur effects (slow on older machines)"
 msgstr "Включить эффект прозрачности/размытия (медленно на старых компьютерах)"
 
+#: components/i18n/errors.tsx
+msgid "Encountered a problem while saving previous session."
+msgstr "Не удалось сохранить предыдущую сессию."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Encrypting the keys…"
+msgstr "Шифруем ключи…"
+
+#: components/client/e2ee/ui/E2eeWatcher.tsx
+msgid "Encryption data of this device was saved by a newer version of the app. Update the app to read encrypted chats."
+msgstr "Данные шифрования этого устройства сохранены более новой версией приложения. Обновите приложение, чтобы читать зашифрованные чаты."
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "Encryption is active in another window: messages can be read there."
+msgstr "Шифрование работает в другом окне: сообщения можно прочитать там."
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Encryption is active in another window: write from there."
+msgstr "Шифрование работает в другом окне: пишите оттуда."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Encryption is active in another window. Manage it there."
+msgstr "Шифрование работает в другом окне. Управляйте им там."
+
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Encryption is not available on this device right now."
+msgstr "Шифрование сейчас недоступно на этом устройстве."
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+#: src/interface/channels/text/Composition.tsx
+msgid "Encryption is not available on this device."
+msgstr "Шифрование недоступно на этом устройстве."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Encryption is not available right now. Check the connection or log in again."
+msgstr "Шифрование сейчас недоступно. Проверьте соединение или войдите заново."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Encryption is starting…"
+msgstr "Шифрование запускается…"
+
+#: components/client/e2ee/ui/E2eeWatcher.tsx
+msgid "Encryption needs your attention."
+msgstr "Шифрованию нужно ваше внимание."
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Encryption was reset"
+msgstr "Шифрование сброшено"
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
 msgstr "Завершить вызов"
+
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+msgid "End-to-end encrypted"
+msgstr "Сквозное шифрование"
+
+#: src/interface/channels/E2eeChannelHeader.tsx
+msgid "End-to-end encrypted (beta)"
+msgstr "Сквозное шифрование (бета)"
+
+#: src/interface/channels/E2eeChannelBanner.tsx
+msgid "End-to-end encrypted (beta)."
+msgstr "Сквозное шифрование (бета)."
+
+#: src/interface/channels/E2eeChannelHeader.tsx
+msgid "End-to-end encrypted (beta). Encryption is active in another window."
+msgstr "Сквозное шифрование (бета). Шифрование работает в другом окне."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "End-to-end encryption is on for this device."
+msgstr "Сквозное шифрование включено на этом устройстве."
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Enhanced"
@@ -1607,6 +1867,10 @@ msgstr "Войти в канал"
 msgid "Enter Code"
 msgstr "Введите код"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Enter recovery key"
+msgstr "Ввести ключ восстановления"
+
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your current password."
 msgstr "Введите ваш текущий пароль."
@@ -1629,12 +1893,25 @@ msgstr "Введите ваш код приглашения."
 msgid "Enter your preferred username."
 msgstr "Введите имя пользователя."
 
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Enter your recovery key (or its passphrase) to read your earlier encrypted messages on this device."
+msgstr "Введите ключ восстановления (или его пароль), чтобы читать прежние зашифрованные сообщения на этом устройстве."
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 #: components/app/interface/settings/ChannelSettings.tsx
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Everyone"
 msgstr "Все"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Export and save"
+msgstr "Экспортировать и сохранить"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Export keys"
+msgstr "Экспорт ключей"
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "External links can be dangerous!"
@@ -1667,6 +1944,10 @@ msgstr "Не удалось отправить"
 #: components/auth/src/flows/FlowVerify.tsx
 msgid "Failed to verify!"
 msgstr "Не удалось проверить!"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Fair. A longer passphrase is safer."
+msgstr "Средний. Длиннее — надёжнее."
 
 #: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -1895,6 +2176,10 @@ msgstr "Домашняя страница"
 msgid "I confirm that I am at least 18 years old."
 msgstr "Я подтверждаю, что мне больше 18 лет."
 
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "I have saved my recovery key"
+msgstr "Я сохранил ключ восстановления"
+
 #: components/modal/modals/LinkWarning.tsx
 msgid "I understand the consequences"
 msgstr "Я осознаю последствия"
@@ -1920,6 +2205,21 @@ msgstr "Незаконный взлом"
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
 msgstr "Выдача себя за кого-то другого"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Import"
+msgstr "Импортировать"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Import keys"
+msgstr "Импорт ключей"
+
+#. placeholder {0}: r().imported
+#. placeholder {1}: r().total
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Imported {0} of {1} keys."
+msgstr "Импортировано ключей: {0} из {1}."
 
 #: src/AndroidNag.tsx
 msgid "In the meantime, install Stoat from Google Play for a faster, smoother experience designed for Android."
@@ -2022,6 +2322,20 @@ msgstr "Перейти к началу"
 msgid "Keep as is"
 msgstr "Оставить как есть"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Key backup is on: the keys of your encrypted chats are stored on the server, encrypted with your recovery key."
+msgstr "Бэкап ключей включён: ключи ваших зашифрованных чатов хранятся на сервере, зашифрованные ключом восстановления."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Key files"
+msgstr "Файлы ключей"
+
+#. placeholder {0}: backup()!.keysBackedUp
+#. placeholder {1}: backup()!.keysTotal
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Keys backed up: {0} of {1}"
+msgstr "Ключей в бэкапе: {0} из {1}"
+
 #: components/modal/modals/KickMember.tsx
 msgid "Kick"
 msgstr "Выгнать"
@@ -2050,6 +2364,10 @@ msgstr "Язык"
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Last sync <0/>"
 msgstr "Последняя синхронизцая <0/>"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Later"
+msgstr "Позже"
 
 #: src/interface/channels/text/TextSearchSidebar.tsx
 msgid "Latest"
@@ -2118,17 +2436,38 @@ msgstr "Войти"
 #~ msgstr "Войти"
 
 #: components/auth/src/flows/FlowLogin.tsx
-msgid "Log in again"
-msgstr "Войти снова"
+#~ msgid "Log in again"
+#~ msgstr "Войти снова"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Log in again — this becomes a new device."
+msgstr "Войдите снова — это станет новым устройством."
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Log in to pick up right where you left off."
 msgstr "Войдите, чтобы продолжить с того места, где остановились."
 
+#: components/client/e2ee/ui/views/Devices.tsx
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Log out"
+msgstr "Выйти"
+
 #: components/app/interface/settings/user/Sessions.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Log Out"
 msgstr "Выйти"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Log out — the old keys of this device are deleted."
+msgstr "Выйдите — старые ключи этого устройства удалятся."
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Log out and log in again"
+msgstr "Выйти и войти заново"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Log out and reset"
+msgstr "Выйти и сбросить"
 
 #: components/auth/src/flows/Form.tsx
 msgid "Log out of all other sessions"
@@ -2138,6 +2477,10 @@ msgstr "Выйти из всех других сессий"
 msgid "Log Out Other Sessions"
 msgstr "Выйти из остальных сессий"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Log out?"
+msgstr "Выйти?"
+
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Logging you in…"
 msgstr "Выполняется вход…"
@@ -2145,9 +2488,17 @@ msgstr "Выполняется вход…"
 #~ msgid "Login"
 #~ msgstr "Войти"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Logs this device out. After you log in again it is a new device: restore your history with the recovery key or verify it with another device."
+msgstr "Выход на этом устройстве. После нового входа это будет новое устройство: восстановите историю ключом восстановления или сверьте его с другим устройством."
+
 #: components/app/interface/settings/user/Sessions.tsx
 msgid "Logs you out of all sessions except this device."
 msgstr "Выйти из других сессий, кроме текущей."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Looks like a recovery key"
+msgstr "Похоже на ключ восстановления"
 
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Lowercase letters, numbers and underscores only."
@@ -2233,6 +2584,11 @@ msgstr "Участники"
 msgid "Members can send one message every {0}."
 msgstr "Участники могут отправлять сообщения каждые {0}."
 
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: src/interface/channels/E2eeChannelBanner.tsx
+msgid "Members who join later cannot read the messages sent before they joined."
+msgstr "Новые участники не смогут прочитать сообщения, отправленные до их вступления."
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Mention"
 msgstr "Упомянуть"
@@ -2295,6 +2651,18 @@ msgstr "Размер Сообщения"
 #: components/app/interface/channels/text/Message.tsx
 msgid "Message was sent on another platform"
 msgstr "Сообщение было отправлено на другой платформе"
+
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+msgid "Messages and files here are readable only on the members' devices, not by the server. Search does not work here, and links get no previews."
+msgstr "Сообщения и файлы здесь читаются только на устройствах участников, сервер их не видит. Поиск здесь не работает, у ссылок нет превью."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Messages read with imported keys are marked \"sender not confirmed\": a file cannot prove who wrote them."
+msgstr "Сообщения, прочитанные импортированными ключами, помечаются «отправитель не подтверждён»: файл не доказывает, кто их написал."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Messages read with keys from the backup are marked \"sender not confirmed\": the backup cannot prove who wrote them."
+msgstr "Сообщения, прочитанные ключами из бэкапа, помечаются «отправитель не подтверждён»: бэкап не доказывает, кто их написал."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Messaging"
@@ -2402,9 +2770,21 @@ msgstr "Нейтрально"
 msgid "NEW"
 msgstr "НОВОЕ"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "New device"
+msgstr "Новое устройство"
+
 #: components/app/menus/ServerContextMenu.tsx
 msgid "New folder"
 msgstr "Новая папка"
+
+#: components/client/NotificationsWorker.tsx
+msgid "New message"
+msgstr "Новое сообщение"
+
+#: components/modal/modals/EnableEncryption.tsx
+msgid "New messages and files in this conversation will be readable only on its members' devices — not by the server. This cannot be turned off later.<0/><1/>Search will not work here, links get no previews, and members who join later will not see earlier messages. Older apps cannot read encrypted messages. Calls are not end-to-end encrypted.<2/><3/>End-to-end encryption is in beta: it has not been audited yet."
+msgstr "Новые сообщения и файлы в этом чате будут читаться только на устройствах участников — не на сервере. Выключить это потом нельзя.<0/><1/>Поиск здесь не будет работать, у ссылок не будет превью, а новые участники не увидят прежних сообщений. Старые версии приложений не читают зашифрованные сообщения. Звонки не шифруются сквозным шифрованием.<2/><3/>Сквозное шифрование — бета: внешнего аудита ещё не было."
 
 #. placeholder {0}: dayjs(decodeTime(props.lastId()!)).fromNow()
 #: components/ui/components/features/messaging/bars/NewMessages.tsx
@@ -2420,13 +2800,21 @@ msgstr "Новое имя"
 msgid "New Password"
 msgstr "Новый пароль"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "New recovery key"
+msgstr "Новый ключ восстановления"
+
+#: components/auth/src/AuthPage.tsx
+msgid "New to dur.io?"
+msgstr "Впервые в dur.io?"
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to Stoat"
 msgstr "Новый в Stoat"
 
 #: components/auth/src/AuthPage.tsx
-msgid "New to Stoat?"
-msgstr "Впервые в Stoat?"
+#~ msgid "New to Stoat?"
+#~ msgstr "Впервые в Stoat?"
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to the server"
@@ -2440,9 +2828,25 @@ msgstr "Новые непрочитанные записи"
 msgid "Nickname"
 msgstr "Никнейм"
 
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+msgid "No device of this person can read encrypted messages yet: they need the dur.io app and to sign in again."
+msgstr "Ни одно устройство этого человека пока не читает зашифрованные сообщения: ему нужно приложение dur.io и повторный вход."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "No encrypted chats are loaded yet: all keys this device has are exported."
+msgstr "Зашифрованные чаты ещё не загружены: будут экспортированы все ключи этого устройства."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "No encryption"
+msgstr "Без шифрования"
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "No GIFs found"
 msgstr "GIF-файлы не найдены"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "No key backup on this device. Without it, a new device cannot read your earlier encrypted messages unless you verify it with another one."
+msgstr "На этом устройстве нет бэкапа ключей. Без него новое устройство не прочитает прежние зашифрованные сообщения, если не сверить его с другим."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
@@ -2461,6 +2865,10 @@ msgstr "Никого тут нет пока что!"
 msgid "None"
 msgstr "Ничего"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "None of your other devices is verified. Verify this device with one of them: then it can share the keys of your earlier messages."
+msgstr "Ни одно из ваших других устройств не проверено. Сверьте это устройство с одним из них: тогда оно передаст ключи прежних сообщений."
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Normal"
 msgstr "Обычно"
@@ -2468,6 +2876,10 @@ msgstr "Обычно"
 #: components/modal/modals/ReportContent.tsx
 msgid "Not of minimum age to use the platform"
 msgstr "Недостаточный возраст для использования платформы"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Not verified"
+msgstr "Не проверено"
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/menus/ServerContextMenu.tsx
@@ -2536,9 +2948,10 @@ msgid "Only mentions will notify you"
 msgstr "Только упоминания будут уведомлять вас"
 
 #: components/instance/index.tsx
-msgid "Oops, something went wrong! {e}"
-msgstr "Упс, что-то пошло не так! {e}"
+#~ msgid "Oops, something went wrong! {e}"
+#~ msgstr "Упс, что-то пошло не так! {e}"
 
+#: components/client/e2ee/ui/E2eeWatcher.tsx
 #: components/modal/modals/Invite.tsx
 msgid "Open"
 msgstr "Открыть"
@@ -2568,6 +2981,10 @@ msgstr "Открыть настройки"
 msgid "Other"
 msgstr "Другое"
 
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Other apps and clipboard managers can read the clipboard. It is cleared after a minute. Writing the key down is safer."
+msgstr "Другие приложения и менеджеры буфера обмена могут его прочитать. Буфер очистится через минуту. Надёжнее записать ключ."
+
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Output Volume"
 msgstr "Громкость Вывода"
@@ -2588,6 +3005,10 @@ msgstr "Простить Пользователя"
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Partial Outage"
 msgstr "Частичный сбой"
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Passphrase"
+msgstr "Пароль"
 
 #: components/app/interface/settings/user/Account.tsx
 #: components/auth/src/flows/Form.tsx
@@ -2649,8 +3070,8 @@ msgid "Please enter your email."
 msgstr "Введите свою электронную почту."
 
 #: components/i18n/errors.tsx
-msgid "Please log in again."
-msgstr "Пожалуйста, водите снова."
+#~ msgid "Please log in again."
+#~ msgstr "Пожалуйста, водите снова."
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Please save these to a safe location."
@@ -2709,6 +3130,10 @@ msgstr "Способствует причинению вреда"
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Pronouns"
 msgstr "Местоимения"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Protect your encrypted history"
+msgstr "Защитите историю зашифрованных чатов"
 
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
@@ -2778,6 +3203,10 @@ msgstr "Получать push-уведомления, когда приложе�
 msgid "Reconnecting"
 msgstr "Переподключение"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Recovery and key backup"
+msgstr "Восстановление и бэкап ключей"
+
 #: components/modal/modals/MFAFlow.tsx
 msgid "Recovery Code"
 msgstr "Код восстановления"
@@ -2785,6 +3214,11 @@ msgstr "Код восстановления"
 #: components/app/interface/settings/user/Account.tsx
 msgid "Recovery Codes"
 msgstr "Коды Восстановления"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Recovery key"
+msgstr "Ключ восстановления"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Reduced"
@@ -2796,6 +3230,10 @@ msgstr "Приглушенный"
 #: components/modal/modals/AddBot.tsx
 msgid "Registered since <0/>"
 msgstr "Зарегестрирован с <0/>"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Reinstalled the app? The old installation stays in this list as a separate device until you log it out."
+msgstr "Переустановили приложение? Старая установка остаётся в списке отдельным устройством, пока вы из неё не выйдете."
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Reject friend request"
@@ -2855,6 +3293,10 @@ msgstr "Убрать реакцию"
 msgid "Remove Timeout"
 msgstr "Снять ограничение"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Removed"
+msgstr "Удалено"
+
 #: components/app/interface/settings/user/Sessions.tsx
 #: components/modal/modals/EditCategory.tsx
 #: components/modal/modals/RenameSession.tsx
@@ -2877,6 +3319,18 @@ msgstr "Переименовать Сессию"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Rep Stoat using Discord rich presence."
 msgstr "Представлять Stoat в Discord RPC."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Repeat the passphrase"
+msgstr "Повторите пароль"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Replace the backup"
+msgstr "Заменить бэкап"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Replace the backup (keeps the recovery key)"
+msgstr "Заменить бэкап (ключ восстановления сохранится)"
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Reply"
@@ -2925,6 +3379,11 @@ msgstr "Сбросить"
 msgid "Reset {0}'s token?"
 msgstr "Сбросить токен {0}?"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Reset encryption"
+msgstr "Сбросить шифрование"
+
 #: components/auth/src/flows/FlowConfirmReset.tsx
 #: components/auth/src/flows/FlowReset.tsx
 msgid "Reset password"
@@ -2938,14 +3397,46 @@ msgstr "Сбросить Коды Восстановления"
 msgid "Reset Token"
 msgstr "Сбросить токен"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Resetting encryption logs this device out. Use it if encrypted chats keep failing on this device."
+msgstr "Сброс шифрования выполняет выход на этом устройстве. Используйте, если зашифрованные чаты здесь постоянно не работают."
+
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Responsibly disclosed security issues"
 msgstr "Ответственно раскрыты проблемы безопасности"
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Restore"
+msgstr "Восстановить"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Restore call window"
 msgstr "Восстановить окно звонка"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Restore history"
+msgstr "Восстановить историю"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Restore with recovery key"
+msgstr "Восстановить ключом восстановления"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Restore your history with the recovery key, or verify the device with another one."
+msgstr "Восстановите историю ключом восстановления или сверьте устройство с другим."
+
+#. placeholder {0}: progress()!.imported
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Restored {0} keys."
+msgstr "Восстановлено ключей: {0}."
+
+#. placeholder {0}: progress()!.done
+#. placeholder {1}: progress()!.total
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Restoring keys: {0} of {1}"
+msgstr "Восстанавливаем ключи: {0} из {1}"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 msgid "Retry sending"
@@ -3008,6 +3499,15 @@ msgstr "Сохранить файл"
 msgid "Save permissions"
 msgstr "Сохранить изменения"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Save the keys of your encrypted chats to a file protected with a passphrase, or load such a file — for example after reinstalling without a key backup."
+msgstr "Сохраните ключи зашифрованных чатов в файл с паролем или загрузите такой файл — например, после переустановки без бэкапа ключей."
+
+#: components/client/e2ee/ui/views/Diagnostics.tsx
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Save to file"
+msgstr "Сохранить в файл"
+
 #: src/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "Сохранить в заметки"
@@ -3016,6 +3516,11 @@ msgstr "Сохранить в заметки"
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Saved Notes"
 msgstr "Заметки"
+
+#. placeholder {0}: exported()
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Saved: keys of {0} sessions."
+msgstr "Сохранено: ключи {0} сессий."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Saving…"
@@ -3111,6 +3616,10 @@ msgstr "Отправлять сообщения в каналы"
 msgid "Send Request"
 msgstr "Отправить Запрос"
 
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "sender not confirmed"
+msgstr "отправитель не подтверждён"
+
 #: components/app/interface/channels/text/DraftMessage.tsx
 msgid "Sending..."
 msgstr "Отправка..."
@@ -3128,6 +3637,10 @@ msgstr "Отправлено {0} вложений"
 msgid "Sent an attachment"
 msgstr "Отправил вложение"
 
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "Sent from an unknown or mismatching device."
+msgstr "Отправлено с неизвестного или несовпадающего устройства."
+
 #: components/ui/components/features/messaging/elements/MessageReply.tsx
 msgid "Sent multiple attachments"
 msgstr "Отправил несколько вложений"
@@ -3135,6 +3648,10 @@ msgstr "Отправил несколько вложений"
 #: src/interface/navigation/servers/railDrag.ts
 msgid "Server"
 msgstr "Серверы"
+
+#: components/instance/ServerSelect.tsx
+msgid "Server address"
+msgstr "Адрес сервера"
 
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"
@@ -3184,6 +3701,10 @@ msgstr "Установить цвет папки: {value}"
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Set role colour to {colour}"
 msgstr "Установлен цвет роли: {colour}"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Set up key backup"
+msgstr "Настроить бэкап ключей"
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Set up your account and make yourself at home."
@@ -3240,6 +3761,10 @@ msgstr "Показывать кнопку отправки сообщения"
 #~ msgid "Sign Up"
 #~ msgstr "Зарегистрироваться"
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Signed in <0/>"
+msgstr "Вход <0/>"
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "Silent"
 msgstr "Тихий"
@@ -3255,6 +3780,10 @@ msgstr "Включен медленный режим."
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "Slowmode off"
 msgstr "Медленный режим выключен"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Someone"
+msgstr "Кто-то"
 
 #: components/modal/modals/EditEmail.tsx
 msgid "someone@example.com"
@@ -3279,6 +3808,11 @@ msgstr "Что-то пошло не так! {error}"
 
 #~ msgid "Something went wrong! Try again later."
 #~ msgstr "Чтото пошло не так! Попробуйте снова позже."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Something went wrong. Try again."
+msgstr "Что-то пошло не так. Попробуйте ещё раз."
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Sounds"
@@ -3323,6 +3857,14 @@ msgstr "Начать звонок"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Start with Computer"
 msgstr "Запускать вместе с ПК"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Starting encryption…"
+msgstr "Запускаем шифрование…"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Starting…"
+msgstr "Запуск…"
 
 #: components/ui/components/features/profiles/ProfileStatus.tsx
 msgid "Status"
@@ -3375,6 +3917,10 @@ msgstr "Трансляция завершена"
 msgid "Stream Start"
 msgstr "Трансляция началась"
 
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Strong."
+msgstr "Надёжный."
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Submit feature suggestion"
 msgstr "Отправить предложение"
@@ -3398,6 +3944,10 @@ msgstr "Предложить новую функцию Stoat в обсужден
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
 msgstr "Поддержите проект пожертвованием - спасибо!"
+
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
+msgstr "Сменить аккаунт"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
@@ -3459,6 +4009,22 @@ msgstr "Текстовый канал"
 msgid "That action had no effect."
 msgstr "Это действие ни к чему не привело."
 
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "That step did not work. Try again."
+msgstr "Шаг не удался. Попробуйте ещё раз."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "The backup on the server does not match its recovery data. It was not used."
+msgstr "Бэкап на сервере не совпадает с данными восстановления. Он не использован."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "The backup was replaced on another device meanwhile. Try again."
+msgstr "Тем временем бэкап заменили на другом устройстве. Попробуйте ещё раз."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "The backup was replaced on another device. Enter your recovery key to use it here."
+msgstr "Бэкап заменён на другом устройстве. Введите ключ восстановления, чтобы использовать его здесь."
+
 #: components/i18n/errors.tsx
 msgid "The bot has been removed from discover by moderators, the user must contact support."
 msgstr "Бот был удалён из каталога модераторами. Для получения дополнительной информации свяжитесь с поддержкой."
@@ -3466,6 +4032,14 @@ msgstr "Бот был удалён из каталога модераторам�
 #: components/i18n/errors.tsx
 msgid "The bot is already on discover, the user must contact support to have it removed"
 msgstr "Бот уже добавлен в каталог. Чтобы удалить его, свяжитесь с поддержкой."
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "The codes did not match. Someone may be in the middle: the device is not verified. Verify again when you are next to each other."
+msgstr "Коды не совпали. Возможно, кто-то посередине: устройство не проверено. Повторите сверку, когда будете рядом."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "The device list could not be loaded."
+msgstr "Не удалось загрузить список устройств."
 
 #: components/i18n/errors.tsx
 msgid "The Discover request is approved or the item has been removed from discover. In either case, the user must contact support."
@@ -3475,18 +4049,70 @@ msgstr "Заявка на размещение в каталоге уже одо
 msgid "The Discover request was declined. Declined requests cannot be removed, but the user may submit again."
 msgstr "Заявка на публикацию в каталоге была отклонена. Отклонённые заявки нельзя удалить, но вы можете подать новую."
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "The encryption data of this device was saved by a newer version of the app. Install the latest version to read encrypted chats again. Resetting encryption instead loses the keys that are not in your backup."
+msgstr "Данные шифрования этого устройства сохранены более новой версией приложения. Установите последнюю версию, чтобы снова читать зашифрованные чаты. Сброс шифрования вместо этого потеряет ключи, которых нет в бэкапе."
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "The encryption keys of this device are deleted when you log out; your key backup stays on the server."
+msgstr "Ключи шифрования этого устройства удалятся при выходе; бэкап ключей останется на сервере."
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "The encryption keys of this device are lost (the app data was restored or cleared, or the server has other keys for this device). Encrypted messages cannot be read or sent here."
+msgstr "Ключи шифрования этого устройства потеряны (данные приложения восстановлены или очищены, либо у сервера другие ключи этого устройства). Здесь нельзя читать и отправлять зашифрованные сообщения."
+
+#: src/interface/channels/text/Composition.tsx
+msgid "The encryption keys of this device are lost: reset encryption in Settings → Devices and encryption."
+msgstr "Ключи шифрования этого устройства потеряны: сбросьте шифрование в «Настройки → Устройства и шифрование»."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "The encryption keys of this device are lost. Reset encryption to keep chatting in encrypted chats."
+msgstr "Ключи шифрования этого устройства потеряны. Сбросьте шифрование, чтобы продолжить общение в зашифрованных чатах."
+
 #. placeholder {0}: file.name
 #: src/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "Размер файла \"{0}\" ({fileSize}) первышает лимит размера файла в {maxSizeFormatted}."
 
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "The file could not be read."
+msgstr "Не удалось прочитать файл."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "The file is too large (more than 64 MiB)."
+msgstr "Файл слишком большой (больше 64 МиБ)."
+
 #: components/i18n/errors.tsx
 msgid "The item was removed by moderators, and as such future applications are prohibited. Contact support for more information."
 msgstr "Элемент был заблокирован модерацией. Повторная подача заявок невозможна. Обратитесь в службу поддержки для уточнения деталей."
 
+#: components/client/e2ee/ui/E2eeWatcher.tsx
+msgid "The key backup was replaced on another device. Enter your recovery key to use it here."
+msgstr "Бэкап ключей заменён на другом устройстве. Введите ключ восстановления, чтобы использовать его здесь."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "The passphrases do not match."
+msgstr "Пароли не совпадают."
+
 #: components/i18n/errors.tsx
 msgid "The password is too short."
 msgstr "Пароль слишком короткий."
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "The recovery key unlocks the backup of your encryption keys. With it, a new device can read your earlier encrypted messages. The server cannot read the backup. Keep the key somewhere safe: nobody, not even the server, can recover it for you."
+msgstr "Ключ восстановления открывает бэкап ваших ключей шифрования. С ним новое устройство прочитает прежние зашифрованные сообщения. Сервер не может прочитать бэкап. Храните ключ в надёжном месте: никто, даже сервер, не восстановит его за вас."
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "The sender of this message cannot be confirmed (key from a backup or a key file)."
+msgstr "Отправителя этого сообщения нельзя подтвердить (ключ из бэкапа или файла ключей)."
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "The sender's device did not share the key for this message."
+msgstr "Устройство отправителя не передало ключ этого сообщения."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "The server could not be reached. Try again."
+msgstr "Сервер недоступен. Попробуйте ещё раз."
 
 #: components/i18n/errors.tsx
 msgid "The server has been removed from discover by moderators, the user must contact support."
@@ -3496,14 +4122,62 @@ msgstr "Сервер был удалён из каталога модерато�
 msgid "The server is already on discover, the user must contact support to have it removed."
 msgstr "Сервер уже находится в каталоге. Для удаления обратитесь в поддержку."
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "The server refused some encryption data of this device (keys or verification messages). Chatting goes on; if messages stay unreadable for others, send a diagnostic report below."
+msgstr "Сервер отклонил часть данных шифрования этого устройства (ключи или сообщения сверки). Общение продолжается; если ваши сообщения остаются нечитаемыми для других, отправьте диагностический отчёт ниже."
+
+#: src/interface/channels/E2eeChannelHeader.tsx
+msgid "The server removed encryption from this conversation. Your messages here are still encrypted."
+msgstr "Сервер снял шифрование с этого чата. Ваши сообщения здесь по-прежнему шифруются."
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "The verification could not start. Try again a little later."
+msgstr "Не удалось начать сверку. Попробуйте чуть позже."
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "The verification timed out."
+msgstr "Время сверки истекло."
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "The verification was cancelled."
+msgstr "Сверка отменена."
+
+#: components/i18n/errors.tsx
+msgid "The web socket was unable to connect to the backend."
+msgstr "Не удалось подключиться к серверу по WebSocket."
+
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
 msgstr "Тема"
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "There is a typo in the recovery key"
+msgstr "В ключе восстановления опечатка"
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "There is a typo in the recovery key."
+msgstr "В ключе восстановления опечатка."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "There is no backup on the server."
+msgstr "На сервере нет бэкапа."
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "They don't match"
+msgstr "Не совпадают"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "They match"
+msgstr "Совпадают"
 
 #. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "This {0} is discoverable"
 msgstr "{0} отображается в каталоге"
+
+#: components/client/Controller.ts
+msgid "This account is disabled."
+msgstr "Этот аккаунт отключён."
 
 #: components/i18n/errors.tsx
 msgid "This account is not activated! Please check your account's inbox and try again."
@@ -3529,6 +4203,18 @@ msgstr "Этот канал недоступен в вашем регионе н
 msgid "This content is not available in your region."
 msgstr "Этот контент недоступен в вашем регионе."
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "This device"
+msgstr "Это устройство"
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "This device does not receive keys: its inbox on the server is full."
+msgstr "Это устройство не получает ключи: его ящик на сервере переполнен."
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "This device has no key backup. Its encryption keys are deleted when you log out: without a backup or another verified device, your encrypted history cannot be read on a new device."
+msgstr "На этом устройстве нет бэкапа ключей. Его ключи шифрования удалятся при выходе: без бэкапа или другого проверенного устройства историю зашифрованных чатов не прочитать на новом устройстве."
+
 #: components/i18n/errors.tsx
 msgid "This feature is currently disabled."
 msgstr "Эта функция пока недоступна."
@@ -3546,6 +4232,14 @@ msgstr "Эта группа достигла своего лимита в {0} п
 msgid "This has already been sent."
 msgstr "Это уже было отправлено."
 
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "This is not a key file, or it is damaged."
+msgstr "Это не файл ключей, или он повреждён."
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "This is not the recovery key (or passphrase) of your backup."
+msgstr "Это не ключ восстановления (или пароль) вашего бэкапа."
+
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "This is taking longer than usual."
 msgstr "Это занимает больше времени, чем обычно."
@@ -3558,6 +4252,10 @@ msgstr "Это начало вашей беседы."
 msgid "This is the start of your notes."
 msgstr "Это начало ваших заметок."
 
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "This message could not be decrypted."
+msgstr "Не удалось расшифровать это сообщение."
+
 #: components/i18n/errors.tsx
 msgid "This message is already pinned."
 msgstr "Это сообщение уже закреплено."
@@ -3566,9 +4264,21 @@ msgstr "Это сообщение уже закреплено."
 msgid "This message is empty and has not been sent."
 msgstr "Это сообщение пустое и не было отправлено."
 
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "This message is from a newer version of the app. Update to read it."
+msgstr "Это сообщение из более новой версии приложения. Обновите приложение, чтобы прочитать его."
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "This message may have been tampered with and is not shown."
+msgstr "Это сообщение могло быть подменено и не показывается."
+
 #: components/i18n/errors.tsx
 msgid "This password has previously appeared in security leaks, please use another password."
 msgstr "Этот пароль был замечен в утечке, поменяйте его на другой пароль."
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "This server does not offer end-to-end encryption."
+msgstr "Этот сервер не поддерживает сквозное шифрование."
 
 #: components/app/interface/settings/server/Overview.tsx
 msgid "This server is about..."
@@ -3625,6 +4335,10 @@ msgstr "Отправить в тайм-аут"
 msgid "Timeout Members"
 msgstr "Отстранять участников"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "To read your earlier encrypted messages here, verify this device with another of your devices, or restore your history with the recovery key."
+msgstr "Чтобы читать здесь прежние зашифрованные сообщения, сверьте это устройство с другим своим устройством или восстановите историю ключом восстановления."
+
 #: src/interface/common/CommonHeader.tsx
 msgid "Toggle main sidebar"
 msgstr "Переключить главную боковую панель"
@@ -3637,9 +4351,22 @@ msgstr "Token скопирован в буфер обмена"
 msgid "Tonal Spot"
 msgstr "Тональное Пятно"
 
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Too many keys for one file. Export the chats one by one (untick \"All encrypted chats\")."
+msgstr "Слишком много ключей для одного файла. Экспортируйте чаты по одному (снимите «Все зашифрованные чаты»)."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Too short: at least {MIN_PASSPHRASE} characters."
+msgstr "Слишком короткий: минимум {MIN_PASSPHRASE} символов."
+
 #: components/app/interface/settings/user/Language.tsx
 msgid "Traditional (DD/MM/YYYY)"
 msgstr "Традиционный (DD/MM/YYYY)"
+
+#: components/app/menus/UserContextMenu.tsx
+#: components/modal/modals/TransferGroup.tsx
+msgid "Transfer Ownership"
+msgstr "Передать права владельца"
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Trending GIFs"
@@ -3652,6 +4379,35 @@ msgstr "Устранение неполадок"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Try again"
 msgstr "Время ожидания истекло"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Turn on backup"
+msgstr "Включить бэкап"
+
+#: components/modal/modals/EnableEncryption.tsx
+msgid "Turn on encryption"
+msgstr "Включить шифрование"
+
+#: src/interface/channels/E2eeChannelHeader.tsx
+msgid "Turn on end-to-end encryption (beta)"
+msgstr "Включить сквозное шифрование (бета)"
+
+#: components/modal/modals/EnableEncryption.tsx
+msgid "Turn on end-to-end encryption? (beta)"
+msgstr "Включить сквозное шифрование? (бета)"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Turning on the backup…"
+msgstr "Включаем бэкап…"
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "Unable to decrypt this message: its key has not arrived. Verify this device with another one of yours or restore the key backup."
+msgstr "Не удалось расшифровать сообщение: ключ не пришёл. Сверьте это устройство с другим своим или восстановите бэкап ключей."
+
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Unblock"
+msgstr "Разблокировать"
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Unblock user"
@@ -3670,6 +4426,10 @@ msgstr "Включить звук"
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Unknown"
 msgstr "Неизвестно"
+
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "unknown device"
+msgstr "неизвестное устройство"
 
 #: components/markdown/plugins/anchors.tsx
 #: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
@@ -3727,6 +4487,10 @@ msgstr "Нежелательная реклама или спам"
 msgid "Until I turn it back on"
 msgstr "Пока я не включю снова"
 
+#: src/interface/channels/text/Composition.tsx
+msgid "Update the app to write in encrypted chats."
+msgstr "Обновите приложение, чтобы писать в зашифрованные чаты."
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
 msgstr "Загружать файлы"
@@ -3738,6 +4502,14 @@ msgstr "Загрузить на Gifbox"
 #: components/modal/modals/JoinServer.tsx
 msgid "Use a code or invite link"
 msgstr "Использовать код или ссылку приглашения"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Use emoji from other servers"
+msgstr "Использовать эмодзи с других серверов"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Use External Emojis"
+msgstr "Внешние эмодзи"
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
@@ -3780,6 +4552,10 @@ msgstr "Пользователь покидает звонок"
 msgid "User Management"
 msgstr "Управление пользователями"
 
+#: components/i18n/errors.tsx
+msgid "User session not found. Try switching users or logging in again."
+msgstr "Сессия пользователя не найдена. Смените пользователя или войдите заново."
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "User Settings"
 msgstr "Настройки пользователя"
@@ -3820,9 +4596,24 @@ msgstr "Пользователям более не будет предложен
 #~ msgid "Using default speaker"
 #~ msgstr ""
 
+#: components/client/e2ee/ui/views/Devices.tsx
 #: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Verified"
 msgstr "Подтверждён"
+
+#: components/client/e2ee/ui/E2eeWatcher.tsx
+#: components/client/e2ee/ui/views/ChannelEncryption.tsx
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Verify"
+msgstr "Сверить"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Verify device"
+msgstr "Сверка устройства"
+
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Verify with another device"
+msgstr "Сверить с другим устройством"
 
 #: components/auth/src/flows/FlowVerify.tsx
 msgid "Verifying your account…"
@@ -3889,6 +4680,22 @@ msgstr "Обработка Голоса"
 msgid "Volume"
 msgstr "Громкость"
 
+#: components/app/interface/channels/text/E2eeMessageStatus.tsx
+msgid "Waiting for the key to decrypt this message…"
+msgstr "Ждём ключ для расшифровки этого сообщения…"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Waiting for the other device to accept…"
+msgstr "Ждём, пока другое устройство примет…"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Waiting for the other device to confirm…"
+msgstr "Ждём подтверждения другого устройства…"
+
+#: components/client/e2ee/ui/views/Verify.tsx
+msgid "Waiting for the other device…"
+msgstr "Ждём другое устройство…"
+
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Want to change username?"
 msgstr "Хотите поменять имя пользователя?"
@@ -3898,8 +4705,8 @@ msgid "We are working hard on optimising our web app for mobile."
 msgstr "Мы активно работаем над оптимизацией веб-приложения для мобильных устройств."
 
 #: components/auth/src/flows/FlowLogin.tsx
-msgid "We couldn't finish logging you in. Try again, and if it keeps happening, check Stoat's status."
-msgstr "Не удалось выполнить вход в аккаунт. Повторите попытку позже или проверьте статус работы Stoat."
+#~ msgid "We couldn't finish logging you in. Try again, and if it keeps happening, check Stoat's status."
+#~ msgstr "Не удалось выполнить вход в аккаунт. Повторите попытку позже или проверьте статус работы Stoat."
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "We only use it to verify your account and help you get back in if you're ever locked out. We'll never sell it or send you spam."
@@ -3912,6 +4719,10 @@ msgstr "Мы отправим вам на почту безопасную ссы
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "We've sent you a verification email. Please allow up to 10 minutes for it to arrive."
 msgstr "Мы отправили вам на электронную почту письмо для подтверждения. Пожалуйста, подождите до 10 минут для его получения."
+
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Weak: easy to guess. Use several words."
+msgstr "Слабый: легко угадать. Используйте несколько слов."
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "Webhook"
@@ -3952,6 +4763,14 @@ msgstr "Узнай, что нового"
 msgid "Whether other users can edit these settings"
 msgstr "Могут ли пользователи менять эти настройки"
 
+#: components/i18n/errors.tsx
+msgid "Whoops, you're already logged in as this user!"
+msgstr "Вы уже вошли как этот пользователь!"
+
+#: components/client/e2ee/ui/views/Restore.tsx
+msgid "Will be used as a passphrase"
+msgstr "Будет использован как пароль"
+
 #. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "with {0}"
@@ -3965,6 +4784,10 @@ msgstr "Вместе с {0}"
 msgid "with {0} others"
 msgstr "с {0} другими"
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "Without a recovery key or another device, earlier encrypted messages cannot be read on this device afterwards."
+msgstr "Без ключа восстановления или другого устройства прежние зашифрованные сообщения потом не прочитать на этом устройстве."
+
 #: components/modal/modals/CreateGroupOrServer.tsx
 msgid "Would you like to create a new group or server?"
 msgstr "Хотите ли вы создать новую группу или сервер?"
@@ -3973,9 +4796,17 @@ msgstr "Хотите ли вы создать новую группу или с�
 msgid "Would you like to create a new server or join an existing one?"
 msgstr "Хотите ли вы создать новый сервер или присоединиться к существующему?"
 
+#: components/client/e2ee/ui/views/KeyFiles.tsx
+msgid "Wrong passphrase, or the file was modified."
+msgstr "Неверный пароль, или файл изменён."
+
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "You agree that your bot is subject to the Acceptable Usage Policy."
 msgstr "Вы согласились с тем, что ваш бот не нарушаает Политику приемлемого пользования."
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "You already have a backup. A new recovery key replaces it: the old key stops working, and keys that only the old backup has are lost. If you have the old key, restore your history instead."
+msgstr "У вас уже есть бэкап. Новый ключ восстановления заменит его: старый ключ перестанет работать, а ключи, которые есть только в старом бэкапе, пропадут. Если старый ключ у вас есть, лучше восстановите историю."
 
 #. placeholder {0}: props.member.user?.username
 #. placeholder {0}: props.user?.username
@@ -4177,9 +5008,17 @@ msgstr "Ваш адрес электронной почты остается с�
 msgid "Your message is too long, please remove some characters and try again."
 msgstr "Ваше сообщение слишком длинное. Сократите его и попробуйте снова."
 
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Your other devices"
+msgstr "Ваши другие устройства"
+
 #: components/modal/modals/MFARecovery.tsx
 msgid "Your recovery codes"
 msgstr "Ваши резервные коды"
+
+#: components/client/e2ee/ui/views/Recovery.tsx
+msgid "Your recovery key. Write it down or save it to a file. It is shown only now."
+msgstr "Ваш ключ восстановления. Запишите его или сохраните в файл. Он показывается только сейчас."
 
 #: components/i18n/errors.tsx
 msgid "Your request failed. Please contact support."
@@ -4189,7 +5028,7 @@ msgstr "Не удалось выполнить запрос. Обратитес�
 msgid "Your role ranking is too low to take this action."
 msgstr "Ваша роль слишком низкая чтобы сделать это действие."
 
-#: components/auth/src/flows/FlowLogin.tsx
+#: components/i18n/errors.tsx
 msgid "Your session ended, possibly because you logged out on another device. Log in again to continue."
 msgstr "Сеанс завершён — возможно, вы вышли из аккаунта на другом устройстве. Войдите снова, чтобы продолжить. Если это были не вы, рекомендуем сменить пароль."
 
