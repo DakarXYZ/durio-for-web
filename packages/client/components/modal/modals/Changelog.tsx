@@ -20,9 +20,15 @@ export interface ChangelogResponse {
   updated_at?: string;
 }
 
-const CHANGELOG_ENDPOINT = "https://changelog.stoat.chat/v1/changelogs/latest";
+// dur.io: no upstream changelog service — a logged-in client must not call stoat.chat
+// (and its "What's new" is not ours). A build may name its own (`VITE_CHANGELOG_URL`).
+const CHANGELOG_ENDPOINT = import.meta.env.VITE_CHANGELOG_URL as
+  | string
+  | undefined;
 
 export async function fetchLatestChangelog(): Promise<ChangelogResponse | null> {
+  if (!CHANGELOG_ENDPOINT) return null;
+
   try {
     const response = await fetch(CHANGELOG_ENDPOINT, {
       headers: { Accept: "application/json" },
