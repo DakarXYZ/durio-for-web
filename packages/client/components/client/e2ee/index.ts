@@ -186,10 +186,16 @@ async function start(client: Client, instance: Instance) {
  * store, its key, the channel pins, the device's local marks and object URLs go
  * @param client Client being signed out
  * @param instance Instance
+ * @param session The stored session: a client whose session ended before `Ready`
+ *   (the app started after a revocation) knows no user
  */
-export async function forgetE2eeAccount(client: Client, instance: Instance) {
-  const userId = client.user?.id;
-  const deviceId = client.sessionId;
+export async function forgetE2eeAccount(
+  client: Client,
+  instance: Instance,
+  session?: { userId: string; _id?: string },
+) {
+  const userId = client.user?.id ?? session?.userId;
+  const deviceId = client.sessionId ?? session?._id;
   if (!userId) return;
 
   // first, synchronously: the SDK's `logout` finds no core left to close

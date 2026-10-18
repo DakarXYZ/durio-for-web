@@ -257,6 +257,9 @@ class Lifecycle {
         this.dispose(true);
         return;
       case TransitionType.PermanentFailure:
+        // dur.io: a second report of the failure (the socket and the E2EE requests
+        // both see an ended session) keeps the first (WEB-08)
+        if (this.state() === State.Error) return;
         this.#permanentError = transition.error;
         this.#enter(State.Error);
         return;
@@ -691,8 +694,8 @@ export default class ClientController {
   logout = () => {
     // dur.io (WEB-12): the crypto store, its key and pins of this account go, and
     // its local data (drafts, the outbox) now rather than at the next start
-    void forgetE2eeAccount(this.instance.client, this.instance);
     const session = this.state.auth.getSession();
+    void forgetE2eeAccount(this.instance.client, this.instance, session);
     if (session) void this.state.forgetSessionData(session);
     this.state.settings.resetNotificationsState();
     killServiceWorkerSubscription(this.instance.client, true);
