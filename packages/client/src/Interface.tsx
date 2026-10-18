@@ -16,6 +16,7 @@ import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClient, useClientLifecycle } from "@revolt/client";
 import { State } from "@revolt/client/Controller";
 import { NotificationsWorker } from "@revolt/client/NotificationsWorker";
+import { E2eeWatcher } from "@revolt/client/e2ee/ui/E2eeWatcher";
 import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
@@ -133,6 +134,7 @@ const Interface = (props: { children: JSX.Element }) => {
         </Switch>
 
         <NotificationsWorker />
+        <E2eeWatcher />
       </AppRoot>
     </MessageCache>
   );

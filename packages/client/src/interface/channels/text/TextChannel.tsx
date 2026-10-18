@@ -31,6 +31,7 @@ import { ChannelHeader } from "../ChannelHeader";
 import { ChannelPageProps } from "../ChannelPage";
 
 import { Channel } from "stoat.js";
+import { E2eeChannelBanner } from "../E2eeChannelBanner";
 import { MessageComposition } from "./Composition";
 import { isLargeServer } from "./largeServer";
 import { MemberSidebar } from "./MemberSidebar";
@@ -234,6 +235,7 @@ export function TextChannel(props: ChannelPageProps) {
             atEnd={[atEnd, setEnd]}
           />
 
+          <E2eeChannelBanner channel={props.channel} />
           <MessageComposition
             channel={props.channel}
             onMessageSend={() => jumpToBottomRef?.()}

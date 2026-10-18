@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { Show, lazy } from "solid-js";
 
 import { Trans } from "@lingui/solid/macro";
 import { Server } from "stoat.js";
@@ -44,6 +44,9 @@ import { Sessions } from "./user/Sessions";
 import { EditSubscription } from "./user/subscriptions";
 import { VoiceSettings } from "./user/voice/VoiceSettings";
 
+// dur.io: "Devices and encryption", a lazy chunk (WEB-07)
+const E2eeSettings = lazy(() => import("@revolt/client/e2ee/ui/views/Devices"));
+
 const Config: SettingsConfiguration<{ server: Server }> = {
   /**
    * Page titles
@@ -86,6 +89,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <EditProfile />;
       case "sessions":
         return <Sessions />;
+      case "encryption":
+        return <E2eeSettings />;
       case "bots":
         return <MyBots />;
       case "language":
@@ -219,6 +224,11 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "sessions",
               icon: <MdVerifiedUser {...iconSize(20)} />,
               title: <Trans>Sessions</Trans>,
+            },
+            {
+              id: "encryption",
+              icon: <Symbol size={20}>encrypted</Symbol>,
+              title: <Trans>Devices and encryption (beta)</Trans>,
             },
           ],
         },

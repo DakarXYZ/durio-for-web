@@ -36,6 +36,12 @@ export function E2eeChannelHeader(props: { channel: Channel }) {
       </Match>
       <Match when={encryptable() && props.channel.isEncrypted}>
         <IconButton
+          onPress={() =>
+            openModal({
+              type: "e2ee",
+              view: { kind: "channel", channel: props.channel },
+            })
+          }
           use:floating={{
             tooltip: {
               placement: "bottom",

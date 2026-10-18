@@ -444,7 +444,11 @@ export function MessageComposition(props: Props) {
               ? t`Encryption is active in another window: write from there.`
               : client().e2ee.status() === "starting"
                 ? t`Starting encryption…`
-                : t`Encryption is not available on this device.`
+                : client().e2ee.status() === "keyLost"
+                  ? t`The encryption keys of this device are lost: reset encryption in Settings → Devices and encryption.`
+                  : client().e2ee.status() === "updateApp"
+                    ? t`Update the app to write in encrypted chats.`
+                    : t`Encryption is not available on this device.`
         }
         sendingAllowed={
           props.channel.havePermission("SendMessage") &&

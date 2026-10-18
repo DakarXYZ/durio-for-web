@@ -1,6 +1,6 @@
-import { Match, Switch } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 
-import { Trans } from "@lingui/solid/macro";
+import { Trans, useLingui } from "@lingui/solid/macro";
 import type { MessageE2ee } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -70,6 +70,62 @@ const Status = styled("div", {
       true: {
         color: "var(--md-sys-color-error)",
       },
+    },
+  },
+});
+
+/**
+ * Shield of a decrypted message whose sender is not proven (dur.io, WEB-07): its key
+ * came from the backup or a key file (`Unauthenticated`), or from a device that is not
+ * (or no longer) the sender's (`UnknownDevice`, `Mismatch`)
+ */
+export function E2eeMessageShield(props: { e2ee?: MessageE2ee }) {
+  const { t } = useLingui();
+
+  const warning = () => {
+    if (props.e2ee?.state !== "ok") return;
+    switch (props.e2ee.verification) {
+      case "Unauthenticated":
+        return t`The sender of this message cannot be confirmed (key from a backup or a key file).`;
+      case "UnknownDevice":
+      case "Mismatch":
+        return t`Sent from an unknown or mismatching device.`;
+    }
+  };
+
+  return (
+    <Show when={warning()}>
+      <Shield
+        mismatch={props.e2ee?.verification === "Mismatch"}
+        use:floating={{ tooltip: { placement: "top", content: warning()! } }}
+      >
+        <Symbol size={14}>
+          {props.e2ee?.verification === "Unauthenticated"
+            ? "shield_question"
+            : "gpp_maybe"}
+        </Symbol>
+        {props.e2ee?.verification === "Unauthenticated" ? (
+          <Trans>sender not confirmed</Trans>
+        ) : (
+          <Trans>unknown device</Trans>
+        )}
+      </Shield>
+    </Show>
+  );
+}
+
+const Shield = styled("div", {
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    fontSize: "0.75em",
+    color: "var(--md-sys-color-outline)",
+    cursor: "default",
+  },
+  variants: {
+    mismatch: {
+      true: { color: "var(--md-sys-color-error)" },
     },
   },
 });

@@ -23,6 +23,7 @@ import {
 
 import type { SettingsConfigurations } from "@revolt/app";
 import { CategoryData } from "@revolt/app/menus/CategoryContextMenu";
+import type { E2eeModalView } from "@revolt/client/e2ee/ui/types";
 import { ServerFolder } from "@revolt/state/stores/ServerFolders";
 import { ScreenShareQualityName } from "@revolt/state/stores/Voice";
 
@@ -67,6 +68,11 @@ export type Modals =
   | {
       type: "enable_encryption";
       channel: Channel;
+    }
+  | {
+      // dur.io: every E2EE dialog, one lazy chunk (WEB-07, WEB-12)
+      type: "e2ee";
+      view: E2eeModalView;
     }
   | {
       type: "create_bot";

@@ -48,7 +48,7 @@ import {
 } from "../../../menus/UserContextMenu";
 
 import { createIsTimedOut } from "@revolt/common/lib/createIsTimedOut";
-import { E2eeMessageStatus } from "./E2eeMessageStatus";
+import { E2eeMessageShield, E2eeMessageStatus } from "./E2eeMessageStatus";
 import { EditMessage } from "./EditMessage";
 
 /**
@@ -394,6 +394,7 @@ export function Message(props: Props) {
             </BreakText>
           </Match>
         </Switch>
+        <E2eeMessageShield e2ee={props.message.e2ee} />
         <For each={props.message.attachments}>
           {(attachment) => (
             <Attachment message={props.message} file={attachment} />

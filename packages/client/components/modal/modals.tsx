@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { lazy, mergeProps, splitProps } from "solid-js";
 
 import { IS_DEV } from "@revolt/client";
 
@@ -72,6 +72,9 @@ import { UserProfileMutualFriendsModal } from "./modals/UserProfileMutualFriends
 import { UserProfileMutualGroupsModal } from "./modals/UserProfileMutualGroups";
 import { UserProfileRolesModal } from "./modals/UserProfileRoles";
 
+// dur.io: E2EE dialogs are a lazy chunk (WEB-07)
+const E2eeModal = lazy(() => import("@revolt/client/e2ee/ui/E2eeModal"));
+
 /**
  * Render the modal
  */
@@ -107,6 +110,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <ChannelToggleMatureModal {...modalProps} />;
     case "enable_encryption":
       return <EnableEncryptionModal {...modalProps} />;
+    case "e2ee":
+      return <E2eeModal {...modalProps} />;
     case "create_bot":
       return <CreateBotModal {...modalProps} />;
     case "create_category":
