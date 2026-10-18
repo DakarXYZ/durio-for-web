@@ -35,6 +35,12 @@ export interface DurioNativeBridge {
   focus(): void;
 
   /**
+   * Overlay of the taskbar button (IPC `setBadgeCount`, D5): the number of unread
+   * mentions, `-1` for a dot (unread messages without mentions), `0` for none
+   */
+  setBadgeCount(count: number): void;
+
+  /**
    * Prefill for the server address screen, set at build time of the desktop app
    * (`electron-store`), empty by default (O13). Only a suggestion: the user confirms it.
    */

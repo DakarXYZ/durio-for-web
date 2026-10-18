@@ -141,6 +141,7 @@ page):
 | `e2eeStoreKey(accountKey): Promise<{key, created} \| Uint8Array>` | IPC `secrets:get`: 32 random bytes per accountKey (`[A-Za-z0-9_-]{1,128}`), created on first use, kept as `safeStorage.encryptString(base64)` in `userData/keys/<accountKey>.bin`. `created: true` when this call made it — with an existing crypto store that means the old key is lost (the page shows the "keys lost" wizard). The page passes the bytes straight to the crypto worker and keeps no copy |
 | `e2eeDeleteStoreKey(accountKey): Promise<void>` | IPC `secrets:delete`: on sign-out (WEB-12); no error when missing |
 | `focus(): void` | IPC `focus`: show, restore and focus the window (a click on a notification while the app sits in the tray) |
+| `setBadgeCount(count): void` | IPC `setBadgeCount`: overlay of the taskbar button — unread mentions (each message of a DM or group counts), `-1` a dot for unread without mentions, `0` none; muted channels do not count |
 | `servers.default(): string \| undefined` | Optional prefill of the server address screen from the build of the desktop app (`electron-store`), empty by default (O13) |
 
 Without the bridge (a plain browser) encryption is unavailable, except `vite dev`, which uses an insecure

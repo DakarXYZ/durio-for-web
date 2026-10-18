@@ -15,6 +15,7 @@ import { MessageCache } from "@revolt/app/interface/channels/text/MessageCache";
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClient, useClientLifecycle } from "@revolt/client";
 import { State } from "@revolt/client/Controller";
+import { DesktopBadge } from "@revolt/client/DesktopBadge";
 import { NotificationsWorker } from "@revolt/client/NotificationsWorker";
 import { E2eeWatcher } from "@revolt/client/e2ee/ui/E2eeWatcher";
 import { useModals } from "@revolt/modal";
@@ -134,6 +135,7 @@ const Interface = (props: { children: JSX.Element }) => {
         </Switch>
 
         <NotificationsWorker />
+        <DesktopBadge />
         <E2eeWatcher />
       </AppRoot>
     </MessageCache>
