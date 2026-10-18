@@ -18,6 +18,8 @@ import { Column, Dialog, DialogProps, IconButton, Text } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { MessageContextMenu } from "@revolt/app";
+import { useClient } from "@revolt/client";
+import { createFileUrl } from "@revolt/client/e2ee";
 import { isGifBox } from "@revolt/common/lib/gifs";
 import { Modals } from "../types";
 
@@ -25,6 +27,9 @@ export function ImageViewerModal(
   props: DialogProps & Modals & { type: "image_viewer" },
 ) {
   const [ref, setRef] = createSignal<HTMLElement>();
+  const client = useClient();
+  // dur.io: an encrypted image is decrypted into an object URL (WEB-06)
+  const original = createFileUrl(client, () => props.file, "original");
 
   let panzoom: PanzoomObject;
 
@@ -127,7 +132,7 @@ export function ImageViewerModal(
                     <Show when={props.file}>
                       <a
                         target="_blank"
-                        href={props.file?.originalUrl}
+                        href={original()}
                         download={props.file?.filename}
                       >
                         <IconButton>
@@ -165,7 +170,7 @@ export function ImageViewerModal(
                     style={{
                       "aspect-ratio": `${(props.file!.metadata as { width: number }).width}/${(props.file!.metadata as { height: number }).height}`,
                     }}
-                    src={props.file!.originalUrl}
+                    src={original()}
                     onClick={(e) => {
                       e.stopPropagation();
                     }}

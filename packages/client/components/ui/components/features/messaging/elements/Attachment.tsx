@@ -5,6 +5,8 @@ import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { MessageContextMenu, useMessage } from "@revolt/app";
+import { useClient } from "@revolt/client";
+import { createFileUrl } from "@revolt/client/e2ee";
 import { useModals } from "@revolt/modal";
 import { Column } from "@revolt/ui/components/layout";
 import { SizedContent, Spoiler } from "@revolt/ui/components/utils";
@@ -50,6 +52,23 @@ export const AttachmentContainer = styled(Column, {
 export function Attachment(props: { file: File; message?: Message }) {
   const { openModal } = useModals();
   const { reactPicker } = useMessage();
+  const client = useClient();
+
+  // dur.io: an encrypted file is decrypted into an object URL (WEB-06)
+  const preview = createFileUrl(
+    client,
+    () => (props.file.metadata.type === "Image" ? props.file : undefined),
+    "preview",
+  );
+  const original = createFileUrl(
+    client,
+    () =>
+      props.file.metadata.type === "Video" ||
+      props.file.metadata.type === "Audio"
+        ? props.file
+        : undefined,
+    "original",
+  );
 
   return (
     <Switch fallback={`Could not render ${props.file.metadata.type}!`}>
@@ -70,7 +89,7 @@ export function Attachment(props: { file: File; message?: Message }) {
               })
             }
             loading="lazy"
-            src={props.file.createFileURL()}
+            src={preview()}
             use:floating={{
               contextMenu: () => (
                 <MessageContextMenu
@@ -95,7 +114,7 @@ export function Attachment(props: { file: File; message?: Message }) {
             controls
             playsinline
             preload="metadata"
-            src={props.file.originalUrl}
+            src={original()}
             use:floating={{
               contextMenu: () => (
                 <MessageContextMenu
@@ -113,7 +132,7 @@ export function Attachment(props: { file: File; message?: Message }) {
           <FileInfo file={props.file} />
           <audio
             controls
-            src={props.file.originalUrl}
+            src={original()}
             use:floating={{
               contextMenu: () => (
                 <MessageContextMenu

@@ -14,6 +14,7 @@ import { useSnackbar } from "@revolt/ui";
 import Instance from "../instance/Instance";
 import { disposeClient } from "../instance/dispose";
 import { killServiceWorkerSubscription } from "./NotificationsController";
+import { attachE2ee, forgetE2eeAccount } from "./e2ee";
 
 export enum State {
   Ready = "Ready",
@@ -96,6 +97,7 @@ class Lifecycle {
   private client: Client;
 
   #connectionFailures = 0;
+  #quickRetried = false;
   #permanentError: unknown | undefined;
   #retryTimeout: number | undefined;
   #nav;
@@ -135,6 +137,7 @@ class Lifecycle {
     this.client.events.on("state", this.onState);
     this.client.on("ready", this.onReady);
     this.client.on("policyChanges", this.onPolicyChanges);
+    attachE2ee(this.client, this.#controller.instance);
     this.#setLoadedOnce(false);
   }
 
@@ -181,6 +184,7 @@ class Lifecycle {
         this.#controller.state.auth.markValid();
         this.#setLoadedOnce(true);
         this.#connectionFailures = 0;
+        this.#quickRetried = false;
         break;
       case State.Dispose:
         this.reset();
@@ -190,7 +194,13 @@ class Lifecycle {
           this.transition({ type: TransitionType.Ready });
         }
         break;
-      case State.Disconnected:
+      case State.Disconnected: {
+        // dur.io (block 5E): a socket the server closed before Ready (bonfire drops
+        // every socket after a Redis error) comes back at once, once; the delay is
+        // only reset by a Ready
+        const quick = this.#closedBeforeReady && !this.#quickRetried;
+        this.#closedBeforeReady = false;
+        if (quick) this.#quickRetried = true;
         this.#connectionFailures++;
 
         if (!navigator.onLine) {
@@ -198,9 +208,10 @@ class Lifecycle {
             type: TransitionType.DeviceOffline,
           });
         } else {
-          const retryIn =
-            (Math.pow(2, this.#connectionFailures) - 1) *
-            (0.8 + Math.random() * 0.4);
+          const retryIn = quick
+            ? 0
+            : (Math.pow(2, this.#connectionFailures) - 1) *
+              (0.8 + Math.random() * 0.4);
 
           console.info(
             "Will try to reconnect in",
@@ -216,6 +227,7 @@ class Lifecycle {
           }, retryIn * 1e3) as never;
         }
         break;
+      }
       case State.Error:
         this.#nav("/login");
     }
@@ -370,8 +382,14 @@ class Lifecycle {
       () => ack().then(() => this.#policyAttentionRequired(undefined)),
     ]);
 
+  #closedBeforeReady = false;
+
   private onState = (state: ConnectionState) => {
     if (state === ConnectionState.Disconnected) {
+      this.#closedBeforeReady =
+        this.state() === State.Reconnecting ||
+        this.state() === State.Connecting;
+
       //Stoat error
       if (this.client.events.lastError?.type === "revolt")
         return this.showError(this.client.events.lastError.data);
@@ -669,6 +687,8 @@ export default class ClientController {
   };
 
   logout = () => {
+    // dur.io: the store key and pins of this account go too (WEB-12)
+    void forgetE2eeAccount(this.instance.client, this.instance);
     this.state.settings.resetNotificationsState();
     killServiceWorkerSubscription(this.instance.client, true);
     this.state.auth.removeSession();

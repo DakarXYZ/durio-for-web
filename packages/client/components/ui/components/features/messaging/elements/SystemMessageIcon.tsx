@@ -10,6 +10,7 @@ import {
   BiSolidImage,
   BiSolidInfoCircle,
   BiSolidKey,
+  BiSolidLock,
   BiSolidPurchaseTag,
   BiSolidShieldX,
   BiSolidXCircle,
@@ -97,6 +98,9 @@ export function SystemMessageIcon(props: {
           </Match>
           <Match when={props.systemMessage.type === "call_started"}>
             <BiRegularPhone size={16} />
+          </Match>
+          <Match when={props.systemMessage.type === "encryption_enabled"}>
+            <BiSolidLock size={16} />
           </Match>
         </Switch>
       </Tooltip>

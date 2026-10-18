@@ -65,6 +65,10 @@ export type Modals =
       channel: Channel;
     }
   | {
+      type: "enable_encryption";
+      channel: Channel;
+    }
+  | {
       type: "create_bot";
       client: Client;
       onCreate: (bot: Bot) => void;

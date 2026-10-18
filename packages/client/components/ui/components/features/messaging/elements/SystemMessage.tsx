@@ -6,6 +6,7 @@ import {
   ChannelEditSystemMessage,
   ChannelOwnershipChangeSystemMessage,
   ChannelRenamedSystemMessage,
+  EncryptionEnabledSystemMessage,
   MessagePinnedSystemMessage,
   SystemMessage as SystemMessageClass,
   TextSystemMessage,
@@ -194,6 +195,12 @@ export function SystemMessage(props: Props) {
               />
             </span>
           </Show>
+        </Match>
+        <Match when={sm.type === "encryption_enabled"}>
+          <Trans>
+            <UserMention userId={(sm as EncryptionEnabledSystemMessage).byId} />{" "}
+            turned on end-to-end encryption (beta). It cannot be turned off.
+          </Trans>
         </Match>
         <Match when={sm.type === "text"}>
           {(sm as TextSystemMessage).content}

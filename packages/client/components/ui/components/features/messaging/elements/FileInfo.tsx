@@ -8,6 +8,9 @@ import {
 import { Match, Show, Switch } from "solid-js";
 
 import { File, MessageEmbed } from "stoat.js";
+
+import { useClient } from "@revolt/client";
+import { decryptedBlob } from "@revolt/client/e2ee";
 import { styled } from "styled-system/jsx";
 
 import { IconButton, Text } from "@revolt/ui/components/design";
@@ -43,6 +46,18 @@ interface Props {
  * Information about a given attachment or embed
  */
 export function FileInfo(props: Props) {
+  const client = useClient();
+
+  /**
+   * dur.io: an encrypted file is decrypted in memory and saved from an object URL
+   * @param file Encrypted file
+   */
+  async function saveDecrypted(file: File) {
+    const url = URL.createObjectURL(await decryptedBlob(client(), file));
+    download(url, file.filename);
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  }
+
   function download(url: string, name?: string) {
     const link = document.createElement("a");
     link.href = url;
@@ -90,7 +105,9 @@ export function FileInfo(props: Props) {
       <Show when={props.file}>
         <IconButton
           onPress={() =>
-            download(props.file!.originalUrl, props.file!.filename)
+            props.file!.e2ee
+              ? saveDecrypted(props.file!)
+              : download(props.file!.originalUrl, props.file!.filename)
           }
         >
           <Symbol>download</Symbol>

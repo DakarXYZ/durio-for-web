@@ -88,6 +88,25 @@ SDK imports it under the old name `stoat-api` through a pnpm alias. Regenerate w
 `pnpm --filter @durio/stoat-api generate && pnpm --filter @durio/stoat-api build`; see
 `packages/stoat-api/README.md` for refreshing the spec.
 
+### dur.io fork: end-to-end encryption
+
+E2EE of DMs and groups lives in the SDK (`packages/stoat.js/src/e2ee/`: the `E2eeProvider` interface, request
+executor, decryption queue, outbox) and runs the crypto core `@durio/stoat-crypto` (wasm in a Web Worker, one per
+account) from `packages/client/components/client/e2ee/`. The core is not on the npm registry: during development
+the client depends on the tarball built in the sibling clone of `durio-crypt`:
+
+```bash
+# in ../stoat-crypto (the durio-crypt clone next to for-web)
+scripts/build-wasm.sh build   # → bindings/web/build/durio-stoat-crypto-<v>.tgz (+ .sha256)
+```
+
+`packages/client/package.json` points at `file:../../../stoat-crypto/bindings/web/build/durio-stoat-crypto-<v>.tgz`;
+CI and releases switch to the tarball of the GitHub Release (`https://github.com/DakarXYZ/durio-crypt/releases/download/v<v>/durio-stoat-crypto-<v>.tgz`)
+and compare the lockfile integrity with the release's `.sha256`. The crypto store key comes from the desktop app
+(`window.native.e2eeStoreKey`, stage 7); `vite dev` without it uses an insecure development key, other builds
+without the bridge show encryption as unavailable. Tests: `pnpm --filter stoat.js test` (SDK flows with a fake
+core) and `mise test:unit` (includes the real wasm core through the SDK).
+
 ### Using the official backend
 
 By default, the client connects to a backend running on the same host (localhost).

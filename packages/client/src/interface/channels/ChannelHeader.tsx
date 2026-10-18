@@ -30,6 +30,7 @@ import MdSettings from "@material-design-icons/svg/outlined/settings.svg?compone
 import MdKeep from "../../svg/keep.svg?component-solid";
 import { HeaderIcon } from "../common/CommonHeader";
 
+import { E2eeChannelHeader } from "./E2eeChannelHeader";
 import { canIHasSidebar, SidebarState } from "./text/TextChannel";
 
 interface Props {
@@ -140,6 +141,8 @@ export function ChannelHeader(props: Props) {
       </Switch>
 
       <Spacer />
+
+      <E2eeChannelHeader channel={props.channel} />
 
       <Show when={props.channel.isVoice && !voice.showCard(props.channel)}>
         <IconButton
@@ -255,7 +258,8 @@ export function ChannelHeader(props: Props) {
         </IconButton>
       </Show>
 
-      <Show when={searchValue() !== null}>
+      {/* dur.io: the server cannot search encrypted text */}
+      <Show when={searchValue() !== null && !props.channel.isEncrypted}>
         <Show
           when={
             layout() === "desktop" || props.sidebarState!().state !== "default"

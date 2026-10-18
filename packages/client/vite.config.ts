@@ -121,8 +121,14 @@ export default defineConfig({
     },
     sourcemap: true,
   },
+  // dur.io (WEB-03): the crypto worker is a module (the wasm glue is ESM) and the
+  // package is not pre-bundled, so `new URL("…_bg.wasm", import.meta.url)` survives and
+  // the .wasm lands in assets/ with a hash
+  worker: {
+    format: "es",
+  },
   optimizeDeps: {
-    exclude: ["hast"],
+    exclude: ["hast", "@durio/stoat-crypto"],
   },
   resolve: {
     alias: {

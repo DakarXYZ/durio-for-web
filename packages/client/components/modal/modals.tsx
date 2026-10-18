@@ -38,6 +38,7 @@ import { EditPasswordModal } from "./modals/EditPassword";
 import { EditServerFolderModal } from "./modals/EditServerFolder";
 import { EditUsernameModal } from "./modals/EditUsername";
 import { EmojiPreviewModal } from "./modals/EmojiPreview";
+import { EnableEncryptionModal } from "./modals/EnableEncryption";
 import { Error2Modal } from "./modals/Error2";
 import { ImageViewerModal } from "./modals/ImageViewer";
 import { InviteModal } from "./modals/Invite";
@@ -104,6 +105,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <ChannelInfoModal {...modalProps} />;
     case "channel_toggle_mature":
       return <ChannelToggleMatureModal {...modalProps} />;
+    case "enable_encryption":
+      return <EnableEncryptionModal {...modalProps} />;
     case "create_bot":
       return <CreateBotModal {...modalProps} />;
     case "create_category":

@@ -99,7 +99,8 @@ export function MessageComposition(props: Props) {
       !tooLong &&
       (draftContent.trim().length > 0 || draftFiles.length > 0) &&
       !isSlowmode &&
-      !isTimedOut()
+      !isTimedOut() &&
+      client().e2ee.canSend(props.channel)
     );
   });
 
@@ -436,8 +437,20 @@ export function MessageComposition(props: Props) {
               ? t`Message ${props.channel.recipient?.username}`
               : t`Message ${props.channel.name}`
         }
+        blockedReason={
+          client().e2ee.canSend(props.channel)
+            ? undefined
+            : client().e2ee.status() === "locked"
+              ? t`Encryption is active in another window: write from there.`
+              : client().e2ee.status() === "starting"
+                ? t`Starting encryption…`
+                : t`Encryption is not available on this device.`
+        }
         sendingAllowed={
-          props.channel.havePermission("SendMessage") && !isTimedOut()
+          props.channel.havePermission("SendMessage") &&
+          !isTimedOut() &&
+          // dur.io: nothing goes to an encrypted channel without the crypto core
+          client().e2ee.canSend(props.channel)
         }
         timeoutActive={isTimedOut()}
         autoCompleteSearchSpace={searchSpace}

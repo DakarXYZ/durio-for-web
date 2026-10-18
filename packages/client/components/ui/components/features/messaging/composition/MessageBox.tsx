@@ -82,6 +82,11 @@ interface Props {
   timeoutActive?: boolean;
 
   /**
+   * Why sending is not allowed, if not for permissions (dur.io: encryption)
+   */
+  blockedReason?: string;
+
+  /**
    * Auto complete config
    */
   autoCompleteSearchSpace?: Accessor<AutoCompleteSearchSpace>;
@@ -265,6 +270,11 @@ export function MessageBox(props: Props) {
               <Trans>
                 You are timed out and can't send messages right now.
               </Trans>
+            </Blocked>
+          </Match>
+          <Match when={!props.sendingAllowed && props.blockedReason}>
+            <Blocked align noPad>
+              {props.blockedReason}
             </Blocked>
           </Match>
           <Match when={!props.sendingAllowed}>

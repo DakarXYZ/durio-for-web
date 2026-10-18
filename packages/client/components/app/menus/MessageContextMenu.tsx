@@ -250,7 +250,10 @@ export function MessageContextMenu(props: {
 
   return (
     <ContextMenu>
-      <Show when={props.file}>
+      {/* dur.io: an encrypted file has no link, it is decrypted in memory */}
+      <Show
+        when={props.file && !(props.file instanceof File && props.file.e2ee)}
+      >
         <ContextMenuButton icon={MdOpenInNew} onClick={openFile}>
           <Trans>Open file</Trans>
         </ContextMenuButton>
@@ -317,7 +320,10 @@ export function MessageContextMenu(props: {
         <Show
           when={
             props.message!.author?.self &&
-            props.message!.channel?.havePermission("SendMessage")
+            props.message!.channel?.havePermission("SendMessage") &&
+            // dur.io: in an encrypted channel only decrypted encrypted messages
+            (!props.message!.channel?.isEncrypted ||
+              props.message!.e2ee?.state === "ok")
           }
         >
           <ContextMenuButton

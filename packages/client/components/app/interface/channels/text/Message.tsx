@@ -48,6 +48,7 @@ import {
 } from "../../../menus/UserContextMenu";
 
 import { createIsTimedOut } from "@revolt/common/lib/createIsTimedOut";
+import { E2eeMessageStatus } from "./E2eeMessageStatus";
 import { EditMessage } from "./EditMessage";
 
 /**
@@ -383,6 +384,9 @@ export function Message(props: Props) {
         <Switch>
           <Match when={props.editing}>
             <EditMessage message={props.message} />
+          </Match>
+          <Match when={props.message.e2ee && props.message.e2ee.state !== "ok"}>
+            <E2eeMessageStatus e2ee={props.message.e2ee!} />
           </Match>
           <Match when={props.message.content && !isOnlyGIF()}>
             <BreakText>

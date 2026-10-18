@@ -1,8 +1,9 @@
 import { Accessor, Setter, batch, createSignal } from "solid-js";
 
-import { API, Channel, Client, Message } from "stoat.js";
+import { API, Channel, Client, E2eePayloadAttachment, Message } from "stoat.js";
 import { ulid } from "ulid";
 
+import { uploadEncryptedFile } from "@revolt/client/e2ee";
 import { insecureUniqueId } from "@revolt/common";
 import { useInstance } from "@revolt/instance";
 
@@ -105,6 +106,8 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
       autumnId?: string;
       uploadProgress: [Accessor<number>, Setter<number>];
       spoiler: [Accessor<boolean>, Setter<boolean>];
+      /** Uploaded encrypted, with its keys (dur.io, WEB-06; memory only) */
+      e2ee?: E2eePayloadAttachment;
     }
   >;
 
@@ -285,8 +288,14 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
    * @param client Client
    * @param channel Channel
    * @param existingDraft The existing draft to send
+   * @param existingKey Idempotency key of an earlier attempt (retry)
    */
-  async sendDraft(client: Client, channel: Channel, existingDraft?: DraftData) {
+  async sendDraft(
+    client: Client,
+    channel: Channel,
+    existingDraft?: DraftData,
+    existingKey?: string,
+  ) {
     const draft = existingDraft ?? this.popDraft(channel.id);
 
     // Check if this is something we can even send
@@ -295,8 +304,9 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
     //Don't send empty replies
     if (draft.replies?.length === 0) delete draft.replies;
 
-    // Add message to the outbox
-    const idempotencyKey = ulid();
+    // Add message to the outbox; a retry keeps its key, so the server can tell
+    // a repeat from a new message (dur.io, block 5E)
+    const idempotencyKey = existingKey ?? ulid();
     this.set("outbox", channel.id, [
       ...this.getPendingMessages(channel.id),
       {
@@ -317,6 +327,20 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
       attachments,
     };
 
+    // dur.io: in an encrypted channel files are encrypted and named in the payload
+    const encrypted = client.e2ee.isEncrypted(channel);
+    const encryptedAttachments: E2eePayloadAttachment[] = [];
+    const markFailed = () =>
+      this.set(
+        "outbox",
+        channel.id,
+        this.getPendingMessages(channel.id).map((entry) =>
+          entry.idempotencyKey === idempotencyKey
+            ? { ...entry, status: "failed" }
+            : entry,
+        ),
+      );
+
     // Add any files if attached
     if (files?.length) {
       // TODO: keep track of % upload progress
@@ -326,7 +350,27 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
       for (const fileId of files) {
         // Prepare for upload
         const body = new FormData();
-        const { file, autumnId, uploadProgress } = this.getFile(fileId);
+        const cached = this.getFile(fileId);
+        const { file, autumnId, uploadProgress } = cached;
+
+        if (encrypted) {
+          try {
+            cached.e2ee ??= await uploadEncryptedFile(
+              client,
+              this.instance.mediaUrl,
+              file,
+              {
+                spoiler: this.isFileSpoiler(fileId),
+                onProgress: uploadProgress[1],
+              },
+            );
+          } catch {
+            return markFailed();
+          }
+
+          encryptedAttachments.push(cached.e2ee);
+          continue;
+        }
 
         // Use ID if already uploaded
         if (autumnId) {
@@ -366,7 +410,8 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
           xhr.send(body);
         });
 
-        if (!success) throw "Upload Error";
+        // Upload Error: the message stays in the outbox as failed, not "sending"
+        if (!success) return markFailed();
 
         attachments.push(response.id);
         this.fileCache[fileId].autumnId = response.id;
@@ -380,7 +425,10 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
 
     // Send the message and clear the draft
     try {
-      await channel.sendMessage(data, idempotencyKey);
+      await channel.sendMessage(data, idempotencyKey, {
+        attachments: encryptedAttachments,
+        resend: !!existingKey,
+      });
 
       if (files) {
         for (const file of files) {
@@ -447,7 +495,7 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
       // TODO: validation?
 
       this.cancelSend(channel, idempotencyKey);
-      this.sendDraft(client, channel, draft!);
+      this.sendDraft(client, channel, draft!, idempotencyKey);
     });
   }
 

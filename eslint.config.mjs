@@ -42,4 +42,12 @@ export default defineConfig([
       "prettier/prettier": ["warn"],
     },
   },
+  {
+    // dur.io: no plaintext or keys in the console, even in development
+    // (50-web-sdk decision 6); e2ee/log.ts is the one sanctioned logger
+    files: ["packages/client/components/client/e2ee/**"],
+    rules: {
+      "no-console": "error",
+    },
+  },
 ]);

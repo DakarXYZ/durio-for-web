@@ -5,6 +5,7 @@ import {
   ChannelEditSystemMessage,
   ChannelOwnershipChangeSystemMessage,
   ChannelRenamedSystemMessage,
+  EncryptionEnabledSystemMessage,
   Message,
   MessagePinnedSystemMessage,
   TextSystemMessage,
@@ -48,6 +49,10 @@ export function NotificationsWorker() {
     // Ignore blocked users
     if (message.author?.relationship === "Blocked") return;
 
+    // dur.io: the text (and "mentioned") of an encrypted message is known only
+    // after decryption; the event itself is not delayed (WEB-05, D5)
+    await message.whenDecrypted();
+
     // Ignore muted channels
     if (state.notifications.isMuted(message.channel)) return;
 
@@ -86,9 +91,9 @@ export function NotificationsWorker() {
         break;
     }
 
-    // Find image if applicable
+    // Find image if applicable (never a decrypted one)
     const image = message.attachments?.find(
-      (x) => x.metadata.type === "Image",
+      (x) => x.metadata.type === "Image" && !x.e2ee,
     )?.previewUrl;
 
     // Find body/icon
@@ -189,9 +194,21 @@ export function NotificationsWorker() {
           icon = (message.systemMessage as MessagePinnedSystemMessage).by
             ?.avatarURL;
           break;
+        case "encryption_enabled":
+          body = t`${
+            (message.systemMessage as EncryptionEnabledSystemMessage).by
+              ?.username
+          } turned on end-to-end encryption`;
+          icon = (message.systemMessage as EncryptionEnabledSystemMessage).by
+            ?.avatarURL;
+          break;
       }
     } else if (message.attachments?.length) {
       body = t`Sent ${message.attachments!.length} attachments`;
+    } else if (message.isEncrypted) {
+      // not decrypted (yet): no text, like the push of the server (BE-15)
+      body = t`New message`;
+      icon = message.avatarURL;
     }
 
     // Don't continue if we don't have notification permissions
