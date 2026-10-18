@@ -135,7 +135,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
           </Text>
           <Show when={window.native}>
             <Text class="label">
-              Stoat for Desktop {window.native.versions.desktop()}
+              dur.io Desktop {window.native.versions.desktop()}
             </Text>
             <Text class="label">
               <span
@@ -223,7 +223,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
           ],
         },
         {
-          title: "Stoat",
+          title: "dur.io",
           entries: [
             {
               id: "bots",
@@ -328,7 +328,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               title: <Trans>What's New</Trans>,
             },
             {
-              href: "https://github.com/stoatchat",
+              // dur.io: AGPL — where the source of this build lives
+              href: "https://github.com/DakarXYZ",
               icon: <MdMemory {...iconSize(20)} />,
               title: <Trans>Source Code</Trans>,
             },

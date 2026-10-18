@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Build web for the dur.io desktop app (packages/client/dist-desktop)"
+#MISE depends=["install:assets", "lingui:compile"]
+#MISE wait_for=["build:deps"]
+set -e
+
+# dur.io (WEB-09, WEB-11): no PWA, service worker, push or Sentry; CSP; RNNoise packaged
+node packages/client/desktop/fetch-rnnoise.mjs
+NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--max-old-space-size=4096" pnpm --filter client exec vite build --mode desktop
+node packages/client/desktop/check-build.mjs packages/client/dist-desktop

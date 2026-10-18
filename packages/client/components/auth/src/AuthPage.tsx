@@ -543,7 +543,7 @@ export function AuthPage(props: { children: JSX.Element }) {
                 fallback={
                   <>
                     <span>
-                      <Trans>New to Stoat?</Trans>
+                      <Trans>New to dur.io?</Trans>
                     </span>
                     <A href="/login/create">
                       <Trans>Create account</Trans>

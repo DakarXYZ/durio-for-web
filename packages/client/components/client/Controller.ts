@@ -5,6 +5,7 @@ import { Accessor, Setter, createMemo, createSignal } from "solid-js";
 
 import { API, Client, ConnectionState, ProtocolV1 } from "stoat.js";
 
+import { sessionName } from "@revolt/common/lib/desktop";
 import { useError } from "@revolt/i18n";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
@@ -555,7 +556,7 @@ export default class ClientController {
     const browser = detect();
 
     // Generate a friendly name for this browser
-    let friendly_name;
+    let friendly_name: string;
     if (browser) {
       let { name, os } = browser as { name: string; os: string };
       if (name === "ios") {
@@ -568,9 +569,10 @@ export default class ClientController {
         os = "iPadOS";
       }
 
-      friendly_name = `Stoat for Web (${name} on ${os})`;
+      // dur.io: "dur.io Desktop (<os>)" in the desktop app (WEB-09)
+      friendly_name = sessionName({ name, os });
     } else {
-      friendly_name = "Stoat for Web (Unknown Device)";
+      friendly_name = sessionName();
     }
 
     // Try to login with given credentials

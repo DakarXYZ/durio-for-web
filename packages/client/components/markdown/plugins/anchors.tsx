@@ -6,6 +6,7 @@ import { cva } from "styled-system/css";
 import { MessageContextMenu, useMessage } from "@revolt/app";
 import { useClient } from "@revolt/client";
 import { getChannelIcon } from "@revolt/common/lib/channels";
+import { appHref } from "@revolt/common/lib/desktop";
 import { DefaultHost, useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { paramsFromPathname } from "@revolt/routing";
@@ -128,19 +129,18 @@ export function RenderAnchor(
                 (params.exactMessage && params.messageId
                   ? `/${params.messageId}`
                   : ""),
-              location.origin,
             ).href;
           }
           // END HOTFIX
-          return new URL(
+          // dur.io: `app://durio` in the desktop app (WEB-09)
+          return appHref(
             `/i/${params.host}` +
               (channel()?.serverId ? `/server/${channel()!.serverId}` : "") +
               `/channel/${params.channelId}` +
               (params.exactMessage && params.messageId
                 ? `/${params.messageId}`
                 : ""),
-            location.origin,
-          ).href;
+          );
         };
         return (
           <Show
@@ -176,10 +176,7 @@ export function RenderAnchor(
       } else if (params.exactServer) {
         const server = () => client().servers.get(params.serverId!);
         const internalUrl = () =>
-          new URL(
-            `/i/${params.host}/server/${params.serverId}`,
-            location.origin,
-          ).href;
+          appHref(`/i/${params.host}/server/${params.serverId}`);
 
         return (
           <Show
@@ -219,8 +216,7 @@ export function RenderAnchor(
       ) {
         return <Invite code={params.inviteId} />;
       } else {
-        const internalUrl = () =>
-          new URL(url.pathname, location.origin).toString();
+        const internalUrl = () => appHref(url.pathname);
 
         return (
           <LinkComponent

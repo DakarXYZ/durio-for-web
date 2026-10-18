@@ -107,6 +107,44 @@ and compare the lockfile integrity with the release's `.sha256`. The crypto stor
 without the bridge show encryption as unavailable. Tests: `pnpm --filter stoat.js test` (SDK flows with a fake
 core) and `mise test:unit` (includes the real wasm core through the SDK).
 
+### dur.io fork: desktop build
+
+There is no browser web client (O3): for-web ships only inside the Windows client (`for-desktop`, stage 7),
+which serves a local build from `app://durio/`. Build it with `mise build:desktop` (= `node
+packages/client/desktop/fetch-rnnoise.mjs && vite build --mode desktop` + `desktop/check-build.mjs`) →
+`packages/client/dist-desktop/`. The desktop mode (`packages/client/desktop/plugin.ts`):
+
+- no PWA, service worker or push worker (Web Push does not exist in Electron); no Sentry — a desktop build with
+  `VITE_SENTRY_DSN` set fails, and CI checks the variable is empty; no source maps;
+- base `/`, not `./`: the protocol handler answers deep routes (`/i/<host>/channel/…`) with `index.html`, and
+  route-relative asset URLs would break there;
+- no built-in server (O13): the address screen comes first; the bridge may suggest an address;
+- the RNNoise worklet is downloaded at build time with pinned SHA-256 (`desktop/rnnoise.mjs`, not committed) and
+  served from `/rnnoise/` — the desktop app loads no remote code;
+- Content Security Policy from `desktop/csp.mjs`, as a `<meta>` in `index.html` and — the Electron side — as the
+  `Content-Security-Policy` header of `protocol.handle` (add `frame-ancestors 'none'` there; a meta cannot):
+  `script-src 'self' 'wasm-unsafe-eval'` (crypto core, RNNoise), `worker-src 'self'`, `connect-src 'self' https:
+  wss: blob: data:` (servers are added at runtime and discovered by a typed host, so no list of hosts is
+  possible; plain `http:`/`ws:` only with `desktopCsp({ dev: true })` for a local backend), `img-src`/`media-src`
+  with `https:` and `blob:` (decrypted attachments), `style-src 'unsafe-inline'` (Solid, KaTeX, Shiki), no inline
+  scripts (the build fails on one).
+
+**Bridge contract for the Electron side** (`window.native`, preload with `contextBridge`; every IPC handler checks
+`event.senderFrame.url` starts with `app://durio/`). Existing upstream members stay as they are: `versions.{node,
+chrome,electron,desktop}()`, `minimise()`, `maximise()`, `close()`, `onceScreenPicker(cb)`,
+`screenPickerCallback(idx, audio)`, `isWayland?()`, and `window.desktopConfig.{get,set,getAutostart,setAutostart}`
+(`settings/user/Native.tsx`). dur.io adds (typed in `components/common/lib/desktop.ts`, all optional for the
+page):
+
+| Member | Contract |
+| --- | --- |
+| `e2eeStoreKey(accountKey): Promise<{key, created} \| Uint8Array>` | IPC `secrets:get`: 32 random bytes per accountKey (`[A-Za-z0-9_-]{1,128}`), created on first use, kept as `safeStorage.encryptString(base64)` in `userData/keys/<accountKey>.bin`. `created: true` when this call made it — with an existing crypto store that means the old key is lost (the page shows the "keys lost" wizard). The page passes the bytes straight to the crypto worker and keeps no copy |
+| `e2eeDeleteStoreKey(accountKey): Promise<void>` | IPC `secrets:delete`: on sign-out (WEB-12); no error when missing |
+| `servers.default(): string \| undefined` | Optional prefill of the server address screen from the build of the desktop app (`electron-store`), empty by default (O13) |
+
+Without the bridge (a plain browser) encryption is unavailable, except `vite dev`, which uses an insecure
+development key in `localStorage`.
+
 ### Using the official backend
 
 By default, the client connects to a backend running on the same host (localhost).

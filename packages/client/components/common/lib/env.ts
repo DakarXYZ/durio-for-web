@@ -68,7 +68,12 @@ export default {
   /**
    * RNNoise worklet CDN host location. Defaults to blank, which uses the url provided by the livekit-rnnoise-processor package.
    */
-  RNNOISE_WORKLET_CDN_URL: getEnv("VITE_RNNOISE_WORKLET_CDN_URL"),
+  // dur.io: the desktop build packages the worklet (WEB-11, no remote code)
+  RNNOISE_WORKLET_CDN_URL:
+    getEnv("VITE_RNNOISE_WORKLET_CDN_URL") ||
+    (import.meta.env.MODE === "desktop"
+      ? new URL("/rnnoise/", location.origin).href
+      : undefined),
   /**
    * Session ID to set during development.
    */

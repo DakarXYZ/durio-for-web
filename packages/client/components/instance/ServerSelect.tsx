@@ -1,9 +1,10 @@
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 
 import { Trans } from "@lingui/solid/macro";
 import { useNavigate } from "@solidjs/router";
 import { styled } from "styled-system/jsx";
 
+import { durioNative } from "@revolt/common/lib/desktop";
 import { normalizeHost } from "@revolt/common/lib/env";
 
 /**
@@ -14,6 +15,16 @@ import { normalizeHost } from "@revolt/common/lib/env";
 export default function ServerSelect() {
   const navigate = useNavigate();
   const [address, setAddress] = createSignal("");
+
+  // the desktop app may suggest an address set at its build (empty by default, O13)
+  onMount(async () => {
+    try {
+      const suggested = await durioNative()?.servers?.default?.();
+      if (suggested && !address()) setAddress(suggested);
+    } catch {
+      // no suggestion
+    }
+  });
 
   function connect(e: Event) {
     e.preventDefault();

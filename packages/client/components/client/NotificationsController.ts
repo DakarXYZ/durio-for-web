@@ -2,6 +2,7 @@ import { useLingui } from "@lingui/solid/macro";
 
 import { Client } from "stoat.js";
 
+import { IS_DESKTOP } from "@revolt/common/lib/desktop";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 import { useSnackbar } from "@revolt/ui";
@@ -41,7 +42,9 @@ export function useNotifications() {
 
     return (
       areNotificationsAllowed &&
-      (!notificationPermissionGranted || !(await getPushWorker(getClient())))
+      (!notificationPermissionGranted ||
+        // dur.io: no push worker in the desktop app (WEB-09)
+        (!IS_DESKTOP && !(await getPushWorker(getClient()))))
     );
   };
 
@@ -83,6 +86,7 @@ export function useNotifications() {
     }
 
     //Unproductive workers will not be tolerated in Soviet Russia
+    if (IS_DESKTOP) return;
     const sesList = auth.getSessions().map((s) => pwPath + s.userId);
     for (const worker of await navigator.serviceWorker.getRegistrations()) {
       if (worker.scope.indexOf(PushPrefix) !== -1) {
@@ -148,6 +152,9 @@ export function useNotifications() {
 }
 
 async function setUpServiceWorkerSubscription(client: Client) {
+  // dur.io: Electron has no Web Push; notifications come from the page (D5)
+  if (IS_DESKTOP) return;
+
   if (IS_DEV) {
     console.log("Skipping push worker in dev.");
     return;
@@ -199,6 +206,7 @@ function arrayBufferToBase64URL(buffer: ArrayBuffer): string {
 }
 
 async function getPushWorker(client: Client) {
+  if (IS_DESKTOP) return;
   const scope = client.user && pwPath + client.user.id;
   if (!scope) return;
   const worker = await navigator.serviceWorker.getRegistration(scope);

@@ -11,6 +11,7 @@ import solidPlugin from "vite-plugin-solid";
 import solidSvg from "vite-plugin-solid-svg";
 
 import codegenPlugin from "./codegen.plugin";
+import { durioDesktop, withoutDesktop } from "./desktop/plugin";
 import { addFontPreload } from "./fontpreload.plugin";
 
 const base = process.env.BASE_PATH ?? "/";
@@ -19,6 +20,8 @@ const pwaScope = process.env.PWA_SCOPE || base;
 export default defineConfig({
   base,
   plugins: [
+    // dur.io: `--mode desktop` (WEB-09, WEB-11)
+    durioDesktop(),
     Inspect(),
     devtools(),
     codegenPlugin(),
@@ -46,57 +49,59 @@ export default defineConfig({
       modernPolyfills: true,
       renderLegacyChunks: false,
     }),
-    VitePWA({
-      srcDir: "src",
-      registerType: "autoUpdate",
-      filename: "serviceWorker.ts",
-      strategies: "injectManifest",
-      injectManifest: {
-        maximumFileSizeToCacheInBytes: 8000000,
-        globPatterns: ["**/*.{js,css,html}", "**/material-symbols-*.woff2"],
-      },
-      devOptions: {
-        enabled: true,
-        type: "module",
-      },
-      manifest: {
-        name: "Stoat",
-        short_name: "Stoat",
-        description: "User-first open source chat platform.",
-        categories: ["communication", "chat", "messaging"],
-        start_url: base,
-        scope: pwaScope,
-        display_override: ["window-controls-overlay"],
-        display: "standalone",
-        background_color: "#101823",
-        theme_color: "#101823",
-        icons: [
-          {
-            src: `${base}assets/web/android-chrome-192x192.png`,
-            type: "image/png",
-            sizes: "192x192",
-          },
-          {
-            src: `${base}assets/web/android-chrome-512x512.png`,
-            type: "image/png",
-            sizes: "512x512",
-          },
-          {
-            src: `${base}assets/web/monochrome.svg`,
-            type: "image/svg+xml",
-            sizes: "48x48 72x72 96x96 128x128 256x256",
-            purpose: "monochrome",
-          },
-          {
-            src: `${base}assets/web/masking-512x512.png`,
-            type: "image/png",
-            sizes: "512x512",
-            purpose: "maskable",
-          },
-        ],
-        // TODO: take advantage of shortcuts
-      },
-    }),
+    withoutDesktop(
+      VitePWA({
+        srcDir: "src",
+        registerType: "autoUpdate",
+        filename: "serviceWorker.ts",
+        strategies: "injectManifest",
+        injectManifest: {
+          maximumFileSizeToCacheInBytes: 8000000,
+          globPatterns: ["**/*.{js,css,html}", "**/material-symbols-*.woff2"],
+        },
+        devOptions: {
+          enabled: true,
+          type: "module",
+        },
+        manifest: {
+          name: "dur.io",
+          short_name: "dur.io",
+          description: "dur.io messenger.",
+          categories: ["communication", "chat", "messaging"],
+          start_url: base,
+          scope: pwaScope,
+          display_override: ["window-controls-overlay"],
+          display: "standalone",
+          background_color: "#101823",
+          theme_color: "#101823",
+          icons: [
+            {
+              src: `${base}assets/web/android-chrome-192x192.png`,
+              type: "image/png",
+              sizes: "192x192",
+            },
+            {
+              src: `${base}assets/web/android-chrome-512x512.png`,
+              type: "image/png",
+              sizes: "512x512",
+            },
+            {
+              src: `${base}assets/web/monochrome.svg`,
+              type: "image/svg+xml",
+              sizes: "48x48 72x72 96x96 128x128 256x256",
+              purpose: "monochrome",
+            },
+            {
+              src: `${base}assets/web/masking-512x512.png`,
+              type: "image/png",
+              sizes: "512x512",
+              purpose: "maskable",
+            },
+          ],
+          // TODO: take advantage of shortcuts
+        },
+      }),
+    ),
   ],
   build: {
     target: "esnext",

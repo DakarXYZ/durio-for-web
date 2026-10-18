@@ -20,7 +20,7 @@ import type Instance from "../../instance/Instance";
 import { revokeAllFileUrls } from "./files";
 import { e2eeWarn } from "./log";
 import { deletePins, pinStore } from "./pins";
-import { deleteStoreKey, getStoreKey } from "./storeKey";
+import { type StoreKey, deleteStoreKey, getStoreKey } from "./storeKey";
 
 export { createFileUrl, decryptedBlob, liveFileUrls } from "./files";
 export { uploadEncryptedFile } from "./upload";
@@ -85,14 +85,15 @@ async function start(client: Client, instance: Instance) {
 
   client.e2ee.setStatus("starting");
 
-  let key: Uint8Array | undefined;
+  let storeKey: StoreKey | undefined;
   try {
-    key = await getStoreKey(accountKey);
+    storeKey = await getStoreKey(accountKey);
   } catch (e) {
     e2eeWarn("no store key", (e as Error)?.name);
   }
 
-  if (!key) return client.e2ee.setStatus("unavailable");
+  if (!storeKey) return client.e2ee.setStatus("unavailable");
+  const key = storeKey.key;
 
   const [
     { StoatCrypto, isStoatCryptoError, lockName },
