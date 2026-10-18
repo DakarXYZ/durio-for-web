@@ -15,6 +15,11 @@ type GeoBlock = {
   isAgeRestrictedGeo: boolean;
 };
 
+// dur.io: no region lookup at Revolt's geo service — every channel page sent the user's
+// IP to geo.revolt.chat. A build may name its own (`VITE_GEOBLOCK_URL`); without one the
+// gate only asks for the age confirmation.
+const GEOBLOCK_URL = import.meta.env.VITE_GEOBLOCK_URL as string | undefined;
+
 /**
  * Age gate filter for any content
  */
@@ -34,8 +39,9 @@ export function AgeGate(props: {
 
   const geoQuery = useQuery(() => ({
     queryKey: ["geoblock"],
+    enabled: !!GEOBLOCK_URL,
     queryFn: async (): Promise<GeoBlock> => {
-      const response = await fetch("https://geo.revolt.chat");
+      const response = await fetch(GEOBLOCK_URL!);
       if (!response.ok) {
         throw new Error("Failed to fetch geo data");
       }
