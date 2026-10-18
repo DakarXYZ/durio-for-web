@@ -54,6 +54,35 @@ mise check
 
 Finally, navigate to http://local.revolt.chat:5173.
 
+### dur.io fork: submodules and the SDK workflow
+
+This fork (dur.io) uses our own forks of the submodules (see `.gitmodules`):
+`packages/stoat.js` → `DakarXYZ/durio-javascript-client-sdk`, `packages/solid-livekit-components` →
+`DakarXYZ/durio-solid-livekit-components`. The private brand assets (`packages/client/assets`) are not used:
+run `mise assets:fallback`, the client then takes the dur.io placeholders from
+`packages/client/scripts/assets_fallback`.
+
+There is exactly one copy of the SDK — the `packages/stoat.js` submodule. A change to the SDK is always two
+commits:
+
+```bash
+# 1. edit and commit inside the submodule, on the same branch name as for-web (durio/<stage>)
+cd packages/stoat.js
+git switch durio/stage-6            # or create it: git switch -c durio/stage-6
+pnpm --filter stoat.js typecheck && pnpm --filter stoat.js build
+git commit -am "feat(e2ee): ..."
+
+# 2. bump the submodule pointer in for-web
+cd ../..
+git add packages/stoat.js
+git commit -m "chore(sdk): bump stoat.js (...)"
+```
+
+The SDK commit must be pushed to the fork (`origin` of the submodule) before or together with the for-web commit
+that points to it, otherwise a fresh `git submodule update --init` cannot check it out. We keep the SDK on
+`durio/<stage>` branches like every other dur.io repo (not a separate `e2ee` branch): for-web pins an exact commit,
+so the branch name only has to make the commit reachable in the fork.
+
 ### Using the official backend
 
 By default, the client connects to a backend running on the same host (localhost).
