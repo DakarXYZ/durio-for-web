@@ -47,7 +47,10 @@ export function VerifyDialog(
     const current = flow();
     if (!current) return;
     try {
-      setState(await current.state());
+      // the same state again keeps the dialog as it is: a new object would
+      // re-create its buttons every poll, under the user's pointer
+      const next = await current.state();
+      if (JSON.stringify(next) !== JSON.stringify(state())) setState(next);
     } catch (e) {
       e2eeWarn("verification state", (e as { code?: string })?.code);
     }
