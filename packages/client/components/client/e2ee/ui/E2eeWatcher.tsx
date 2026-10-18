@@ -51,6 +51,7 @@ export function E2eeWatcher() {
     on(client, (current) => {
       const prompted = new Set<string>();
       let keyLostShown = false;
+      let onboardingRuns = false;
       let deviceTimer: ReturnType<typeof setTimeout> | undefined;
 
       const openSettings = () =>
@@ -136,12 +137,33 @@ export function E2eeWatcher() {
       async function onboarding(cli: Client) {
         const device = cli.sessionId;
         const self = cli.user?.id;
-        if (!device || !self || readJson(ONBOARDED + device)) return;
+        if (!device || !self || onboardingRuns || readJson(ONBOARDED + device))
+          return;
+        onboardingRuns = true;
+        try {
+          await onboardingOf(cli, device, self);
+        } finally {
+          onboardingRuns = false;
+        }
+      }
+
+      async function onboardingOf(cli: Client, device: string, self: string) {
+        const otherDevices = async () =>
+          (await cli.e2ee.devices(self)).filter(
+            (d) => !d.deleted && d.deviceId !== device,
+          ).length;
+
+        // a new device has not got its own key query back when it becomes ready:
+        // look again before telling it that it is the only one of the account
+        let ownDevices = await otherDevices();
+        if (!ownDevices) {
+          await new Promise((resolve) => setTimeout(resolve, DEVICE_QUERY_MS));
+          if (cli.e2ee.status() !== "ready") return;
+          ownDevices = await otherDevices();
+        }
 
         const prompt = onboardingPrompt({
-          ownDevices: (await cli.e2ee.devices(self)).filter(
-            (d) => !d.deleted && d.deviceId !== device,
-          ).length,
+          ownDevices,
           backupOnThisDevice: (await cli.e2ee.backup.status()).enabled,
           backupOnServer: await cli.e2ee.backup.exists(),
         });
