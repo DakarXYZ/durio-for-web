@@ -31,6 +31,9 @@ export interface DurioNativeBridge {
   /** Delete the store key of a signed-out account (`secrets:delete`) */
   e2eeDeleteStoreKey(accountKey: string): Promise<void>;
 
+  /** Show and focus the app window, also from the tray (IPC `focus`, D5) */
+  focus(): void;
+
   /**
    * Prefill for the server address screen, set at build time of the desktop app
    * (`electron-store`), empty by default (O13). Only a suggestion: the user confirms it.

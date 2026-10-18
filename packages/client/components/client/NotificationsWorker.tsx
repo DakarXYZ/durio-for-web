@@ -13,6 +13,7 @@ import {
   UserSystemMessage,
 } from "stoat.js";
 
+import { durioNative } from "@revolt/common/lib/desktop";
 import { useInstance } from "@revolt/instance";
 import { useNavigate, useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
@@ -235,6 +236,8 @@ export function NotificationsWorker() {
     });
 
     notification.addEventListener("click", () => {
+      // the desktop app shows its window, also when it sits in the tray (stage 7, D5)
+      durioNative()?.focus?.();
       window.focus();
       navigate(message.path);
     });
