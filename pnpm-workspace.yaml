@@ -1,6 +1,7 @@
 packages:
   - packages/client
   - packages/stoat.js
+  - packages/stoat-api
   - packages/solid-livekit-components
 allowBuilds:
   "@swc/core": true
@@ -8,6 +9,7 @@ allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
   - stoat-api
+  - "@durio/*"
 nodeLinker: isolated
 
 # Override prettier because some of the submodules have ancient prettiers required

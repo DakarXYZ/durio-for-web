@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 #MISE description="Build stoat.js"
+#MISE depends=["build:deps:stoat-api"]
 set -e
 
 pnpm --filter stoat.js build

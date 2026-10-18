@@ -83,6 +83,11 @@ that points to it, otherwise a fresh `git submodule update --init` cannot check 
 `durio/<stage>` branches like every other dur.io repo (not a separate `e2ee` branch): for-web pins an exact commit,
 so the branch name only has to make the commit reachable in the fork.
 
+API types come from `packages/stoat-api` (`@durio/stoat-api`), generated from our backend's `OpenAPI.json`; the
+SDK imports it under the old name `stoat-api` through a pnpm alias. Regenerate with
+`pnpm --filter @durio/stoat-api generate && pnpm --filter @durio/stoat-api build`; see
+`packages/stoat-api/README.md` for refreshing the spec.
+
 ### Using the official backend
 
 By default, the client connects to a backend running on the same host (localhost).

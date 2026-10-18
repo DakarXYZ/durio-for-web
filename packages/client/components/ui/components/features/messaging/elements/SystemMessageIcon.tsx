@@ -136,6 +136,10 @@ const Base = styled("div", {
       user_remove: {
         color: "var(--md-sys-color-primary)",
       },
+      // dur.io: system message of the E2EE switch (API 0.16 fork)
+      encryption_enabled: {
+        color: "var(--md-sys-color-primary)",
+      },
       channel_renamed: {
         color: "var(--md-sys-color-primary)",
       },

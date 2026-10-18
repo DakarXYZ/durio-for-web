@@ -1,0 +1,33 @@
+{
+  "name": "@durio/stoat-api",
+  "version": "0.16.0-fork.1",
+  "description": "dur.io API library: types and typed HTTP client generated from the dur.io backend's OpenAPI spec",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "types": "lib/index.d.ts",
+  "repository": "https://github.com/DakarXYZ/durio-for-web",
+  "author": "DakarX",
+  "license": "MIT",
+  "files": [
+    "src",
+    "lib",
+    "OpenAPI.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "generate": "node codegen.mjs",
+    "build": "tsc",
+    "prepare": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "json-with-bigint": "^3.4.4"
+  },
+  "devDependencies": {
+    "openapi-typescript": "5.4.2",
+    "typescript": "^5.8.3"
+  }
+}
