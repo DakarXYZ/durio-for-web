@@ -1,5 +1,7 @@
+import type { E2eeSasState } from "stoat.js";
 import { describe, expect, it, vi } from "vitest";
 
+import { isNewer } from "../../coreVersion";
 import { deviceRows, newUnverifiedDevices } from "./devices";
 import {
   MAX_KEY_FILE_BYTES,
@@ -186,7 +188,7 @@ describe("SAS dialog (CR-11)", () => {
   });
 
   it("never offers Verified outside the flow: no step has a trust action", () => {
-    const states = [
+    const states: E2eeSasState[] = [
       { type: "Requested" },
       { type: "Incoming" },
       { type: "Ready" },
@@ -194,7 +196,7 @@ describe("SAS dialog (CR-11)", () => {
       { type: "ShowCodes", emoji: [], decimals: [] },
       { type: "Confirmed" },
       { type: "Done" },
-    ] as const;
+    ];
     for (const state of states)
       for (const action of sasView(state).actions)
         expect(["accept", "start", "confirm", "mismatch", "cancel"]).toContain(
@@ -287,5 +289,15 @@ describe("devices and report (AN-30, CR-22)", () => {
 
   it("groups a fingerprint by four", () => {
     expect(fingerprintGroups("ABCDEFGHIJ")).toBe("ABCD EFGH IJ");
+  });
+});
+
+describe("store written by a newer core (CR-23)", () => {
+  it("compares versions numerically", () => {
+    expect(isNewer(undefined, "0.2.0")).toBe(false);
+    expect(isNewer("0.2.0", "0.2.0")).toBe(false);
+    expect(isNewer("0.10.0", "0.9.9")).toBe(true);
+    expect(isNewer("0.2.1", "0.3.0")).toBe(false);
+    expect(isNewer("1.0", "0.99.0")).toBe(true);
   });
 });

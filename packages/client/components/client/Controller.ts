@@ -689,8 +689,11 @@ export default class ClientController {
   };
 
   logout = () => {
-    // dur.io: the store key and pins of this account go too (WEB-12)
+    // dur.io (WEB-12): the crypto store, its key and pins of this account go, and
+    // its local data (drafts, the outbox) now rather than at the next start
     void forgetE2eeAccount(this.instance.client, this.instance);
+    const session = this.state.auth.getSession();
+    if (session) void this.state.forgetSessionData(session);
     this.state.settings.resetNotificationsState();
     killServiceWorkerSubscription(this.instance.client, true);
     this.state.auth.removeSession();

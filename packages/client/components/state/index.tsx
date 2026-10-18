@@ -42,11 +42,11 @@ import {
   unusedSessionStores,
 } from "./stores/sessions";
 
+export { SyncWorker } from "./SyncWorker";
 export { ALLOWED_IMAGE_TYPES } from "./stores/Draft";
 export type { ResolvedEntry } from "./stores/Ordering";
 export type { ServerFolder } from "./stores/ServerFolders";
 export type { Sounds, TypeSounds } from "./stores/Sounds";
-export { SyncWorker } from "./SyncWorker";
 
 /**
  * Introduce some delay before writing state to disk
@@ -217,6 +217,32 @@ export class State {
    */
   get<T extends keyof Store>(key: T): Store[T] {
     return this.store[key];
+  }
+
+  /**
+   * dur.io (WEB-12): delete the per-account store of a signed-out session now —
+   * drafts and the outbox with it (Q33), not only at the next start
+   * @param ses Session being signed out
+   */
+  async forgetSessionData(ses: { host: string; userId: string }) {
+    const storeName = sessionStoreName(ses);
+    for (const [qKey, [timer]] of [...WriteQueue]) {
+      if (!qKey.startsWith(storeName + "|")) continue;
+      clearTimeout(timer);
+      WriteQueue.delete(qKey);
+    }
+
+    if (this.db?.config().storeName === storeName) {
+      this.db = undefined;
+      for (const [key, data] of Object.entries(this.defaults(true)))
+        this.setStore(key as keyof Store, data);
+    }
+
+    try {
+      await localforage.dropInstance({ storeName });
+    } catch (e) {
+      console.warn("[store] Could not delete the signed-out store", e);
+    }
   }
 
   /**

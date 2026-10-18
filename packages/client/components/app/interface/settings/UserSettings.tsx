@@ -5,6 +5,7 @@ import { Server } from "stoat.js";
 import { css } from "styled-system/css";
 
 import { useClient, useClientLifecycle } from "@revolt/client";
+import { logoutWithBackupCheck } from "@revolt/client/e2ee/ui/logout";
 import { useInstance } from "@revolt/instance";
 import { useUser } from "@revolt/markdown/users";
 import { useModals } from "@revolt/modal";
@@ -119,6 +120,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
   list(_, onClose) {
     const { pop, openModal } = useModals();
     const { logout } = useClientLifecycle();
+    const client = useClient();
     const { limits, config } = useInstance();
 
     return {
@@ -365,7 +367,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               ),
               onClick() {
                 pop();
-                logout();
+                // dur.io: offer a key backup first (WEB-12)
+                void logoutWithBackupCheck(client(), openModal, logout);
               },
             },
           ],

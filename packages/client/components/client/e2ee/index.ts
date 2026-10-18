@@ -10,17 +10,29 @@
 //   channels) until that lock is released.
 // - The store key comes from the desktop bridge (stage 7); `vite dev` has an insecure
 //   fallback, other builds without the bridge report `unavailable`.
-// - Account switch (`onClientDispose`): close → terminate. Sign-out: the SDK's `logout`
-//   closes and destroys the store; `forgetE2eeAccount` drops the key and the pins.
+// - Account switch (`onClientDispose`): close → terminate. Sign-out
+//   (`forgetE2eeAccount`, WEB-12): the SDK closes and destroys the store — or, if that
+//   did not happen, a worker of our own does, a blocked deletion retried — then the
+//   store key, pins and the device's local marks go.
+// - Lost keys (AN-42): the bridge created a new store key although the account's store
+//   exists, or the store cannot be opened with its key → `keyLost` (reset = sign out
+//   and in again). A store written by a newer core → `updateApp` (CR-23).
 import type { Client } from "stoat.js";
 
 import { onClientDispose } from "../../instance/dispose";
 import type Instance from "../../instance/Instance";
 
+import {
+  forgetCoreVersion,
+  isNewer,
+  rememberCoreVersion,
+  storedCoreVersion,
+} from "./coreVersion";
 import { revokeAllFileUrls } from "./files";
 import { e2eeWarn } from "./log";
 import { deletePins, pinStore } from "./pins";
 import { type StoreKey, deleteStoreKey, getStoreKey } from "./storeKey";
+import { forgetDeviceMarks } from "./ui/marks";
 
 export { createFileUrl, decryptedBlob, liveFileUrls } from "./files";
 export { uploadEncryptedFile } from "./upload";
@@ -96,12 +108,19 @@ async function start(client: Client, instance: Instance) {
   const key = storeKey.key;
 
   const [
-    { StoatCrypto, isStoatCryptoError, lockName },
+    { StoatCrypto, isStoatCryptoError, lockName, storeName },
     { createStoatCryptoProvider },
   ] = await Promise.all([
     import("@durio/stoat-crypto"),
     import("stoat.js/e2ee"),
   ]);
+
+  // a new key for an existing store: the old key is lost (AN-42)
+  if (storeKey.created && (await storeExists(storeName(accountKey)))) {
+    key.fill(0);
+    e2eeWarn("store key lost");
+    return client.e2ee.setStatus("keyLost");
+  }
 
   const worker = new Worker(new URL("./e2ee.worker.ts", import.meta.url), {
     type: "module",
@@ -110,6 +129,14 @@ async function start(client: Client, instance: Instance) {
   let crypto: Awaited<ReturnType<typeof StoatCrypto.start>> | undefined;
   try {
     crypto = await StoatCrypto.start(worker);
+
+    // a store written by a newer core is not opened (CR-23)
+    if (isNewer(storedCoreVersion(accountKey), crypto.info.coreVersion)) {
+      crypto.terminate();
+      key.fill(0);
+      return client.e2ee.setStatus("updateApp");
+    }
+
     await crypto.open(userId, deviceId, {
       kind: "indexedDb",
       accountKey,
@@ -132,14 +159,17 @@ async function start(client: Client, instance: Instance) {
       return;
     }
 
-    e2eeWarn(
-      "crypto core did not start",
-      isStoatCryptoError(e) ? e.code : (e as Error)?.name,
+    const code = isStoatCryptoError(e) ? e.code : (e as Error)?.name;
+    e2eeWarn("crypto core did not start", code);
+    // the store is there but does not open with this key, or is not this device's
+    return client.e2ee.setStatus(
+      code === "Store" || code === "StoreMismatch" ? "keyLost" : "error",
     );
-    return client.e2ee.setStatus("error");
   } finally {
     key.fill(0);
   }
+
+  rememberCoreVersion(accountKey, crypto.info.coreVersion);
 
   const provider = createStoatCryptoProvider(crypto, {
     userId,
@@ -152,43 +182,65 @@ async function start(client: Client, instance: Instance) {
 }
 
 /**
- * Sign-out of an account (WEB-12): its store key and channel pins go; the store
- * itself is destroyed by the SDK's `logout` while the worker runs, or here
+ * Sign-out of an account (WEB-12), also after its session ended (401): the crypto
+ * store, its key, the channel pins, the device's local marks and object URLs go
  * @param client Client being signed out
  * @param instance Instance
  */
 export async function forgetE2eeAccount(client: Client, instance: Instance) {
   const userId = client.user?.id;
+  const deviceId = client.sessionId;
   if (!userId) return;
 
-  // before any await: `logout` takes the provider away right after this call
-  const hadCore = !!client.e2ee.provider || client.e2ee.status() === "starting";
-  const locked = client.e2ee.status() === "locked";
-  const accountKey = await instance.accountKey(userId);
-  deletePins(accountKey);
+  // first, synchronously: the SDK's `logout` finds no core left to close
+  const uninstalled = client.e2ee.uninstall({ destroy: true });
   revokeAllFileUrls();
 
+  const accountKey = await instance.accountKey(userId);
+  deletePins(accountKey);
+  forgetCoreVersion(accountKey);
+  if (deviceId) forgetDeviceMarks(deviceId);
+
+  // the store was not destroyed with the core (none ran, it trapped, or the deletion
+  // stayed blocked): delete it with a worker of our own
+  if (!(await uninstalled)) {
+    try {
+      const [{ StoatCrypto }, { retryWhileLocked }] = await Promise.all([
+        import("@durio/stoat-crypto"),
+        import("stoat.js/e2ee"),
+      ]);
+      const crypto = await StoatCrypto.start(
+        new Worker(new URL("./e2ee.worker.ts", import.meta.url), {
+          type: "module",
+        }),
+      );
+      try {
+        await retryWhileLocked(() => crypto.destroyStore(accountKey));
+      } finally {
+        crypto.terminate();
+      }
+    } catch (e) {
+      e2eeWarn("crypto store not deleted", (e as { code?: string })?.code);
+    }
+  }
+
+  // the key last: a store that could not be deleted stays unreadable
   try {
     await deleteStoreKey(accountKey);
   } catch (e) {
     e2eeWarn("store key not deleted", (e as Error)?.name);
   }
+}
 
-  // no worker of ours (never started, or it trapped): delete the store with a new one
-  if (hadCore || locked) return;
+/**
+ * Whether an IndexedDB store of the crypto core exists
+ * @param name Store name prefix (`durio-e2ee-<accountKey>`)
+ */
+async function storeExists(name: string) {
   try {
-    const { StoatCrypto } = await import("@durio/stoat-crypto");
-    const crypto = await StoatCrypto.start(
-      new Worker(new URL("./e2ee.worker.ts", import.meta.url), {
-        type: "module",
-      }),
-    );
-    try {
-      await crypto.destroyStore(accountKey);
-    } finally {
-      crypto.terminate();
-    }
-  } catch (e) {
-    e2eeWarn("crypto store not deleted", (e as { code?: string })?.code);
+    const databases = await indexedDB.databases?.();
+    return !!databases?.some((db) => db.name?.startsWith(name));
+  } catch {
+    return false;
   }
 }

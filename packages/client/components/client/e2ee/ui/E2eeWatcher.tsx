@@ -11,10 +11,8 @@ import { e2eeWarn } from "../log";
 
 import { newUnverifiedDevices } from "./logic/devices";
 import { onboardingPrompt } from "./logic/recovery";
+import { ONBOARDED, SEEN_DEVICES as SEEN } from "./marks";
 import { notices } from "./notices";
-
-const ONBOARDED = "durio-e2ee-onboarded:";
-const SEEN = "durio-e2ee-seen-devices:";
 
 /** Wait for the core's key query after a device list update */
 const DEVICE_QUERY_MS = 3_000;
