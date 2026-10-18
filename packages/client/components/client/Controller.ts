@@ -12,6 +12,7 @@ import type { Session } from "@revolt/state/stores/Auth";
 import { useSnackbar } from "@revolt/ui";
 
 import Instance from "../instance/Instance";
+import { disposeClient } from "../instance/dispose";
 import { killServiceWorkerSubscription } from "./NotificationsController";
 
 export enum State {
@@ -224,10 +225,7 @@ class Lifecycle {
     if (logout) {
       this.client.logout().catch(() => {});
     } else {
-      //TODO Client.dispose() method
-      this.client.events.removeAllListeners();
-      this.client.removeAllListeners();
-      this.client.events.disconnect();
+      disposeClient(this.client);
     }
     this.#enter(State.Dispose);
   }
@@ -466,7 +464,10 @@ export default class ClientController {
       //User switch request
       const error = useError();
       try {
-        this.state.auth.swapSession(location.hash.slice(5));
+        this.state.auth.swapSession(
+          location.hash.slice(5),
+          instance.sessionHost,
+        );
       } catch (e) {
         useSnackbar().show({
           message: error(e),
@@ -477,6 +478,16 @@ export default class ClientController {
         this.state.auth.holdSession();
       }
       location.hash = "";
+    }
+
+    //Sessions belong to an instance: resume an account of this one, if any
+    const ses = this.state.auth.getSession();
+    if (ses && ses.host !== instance.sessionHost) {
+      this.state.auth.holdSession();
+      const saved = this.state.auth
+        .getSaved()
+        .find((s) => s.host === instance.sessionHost);
+      if (saved) this.state.auth.swapSession(saved.userId, saved.host);
     }
 
     this._login(true);
@@ -590,6 +601,7 @@ export default class ClientController {
       _id: session._id,
       token: session.token,
       userId: session.user_id,
+      host: this.instance.sessionHost,
       valid: false,
     };
 
@@ -612,22 +624,25 @@ export default class ClientController {
 
   #cacheUserInfo() {
     const user = this.instance.client.user;
-    if (user) this.state.auth.cacheUserInfo(user);
+    if (user) this.state.auth.cacheUserInfo(user, this.instance.sessionHost);
   }
 
   /** True if the user session is about to be swapped */
   isSwapping = () => this.#swapping;
 
-  #swapSession(userId: string) {
+  #swapSession(userId: string, host: string) {
     this.#cacheUserInfo();
-    this.state.auth.swapSession(userId);
+    this.state.auth.swapSession(userId, host);
   }
 
   /** Swap to a saved account */
-  swapAccount = (userId: string) => {
+  swapAccount = (userId: string, host = this.instance.sessionHost) => {
     this.#swapping = true;
     try {
-      this.#swapSession(userId);
+      this.#swapSession(userId, host);
+      //Account of another instance: remount there, it logs in by itself
+      if (host !== this.instance.sessionHost)
+        return this.instance.switchTo(host, "/");
       this.lifecycle.transition({
         type: TransitionType.Dispose,
       });

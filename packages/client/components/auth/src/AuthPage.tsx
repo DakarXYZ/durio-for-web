@@ -21,8 +21,9 @@ import {
 } from "@revolt/app/menus/ContextMenu";
 import { useClientLifecycle } from "@revolt/client";
 import { State } from "@revolt/client/Controller";
+import { CONNECT_PATH } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
-import { A, useLocation } from "@revolt/routing";
+import { A, useLocation, useNavigate } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { IconButton, Symbol } from "@revolt/ui";
 
@@ -300,6 +301,7 @@ const SUCCESS_FLASH_MS = 1400;
 export function AuthPage(props: { children: JSX.Element }) {
   const state = useState();
   const location = useLocation();
+  const navigate = useNavigate();
   const { lifecycle } = useClientLifecycle();
   const { openModal } = useModals();
 
@@ -556,6 +558,14 @@ export function AuthPage(props: { children: JSX.Element }) {
                   <Trans>Log in</Trans>
                 </A>
               </Show>
+
+              <IconButton
+                variant="tonal"
+                aria-label="Change server"
+                onPress={() => navigate(CONNECT_PATH)}
+              >
+                <Symbol size={20}>dns</Symbol>
+              </IconButton>
 
               <IconButton
                 variant="tonal"

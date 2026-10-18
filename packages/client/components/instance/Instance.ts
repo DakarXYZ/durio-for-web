@@ -2,16 +2,20 @@ import { Navigator } from "@solidjs/router";
 import { Accessor, createMemo, createSignal } from "solid-js";
 
 import { CONFIGURATION } from "@revolt/common";
+import { accountKey } from "@revolt/common/lib/accountKey";
 import { AppConfig, STOAT_HOST } from "@revolt/common/lib/env";
 import { Client, UserLimits } from "stoat.js";
 
 import { DefaultHost } from ".";
+import { disposeClient } from "./dispose";
 
 const R_RelPath = /^\/i\/[^/]+/;
 
 export default class Instance {
   /** Undefined on default host */
   readonly host?: string;
+  /** Host sessions of this instance are bound to (also on the default host) */
+  readonly sessionHost: string;
   readonly origin: string;
   readonly isStoat: boolean;
   readonly #nav;
@@ -24,6 +28,7 @@ export default class Instance {
   #cli;
   #setCli;
   #firstInit = true;
+  #accountKeys = new Map<string, Promise<string>>();
   readonly config;
 
   //Instead of these, use the reactive limits accessor below when possible
@@ -53,6 +58,7 @@ export default class Instance {
 
     this.host = host || undefined;
     if (!host) host = DefaultHost;
+    this.sessionHost = host;
 
     const hostUrl = new URL(`https://${host}`);
     this.origin = hostUrl.origin;
@@ -91,9 +97,24 @@ export default class Instance {
   static relPath = (path = location.pathname) =>
     path.replace(R_RelPath, "") || "/";
 
-  /** Switch to a new instance and redirect the client */
-  switchTo(host: string) {
-    this.#nav(this.href(Instance.relPath(), true, host));
+  /** Switch to a new instance and redirect the client
+   * @param path Path on the new instance, defaults to the current one
+   */
+  switchTo(host: string, path = Instance.relPath()) {
+    this.#nav(this.href(path, true, host));
+  }
+
+  /** Account key of a user on this instance (00-architecture §6) */
+  accountKey(userId: string) {
+    let key = this.#accountKeys.get(userId);
+    if (!key)
+      this.#accountKeys.set(userId, (key = accountKey(this.apiUrl, userId)));
+    return key;
+  }
+
+  /** Dispose the current client when leaving this instance */
+  dispose() {
+    disposeClient(this.client);
   }
 
   /** Create a new Stoat.js client, disposing the old one */
@@ -104,10 +125,7 @@ export default class Instance {
       return this.client;
     }
 
-    //TODO Client.dispose() method
-    this.client.events.removeAllListeners();
-    this.client.removeAllListeners();
-    this.client.events.disconnect();
+    disposeClient(this.client);
 
     this.#setCli(_newClient(this.apiUrl));
     return this.client;

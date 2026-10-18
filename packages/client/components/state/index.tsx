@@ -15,6 +15,7 @@ import { createDateNow } from "@solid-primitives/date";
 import equal from "fast-deep-equal";
 import localforage from "localforage";
 
+import { CONFIGURATION } from "@revolt/common";
 import { LoadingScreen } from "@revolt/ui";
 import { SlideDrawer } from "@revolt/ui/components/navigation/SlideDrawer";
 
@@ -35,6 +36,11 @@ import { Sounds } from "./stores/Sounds";
 import { Sync } from "./stores/Sync";
 import { Theme } from "./stores/Theme";
 import { Voice } from "./stores/Voice";
+import {
+  migrateSessionStores,
+  sessionStoreName,
+  unusedSessionStores,
+} from "./stores/sessions";
 
 export { ALLOWED_IMAGE_TYPES } from "./stores/Draft";
 export type { ResolvedEntry } from "./stores/Ordering";
@@ -246,7 +252,10 @@ export class State {
         const ses = oldAuth?.session;
         if (ses) {
           const db = localforage.createInstance({
-            storeName: `@${ses.userId}`,
+            storeName: sessionStoreName({
+              host: CONFIGURATION.DEFAULT_HOST,
+              userId: ses.userId,
+            }),
           });
           for (const store of this.iterStores())
             if (!store.global) {
@@ -266,7 +275,7 @@ export class State {
       //If session exists, use session store
       const ses = this.store.auth.session;
       this.db =
-        ses && localforage.createInstance({ storeName: `@${ses.userId}` });
+        ses && localforage.createInstance({ storeName: sessionStoreName(ses) });
     }
 
     // load all data first
@@ -301,14 +310,17 @@ export class State {
     //Clear old sessions via some hackery
     if (storeKeys) {
       const ses = this.store.auth.session,
-        sesNames = [...(ses ? [ses] : []), ...this.store.auth.saved].map(
-          (s) => `@${s.userId}`,
-        );
-      for (const key of storeKeys)
-        if (key.indexOf("@") !== -1 && !sesNames.includes(key)) {
-          console.warn(`[store] Deleted unused db ${key}`);
-          await localforage.dropInstance({ storeName: key });
-        }
+        sessions = [...(ses ? [ses] : []), ...this.store.auth.saved];
+
+      //Per-account stores moved from `@<userId>` to `@<host>/<userId>`
+      await migrateSessionStores(storeKeys, sessions, (storeName) =>
+        localforage.createInstance({ storeName }),
+      );
+
+      for (const key of unusedSessionStores(storeKeys, sessions)) {
+        console.warn(`[store] Deleted unused db ${key}`);
+        await localforage.dropInstance({ storeName: key });
+      }
     }
   }
 }

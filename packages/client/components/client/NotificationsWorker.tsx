@@ -12,6 +12,7 @@ import {
   UserSystemMessage,
 } from "stoat.js";
 
+import { useInstance } from "@revolt/instance";
 import { useNavigate, useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
 
@@ -24,6 +25,7 @@ export function NotificationsWorker() {
   const state = useState();
   const { t } = useLingui();
   const client = useClient();
+  const instance = useInstance();
   const navigate = useNavigate();
   const params = useSmartParams();
   const sound = useSound();
@@ -34,7 +36,7 @@ export function NotificationsWorker() {
    * Handle incoming messages
    * @param message Message
    */
-  function onMessage(message: Message) {
+  async function onMessage(message: Message) {
     const us = client().user!;
 
     // Ignore if we are currently looking at the channel
@@ -201,13 +203,16 @@ export function NotificationsWorker() {
 
     sound.playSound("message");
 
+    //Tags per account, so accounts on other instances don't replace each other (C17)
+    const tag = `${await instance.accountKey(us.id)}:${message.channelId}`;
+
     const notification = new Notification(title!, {
       icon,
       // @ts-expect-error this does exist on some platforms
       image,
       body,
       timestamp: message.createdAt,
-      tag: message.channelId,
+      tag,
       badge: "/assets/web/android-chrome-512x512.png",
       silent: true,
     });

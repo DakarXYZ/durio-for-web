@@ -3,11 +3,14 @@ import { User } from "stoat.js";
 
 import { AbstractStore } from ".";
 import { State } from "..";
+import { cleanSession, findSession } from "./sessions";
 
 export type Session = {
   _id: string;
   token: string;
   userId: string;
+  /** Instance host the session belongs to (normalized, as in `/i/:host`) */
+  host: string;
   cachedName?: string;
   cachedAvatar?: string;
   valid: boolean;
@@ -35,29 +38,8 @@ export class AuthError extends Error {
   }
 }
 
-function strOrNone(str?: string) {
-  if (typeof str === "string" && str) return str;
-  return undefined;
-}
-
-function cleanSes(inSes?: Session): Session | undefined {
-  if (
-    typeof inSes === "object" &&
-    typeof inSes._id === "string" &&
-    typeof inSes.token === "string" &&
-    typeof inSes.userId === "string" &&
-    inSes.valid
-  ) {
-    return {
-      _id: inSes._id,
-      token: inSes.token,
-      userId: inSes.userId,
-      cachedName: strOrNone(inSes.cachedName),
-      cachedAvatar: strOrNone(inSes.cachedAvatar),
-      valid: true,
-    };
-  }
-}
+const cleanSes = (inSes?: Session) =>
+  cleanSession(inSes, CONFIGURATION.DEFAULT_HOST);
 
 /**
  * Authentication details store
@@ -77,12 +59,17 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
    * Hydrate external context
    */
   hydrate(): void {
-    if (CONFIGURATION.DEVELOPMENT_TOKEN && CONFIGURATION.DEVELOPMENT_USER_ID)
+    if (
+      CONFIGURATION.DEVELOPMENT_TOKEN &&
+      CONFIGURATION.DEVELOPMENT_USER_ID &&
+      CONFIGURATION.DEFAULT_HOST
+    )
       try {
         this.addSession({
           _id: CONFIGURATION.DEVELOPMENT_SESSION_ID ?? "0",
           token: CONFIGURATION.DEVELOPMENT_TOKEN,
           userId: CONFIGURATION.DEVELOPMENT_USER_ID,
+          host: CONFIGURATION.DEFAULT_HOST,
           valid: true,
         });
       } catch {
@@ -169,8 +156,8 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
     if (data.session) throw new AuthError("save_fail");
 
     data.session = newSes;
-    for (const ses of data.saved)
-      if (ses.userId === newSes.userId) throw new AuthError("dup_login");
+    if (findSession(data.saved, newSes.host, newSes.userId) !== -1)
+      throw new AuthError("dup_login");
     this.set(data);
   }
 
@@ -197,28 +184,28 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
   /**
    * Switch to a saved session
    */
-  swapSession(userId: string) {
+  swapSession(userId: string, host: string) {
     const data = this.#read(),
       saved = data.saved;
-    if (data.session?.userId === userId) return; //Y'all good
-    for (let i = 0, l = saved.length; i < l; ++i)
-      if (saved[i].userId === userId) {
-        const old = data.session;
-        data.session = saved[i];
-        saved.splice(i, 1);
-        if (old) saved.unshift(old);
-        return this.set(data);
-      }
+    if (data.session?.userId === userId && data.session.host === host) return; //Y'all good
+    const i = findSession(saved, host, userId);
+    if (i !== -1) {
+      const old = data.session;
+      data.session = saved[i];
+      saved.splice(i, 1);
+      if (old) saved.unshift(old);
+      return this.set(data);
+    }
     throw new AuthError("ses_not_found");
   }
 
   /**
    * Cache username and avatar for account switcher
    */
-  cacheUserInfo(user: User) {
+  cacheUserInfo(user: User, host: string) {
     const data = JSON.parse(JSON.stringify(this.get()));
     for (const s of [data.session, ...data.saved])
-      if (s && s.userId === user.id) {
+      if (s && s.userId === user.id && s.host === host) {
         s.cachedName = `${user.displayName} (@${user.username}#${user.discriminator})`;
         s.cachedAvatar = user.avatarURL;
         return this.set(data);

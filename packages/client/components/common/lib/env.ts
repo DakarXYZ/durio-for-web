@@ -1,5 +1,4 @@
 export const STOAT_HOST = "stoat.chat";
-const STOAT_API = "https://api.stoat.chat";
 
 /** App `stoat.json` endpoint format */
 export interface AppConfig {
@@ -15,43 +14,48 @@ const getEnv = (name: string, devOnly?: boolean) =>
     ? (import.meta.env[name] as string)
     : undefined;
 
-/** If host is Stoat, normalize to STOAT_HOST, else return host */
-export const normalizeHost = (host: string) =>
-  [
-    // historically...
-    "api.revolt.chat",
-    "beta.revolt.chat",
-    "revolt.chat",
-    // ... and now:
-    "api.stoat.chat",
-    "beta.stoat.chat",
-  ].includes(host)
-    ? STOAT_HOST
-    : host;
+/** Old and alternative names of the Stoat instance */
+const STOAT_ALIASES = [
+  // historically...
+  "api.revolt.chat",
+  "beta.revolt.chat",
+  "revolt.chat",
+  // ... and now:
+  "api.stoat.chat",
+  "beta.stoat.chat",
+];
 
-const isStoatOfficialAPI = (api: string) =>
-  [
-    "https://api.revolt.chat",
-    "https://api.stoat.chat",
-    "https://stoat.chat/api",
-    "https://beta.stoat.chat/api",
-    "canary-api.stoat.chat",
-  ].includes(api);
+/**
+ * Normalize a server address as typed by the user or found in a path to a host:
+ * no scheme, path or default port, lowercase; Stoat aliases become STOAT_HOST
+ */
+export const normalizeHost = (host?: string) => {
+  const normalized = (host ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/^[a-z][a-z0-9+.-]*:\/\//, "")
+    .split(/[/?#]/)[0]
+    .replace(/:443$/, "");
 
+  return STOAT_ALIASES.includes(normalized) ? STOAT_HOST : normalized;
+};
+
+// dur.io: no built-in server (O13). Without VITE_HOST the client starts at the server address
+// screen; VITE_API_URL is optional, otherwise it's discovered via /.well-known/stoat
 const DEFAULT_HOST = normalizeHost(
-  getEnv("VITE_DEV_HOST", true) || getEnv("VITE_HOST") || STOAT_HOST,
+  getEnv("VITE_DEV_HOST", true) || getEnv("VITE_HOST"),
 );
 
 const DEFAULT_API_URL =
-  getEnv("VITE_DEV_API_URL", true) || getEnv("VITE_API_URL") || STOAT_API;
+  getEnv("VITE_DEV_API_URL", true) || getEnv("VITE_API_URL") || "";
 
-if (!isStoatOfficialAPI(DEFAULT_API_URL) && DEFAULT_HOST === STOAT_HOST)
+if (DEFAULT_API_URL && !DEFAULT_HOST)
   console.error("VITE_HOST required when VITE_API_URL is set!");
 
 export default {
-  /** Default instance (without the protocol) */
+  /** Default instance (without the protocol), empty if none */
   DEFAULT_HOST,
-  /** API URL of default instance */
+  /** API URL of default instance, empty to discover it */
   DEFAULT_API_URL,
   /** WS server override for development */
   DEV_WS_URL: getEnv("VITE_DEV_WS_URL"),

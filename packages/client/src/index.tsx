@@ -24,7 +24,8 @@ import FlowVerify from "@revolt/auth/src/flows/FlowVerify";
 import { ClientContext, SoundContext, useClient } from "@revolt/client";
 import { DeviceContext } from "@revolt/common";
 import { I18nProvider } from "@revolt/i18n";
-import { InstanceContext } from "@revolt/instance";
+import { CONNECT_PATH, InstanceContext } from "@revolt/instance";
+import ServerSelect from "@revolt/instance/ServerSelect";
 import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
 import { VoiceContext } from "@revolt/rtc";
@@ -199,6 +200,7 @@ if (!escapeSelfEmbed())
         <I18nProvider>
           <SnackbarProvider controller={snackbarCtrl}>
             <Router>
+              <Route path={CONNECT_PATH} component={ServerSelect} />
               <Route path="/i/:host" component={InstanceContext}>
                 {routes()}
               </Route>

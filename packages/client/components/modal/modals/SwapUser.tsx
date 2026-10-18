@@ -3,6 +3,7 @@ import { For, Show } from "solid-js";
 import { Trans } from "@lingui/solid/macro";
 
 import { useClientLifecycle } from "@revolt/client";
+import { useInstance } from "@revolt/instance";
 import { useState } from "@revolt/state";
 import { Avatar, Dialog, DialogProps, MenuButton } from "@revolt/ui";
 
@@ -13,6 +14,7 @@ export function SwapUserModal(
 ) {
   const { auth } = useState();
   const { swapAccount } = useClientLifecycle();
+  const { sessionHost } = useInstance();
 
   return (
     <Dialog
@@ -32,10 +34,11 @@ export function SwapUserModal(
             }
             onClick={() => {
               props.onClose();
-              swapAccount(ses.userId);
+              swapAccount(ses.userId, ses.host);
             }}
           >
             {ses.cachedName || `User ${ses.userId}`}
+            {ses.host !== sessionHost ? ` @ ${ses.host}` : ""}
           </MenuButton>
         )}
       </For>

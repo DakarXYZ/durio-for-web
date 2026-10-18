@@ -5,6 +5,7 @@ import {
   createMemo,
   createSignal,
   JSXElement,
+  onCleanup,
   Show,
   useContext,
 } from "solid-js";
@@ -15,25 +16,42 @@ import { AppConfig, normalizeHost, STOAT_HOST } from "@revolt/common/lib/env";
 import { LoadingScreen, useSnackbar } from "@revolt/ui";
 
 import Instance, { _newClient } from "./Instance";
+import { CONNECT_PATH, discoverInstance, lastSessionHost } from "./servers";
+
+export { onClientDispose } from "./dispose";
+export { CONNECT_PATH } from "./servers";
 
 export const StoatOrigin = new URL(`https://${STOAT_HOST}`).origin;
-export const DefaultURL = new URL(`https://${CONFIGURATION.DEFAULT_HOST}`);
-export const DefaultHost = DefaultURL.host;
-const DefRoute = `/i/${DefaultHost}/`;
+/** Host of the default instance, empty when the build has none (O13) */
+export const DefaultHost = CONFIGURATION.DEFAULT_HOST;
+const DefRoute = DefaultHost && `/i/${DefaultHost}/`;
 
 const instanceContext = createContext<Instance>();
 let appLoadedOnce = false;
 
 export function InstanceContext(props: { children?: JSXElement }) {
   const params = useParams();
+  const host = createMemo(() => normalizeHost(params.host));
+
+  //Switching instance remounts everything below: state, client and socket
+  return (
+    <Show when={[host()]} keyed>
+      {([host]) => <HostContext host={host}>{props.children}</HostContext>}
+    </Show>
+  );
+}
+
+function HostContext(props: { host: string; children?: JSXElement }) {
   const snackbar = useSnackbar();
   const nav = useNavigate();
   const { t } = useLingui();
 
   const [inst, setInst] = createSignal<Instance>();
+  onCleanup(() => inst()?.dispose());
 
-  //Check Stoat instance
-  const host = normalizeHost(params.host);
+  //Check Stoat instance (keyed by InstanceContext, never changes)
+  // eslint-disable-next-line solid/reactivity
+  const host = props.host;
 
   function onError(e: unknown) {
     if ((e as Error).message === "Failed to fetch") {
@@ -46,14 +64,22 @@ export function InstanceContext(props: { children?: JSXElement }) {
 
   (async () => {
     //Redirect default instance
-    //TODO This redirects ALL instance paths to default until multi-instance is ready
-    // Replace with `if (host === DefaultHost)` when ready
-    if (host) return nav(Instance.relPath(), { replace: true });
+    if (host && host === DefaultHost)
+      return nav(Instance.relPath(), { replace: true });
+
+    //No default instance: continue with the last account, else ask for a server
+    if (!host && !DefaultHost) {
+      const last = lastSessionHost();
+      return nav(last ? `/i/${last}${Instance.relPath()}` : CONNECT_PATH, {
+        replace: true,
+      });
+    }
 
     try {
-      const appCfg: AppConfig = host
-        ? await (await fetch(`https://${host}/.well-known/stoat`)).json()
-        : { api: CONFIGURATION.DEFAULT_API_URL };
+      const appCfg: AppConfig =
+        host || !CONFIGURATION.DEFAULT_API_URL
+          ? await discoverInstance(host || DefaultHost)
+          : { api: CONFIGURATION.DEFAULT_API_URL };
 
       const cli = _newClient(appCfg.api);
       await cli.initConfig();
@@ -95,13 +121,14 @@ function Redirect() {
   useBeforeLeave((e) => {
     if (typeof e.to !== "string") return;
 
-    if ((e.to + "/").startsWith(DefRoute)) {
+    if (DefRoute && (e.to + "/").startsWith(DefRoute)) {
       //Redirect default instance
       e.preventDefault();
       nav(Instance.relPath(e.to), { state: DEF_MARK });
     } else if (
       inst.host &&
       !e.to.startsWith("/i/") &&
+      !e.to.startsWith(CONNECT_PATH) &&
       e.options?.state !== DEF_MARK
     ) {
       //Redirect relative path to instance path

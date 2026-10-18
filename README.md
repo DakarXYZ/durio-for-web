@@ -94,7 +94,8 @@ If you want the client to connect to the official hosted backend instead, open t
 #VITE_API_URL=http://localhost:14702
 ```
 
-When these variables are not set, the client automatically falls back to the official backend. (See https://github.com/stoatchat/for-web/blob/main/packages/client/components/common/lib/env.ts)
+When these variables are not set, the client has no default server (dur.io): it starts at the server address
+screen (`/connect`) and discovers the API via `https://<host>/.well-known/stoat`. (See https://github.com/stoatchat/for-web/blob/main/packages/client/components/common/lib/env.ts)
 
 ## Deployment Guide
 
