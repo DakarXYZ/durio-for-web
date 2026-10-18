@@ -1,4 +1,4 @@
-import { lazy, mergeProps, splitProps } from "solid-js";
+import { Suspense, lazy, mergeProps, splitProps } from "solid-js";
 
 import { IS_DEV } from "@revolt/client";
 
@@ -111,7 +111,14 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
     case "enable_encryption":
       return <EnableEncryptionModal {...modalProps} />;
     case "e2ee":
-      return <E2eeModal {...modalProps} />;
+      // a lazy component renders "" while its chunk loads; next to the empty
+      // markers of the root that string reused one of them and broke the root's
+      // render (blank window at the next login or logout, WEB-08)
+      return (
+        <Suspense>
+          <E2eeModal {...modalProps} />
+        </Suspense>
+      );
     case "create_bot":
       return <CreateBotModal {...modalProps} />;
     case "create_category":
