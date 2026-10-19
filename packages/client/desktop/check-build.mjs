@@ -2,7 +2,8 @@
 /* global process, console */
 // Checks of the desktop build (plan WEB-09, WEB-11) for CI and `mise build:desktop`:
 // the CSP is in place, no inline scripts, no service worker, PWA manifest, push worker or
-// source maps, the RNNoise worklet and the crypto wasm are packaged, no Sentry DSN.
+// source maps, the RNNoise worklet, the emoji set and the crypto wasm are packaged, no
+// Sentry DSN, no request URLs of Stoat/Revolt services the app used to load from.
 //
 // Usage: node desktop/check-build.mjs [dist-desktop]
 import { readFile, readdir } from "node:fs/promises";
@@ -61,10 +62,27 @@ for (const needed of ["rnnoise/RNNoiseWorklet.js", "rnnoise/rnnoise.wasm"])
 if (!files.some((f) => /stoat_crypto_wasm_bg-.*\.wasm$/.test(f)))
   problems.push("missing the crypto core wasm");
 
+// Q63: emoji images from the package, not static.stoat.chat
+for (const needed of ["emoji/twemoji/1f600.svg", "emoji/twemoji/NOTICE.txt"])
+  if (!files.includes(needed)) problems.push(`missing ${needed}`);
+
+// third-party services the upstream client fetched from (WEB-08 and after); links the
+// user opens in a browser are not listed, nor cdn.jsdelivr.net: the RNNoise package
+// keeps it as a default that the desktop build overrides with its packaged copy
+const FETCHED_HOSTS = [
+  "static.stoat.chat",
+  "changelog.stoat.chat",
+  "geo.revolt.chat",
+  "api.gifbox.me",
+  "cdn.revoltusercontent.com",
+];
+
 for (const file of files.filter((f) => f.endsWith(".js"))) {
   const source = await readFile(join(dir, file), "utf8");
   if (/https:\/\/[0-9a-f]+@[^"'`\s]*sentry\.io/.test(source))
     problems.push(`Sentry DSN in ${file}`);
+  for (const host of FETCHED_HOSTS)
+    if (source.includes(host)) problems.push(`${host} in ${file}`);
   if (
     /navigator\.serviceWorker\.register\(/.test(source) &&
     /registerSW/.test(source)
