@@ -1429,7 +1429,7 @@ packages:
       solid-js: 1.9.14
 
   '@durio/stoat-crypto@file:../stoat-crypto/bindings/web/build/durio-stoat-crypto-0.2.0.tgz':
-    resolution: {integrity: sha512-5fhL4E86jaldv+XBf+mBJ0qSaJfbn+qw28P2TgBoQOhinyQ0lsUS1pUSLAkjOD/lAOCch0y9ohjc0bV8z5lTzg==, tarball: file:../stoat-crypto/bindings/web/build/durio-stoat-crypto-0.2.0.tgz}
+    resolution: {integrity: sha512-vz3R884qlN8OBvE2KkEh7WYD1bSHShINi5fE1ci6nBakj4Um3fYsaO68SLUaetITO/Dd9q+Eyath8rw9gsy57g==, tarball: file:../stoat-crypto/bindings/web/build/durio-stoat-crypto-0.2.0.tgz}
     version: 0.2.0
     engines: {node: '>=22'}
 
