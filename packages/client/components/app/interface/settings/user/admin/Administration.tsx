@@ -124,6 +124,7 @@ export default function Administration() {
 
       <SearchRow>
         <TextField
+          name="admin-query"
           label={t`User id or name#1234`}
           value={query()}
           onInput={(e) => setQuery(e.currentTarget.value)}
