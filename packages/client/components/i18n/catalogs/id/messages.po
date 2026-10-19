@@ -4337,8 +4337,12 @@ msgid "This server is about..."
 msgstr "Server ini tentang..."
 
 #: components/i18n/errors.tsx
-msgid "This sign up is marked as spam. Please see <0>this support article.</0>"
-msgstr "Pendaftaran ini ditandai sebagai spam. Silahkan lihat <0>artikel dukungan ini.</0>"
+msgid "This sign up is marked as spam."
+msgstr ""
+
+#: components/i18n/errors.tsx
+#~ msgid "This sign up is marked as spam. Please see <0>this support article.</0>"
+#~ msgstr "Pendaftaran ini ditandai sebagai spam. Silahkan lihat <0>artikel dukungan ini.</0>"
 
 #: components/i18n/errors.tsx
 msgid "This user has blocked you."
