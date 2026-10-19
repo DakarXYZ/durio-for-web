@@ -42,6 +42,10 @@ msgstr "dddd [alle] LT"
 msgid "(changes are being saved…)"
 msgstr "(salvataggio in corso...)"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "(this device)"
+msgstr ""
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -219,6 +223,14 @@ msgstr "Il timeout di {0} verrà rimosso e potrà nuovamente interagire con il s
 
 #~ msgid "{m} minutes"
 #~ msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "{name} is logged out on “{device}”."
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "{name} is logged out on every device."
+msgstr ""
 
 #~ msgid "{sec} seconds"
 #~ msgstr ""
@@ -448,6 +460,10 @@ msgstr "Amministratore"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Admin Panel"
 msgstr "Pannello Admin"
+
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Administration"
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Advanced"
@@ -688,6 +704,10 @@ msgstr "Bot"
 msgid "Both devices are ready. Compare emoji to continue."
 msgstr ""
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Bots have no sessions."
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Browser"
 msgstr "Browser"
@@ -755,6 +775,7 @@ msgstr "Non riesci a trovare la GIF giusta? Vai nel Gifbox e carica la tua per f
 msgid "Can't get discover request status right now"
 msgstr "Al momento non è possibile ottenere lo stato della richiesta dalla sezione “Scopri”"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -1877,9 +1898,25 @@ msgstr ""
 msgid "Encryption was reset"
 msgstr ""
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "End all sessions"
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "End all sessions of this user?"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
 msgstr "Termina la chiamata"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "End session"
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "End this session?"
+msgstr ""
 
 #: components/client/e2ee/ui/views/ChannelEncryption.tsx
 msgid "End-to-end encrypted"
@@ -2018,9 +2055,17 @@ msgstr "Risposta"
 msgid "File must be smaller than {0}"
 msgstr "Il file deve essere più piccolo di {0}"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Find"
+msgstr ""
+
 #: src/interface/Home.tsx
 msgid "Find a community based on your hobbies or interests."
 msgstr "Trova una community in base ai tuoi hobby o interessi."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Find a user by id or by name with its number (name#1234) to see where they are signed in. End a session when a device is lost or stolen."
+msgstr ""
 
 #~ msgid "Find your com<0/>munity,<1/>connect with the world."
 #~ msgstr "Trova la tua com<0/>unità,<1/>connettiti con il mondo."
@@ -2438,6 +2483,10 @@ msgstr "Espellere membri"
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Language"
 msgstr "Lingua"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Last seen <0/>"
+msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Last sync <0/>"
@@ -2942,6 +2991,10 @@ msgstr "Nessun permesso ancora impostato"
 msgid "No role overrides have been configured."
 msgstr "Non è stata configurata alcuna eccezione di ruolo."
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "No user with this id or name."
+msgstr ""
+
 #: src/interface/Friends.tsx
 msgid "Nobody here right now!"
 msgstr "Non c'è nessuno qui al momento!"
@@ -3032,6 +3085,10 @@ msgstr "Manutenzione in corso"
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Online"
 msgstr "Online"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Only administrators can do this."
+msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Only mentions will notify you"
@@ -3865,6 +3922,7 @@ msgstr "Mostra il pulsante di invio"
 #~ msgid "Sign Up"
 #~ msgstr "Registrati"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
 #: components/client/e2ee/ui/views/Devices.tsx
 msgid "Signed in <0/>"
 msgstr ""
@@ -3914,6 +3972,7 @@ msgstr "Qualcosa è andato storto! {error}"
 #~ msgid "Something went wrong! Try again later."
 #~ msgstr "Qualcosa è andato storto! Riprova più tardi."
 
+#: components/app/interface/settings/user/admin/Administration.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 #: components/client/e2ee/ui/views/Restore.tsx
 msgid "Something went wrong. Try again."
@@ -4180,6 +4239,10 @@ msgstr ""
 msgid "The encryption keys of this device are lost. Reset encryption to keep chatting in encrypted chats."
 msgstr ""
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The end-to-end encryption devices of these sessions are removed: the user has to sign in again, and can read earlier encrypted messages only from their key backup or another signed-in device."
+msgstr ""
+
 #. placeholder {0}: file.name
 #: src/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
@@ -4200,6 +4263,14 @@ msgstr "Questo contenuto è stato rimosso dai moderatori; di conseguenza, è vie
 
 #: components/client/e2ee/ui/E2eeWatcher.tsx
 msgid "The key backup was replaced on another device. Enter your recovery key to use it here."
+msgstr ""
+
+#: components/client/e2ee/ui/E2eeWatcher.tsx
+msgid "The key backup was turned off on another device. Keys of this device are no longer backed up."
+msgstr ""
+
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "The key backup was turned off on another device. The keys of this device are no longer backed up: set up a new recovery key to turn the backup on again."
 msgstr ""
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -4226,6 +4297,10 @@ msgstr ""
 msgid "The server could not be reached. Try again."
 msgstr ""
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The server did not answer. Check the connection."
+msgstr ""
+
 #: components/i18n/errors.tsx
 #, fuzzy
 msgid "The server has been removed from discover by moderators, the user must contact support."
@@ -4241,6 +4316,18 @@ msgstr ""
 
 #: src/interface/channels/E2eeChannelHeader.tsx
 msgid "The server removed encryption from this conversation. Your messages here are still encrypted."
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The session has already ended."
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The user is not signed in anywhere."
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The user no longer exists."
 msgstr ""
 
 #: components/client/e2ee/ui/views/Verify.tsx
@@ -4664,6 +4751,10 @@ msgstr "Utente bannato"
 #: components/modal/modals/BanNonMember.tsx
 msgid "User broke a certain rule…"
 msgstr "L'utente ha violato una regola specifica…"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "User id or name#1234"
+msgstr ""
 
 #: components/app/interface/settings/server/Overview.tsx
 msgid "User Joined"
