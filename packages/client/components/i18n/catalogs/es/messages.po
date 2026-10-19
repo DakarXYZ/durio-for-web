@@ -4147,6 +4147,10 @@ msgstr "El bot ha sido eliminado de Discover por los moderadores; ponte en conta
 msgid "The bot is already on discover, the user must contact support to have it removed"
 msgstr "El bot ya está en Discover; ponte en contacto con nosotros para quitarlo"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The code is invalid or has expired. Try again."
+msgstr ""
+
 #: components/client/e2ee/ui/views/Verify.tsx
 msgid "The codes did not match. Someone may be in the middle: the device is not verified. Verify again when you are next to each other."
 msgstr ""

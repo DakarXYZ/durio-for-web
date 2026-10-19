@@ -4147,6 +4147,10 @@ msgstr "Бот был удалён из каталога модераторам�
 msgid "The bot is already on discover, the user must contact support to have it removed"
 msgstr "Бот уже добавлен в каталог. Чтобы удалить его, свяжитесь с поддержкой."
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "The code is invalid or has expired. Try again."
+msgstr "Код неверный или устарел. Попробуйте ещё раз."
+
 #: components/client/e2ee/ui/views/Verify.tsx
 msgid "The codes did not match. Someone may be in the middle: the device is not verified. Verify again when you are next to each other."
 msgstr "Коды не совпали. Возможно, кто-то посередине: устройство не проверено. Повторите сверку, когда будете рядом."
