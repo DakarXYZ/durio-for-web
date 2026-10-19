@@ -43,6 +43,28 @@ export function recoveryFailure(error: unknown): RecoveryFailure {
 }
 
 /**
+ * What happened to the backup when this device's uploads stopped
+ * (`BackupVersionChanged`: the core sees 404 and 409 alike): turned off on another
+ * device (no backup on the server anymore) or replaced by a new one
+ */
+export type BackupChange = "turnedOff" | "replaced";
+
+/**
+ * Ask the server which change it was
+ * @param exists Whether the server holds a backup (`client.e2ee.backup.exists`)
+ * @returns The change, `undefined` when the server could not be asked
+ */
+export async function backupChange(
+  exists: () => Promise<boolean>,
+): Promise<BackupChange | undefined> {
+  try {
+    return (await exists()) ? "replaced" : "turnedOff";
+  } catch {
+    return undefined;
+  }
+}
+
+/**
  * Activate a new backup on the server. An MFA ticket is asked for **up front** when a
  * backup exists there (or might: unknown) and for every rotation — without one the
  * server answers 401. If a backup appeared meanwhile (another device), the core says

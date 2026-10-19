@@ -13,6 +13,7 @@ import {
 } from "./keyFiles";
 import {
   activateWithMfa,
+  backupChange,
   onboardingPrompt,
   recoveryFailure,
   turnOffWithMfa,
@@ -350,5 +351,15 @@ describe("turning the key backup off", () => {
       await turnOffWithMfa({ existsOnServer: false, turnOff, requestTicket }),
     ).toBe("done");
     expect(turnOff).toHaveBeenLastCalledWith("T");
+  });
+});
+
+describe("backup stopped on another device", () => {
+  it("tells a turned-off backup from a replaced one", async () => {
+    expect(await backupChange(async () => false)).toBe("turnedOff");
+    expect(await backupChange(async () => true)).toBe("replaced");
+    expect(
+      await backupChange(() => Promise.reject(coreError("NoResponse"))),
+    ).toBeUndefined();
   });
 });

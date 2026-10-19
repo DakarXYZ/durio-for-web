@@ -10,7 +10,7 @@ import { useSnackbar } from "@revolt/ui";
 import { e2eeWarn } from "../log";
 
 import { newUnverifiedDevices } from "./logic/devices";
-import { onboardingPrompt } from "./logic/recovery";
+import { backupChange, onboardingPrompt } from "./logic/recovery";
 import { ONBOARDED, SEEN_DEVICES as SEEN } from "./marks";
 import { notices } from "./notices";
 
@@ -95,9 +95,13 @@ export function E2eeWatcher() {
             else
               snackbar.show({
                 message:
-                  event.code === "BackupVersionChanged"
-                    ? t`The key backup was replaced on another device. Enter your recovery key to use it here.`
-                    : t`Encryption needs your attention.`,
+                  event.code !== "BackupVersionChanged"
+                    ? t`Encryption needs your attention.`
+                    : (await backupChange(() =>
+                          current.e2ee.backup.exists(),
+                        )) === "turnedOff"
+                      ? t`The key backup was turned off on another device. Keys of this device are no longer backed up.`
+                      : t`The key backup was replaced on another device. Enter your recovery key to use it here.`,
                 action: t`Open`,
                 onAction: openSettings,
               });

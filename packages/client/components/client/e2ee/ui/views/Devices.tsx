@@ -20,6 +20,7 @@ import {
   type DeviceStatus,
   deviceRows,
 } from "../logic/devices";
+import { backupChange } from "../logic/recovery";
 import { fingerprintGroups } from "../logic/report";
 import { notices } from "../notices";
 import { Beta, Buttons, Mono, Notice } from "../parts";
@@ -65,6 +66,19 @@ const StatusLabel = styled("span", {
 });
 
 /**
+ * The key backup was deleted on another device (no backup on the server anymore)
+ */
+function BackupTurnedOffText() {
+  return (
+    <Trans>
+      The key backup was turned off on another device. The keys of this device
+      are no longer backed up: set up a new recovery key to turn the backup on
+      again.
+    </Trans>
+  );
+}
+
+/**
  * "Devices and encryption" (dur.io, WEB-07, AN-30): status of this device, its
  * fingerprint, the account's devices (a session is a device, C22) with verification,
  * the key backup, key files, the diagnostic report and the reset. Everything E2EE is
@@ -90,6 +104,15 @@ export default function E2eeSettings() {
 
   const [backup, { refetch: refetchBackup }] = createResource(ready, () =>
     client().e2ee.backup.status(),
+  );
+
+  // the core stops uploads on 404 and 409 alike: ask the server which it was
+  const backupStopped = () =>
+    !!backup()?.outdated ||
+    (notices.actionRequired() === "BackupVersionChanged" &&
+      backup()?.outdated !== false);
+  const [change] = createResource(backupStopped, () =>
+    backupChange(() => client().e2ee.backup.exists()),
   );
 
   const rows = createMemo<DeviceRow[]>(() =>
@@ -243,20 +266,36 @@ export default function E2eeSettings() {
             </Trans>
           </Notice>
         </Show>
-        <Show when={notices.actionRequired() === "BackupVersionChanged"}>
-          <Notice
-            kind="warning"
-            action={
-              <Button size="sm" onPress={() => open("restore")}>
-                <Trans>Enter recovery key</Trans>
-              </Button>
-            }
-          >
-            <Trans>
-              The backup was replaced on another device. Enter your recovery key
-              to use it here.
-            </Trans>
-          </Notice>
+        <Show when={backupStopped()}>
+          <Switch>
+            <Match when={change() === "turnedOff"}>
+              <Notice
+                kind="warning"
+                action={
+                  <Button size="sm" onPress={() => open("recovery")}>
+                    <Trans>New recovery key</Trans>
+                  </Button>
+                }
+              >
+                <BackupTurnedOffText />
+              </Notice>
+            </Match>
+            <Match when={!change.loading}>
+              <Notice
+                kind="warning"
+                action={
+                  <Button size="sm" onPress={() => open("restore")}>
+                    <Trans>Enter recovery key</Trans>
+                  </Button>
+                }
+              >
+                <Trans>
+                  The backup was replaced on another device. Enter your recovery
+                  key to use it here.
+                </Trans>
+              </Notice>
+            </Match>
+          </Switch>
         </Show>
       </Section>
 
@@ -385,6 +424,11 @@ export default function E2eeSettings() {
             <Trans>Recovery and key backup</Trans>
           </Text>
           <Switch>
+            <Match when={backup()?.outdated && change() === "turnedOff"}>
+              <Notice kind="warning">
+                <BackupTurnedOffText />
+              </Notice>
+            </Match>
             <Match when={backup()?.outdated}>
               <Notice kind="warning">
                 <Trans>
