@@ -8,6 +8,8 @@ on:
     - cron: '0/15 * * * *'
 jobs:
   renovate:
+    # upstream infrastructure (secrets, Pages, Harbor); off in the dur.io fork
+    if: github.repository_owner == 'stoatchat'
     runs-on: ubuntu-latest
     steps:
       - id: app-token

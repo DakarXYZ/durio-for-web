@@ -5,6 +5,8 @@ on:
 
 jobs:
   sync:
+    # upstream infrastructure (secrets, Pages, Harbor); off in the dur.io fork
+    if: github.repository_owner == 'stoatchat'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

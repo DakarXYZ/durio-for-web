@@ -7,6 +7,8 @@ on:
 
 jobs:
   production-release:
+    # upstream infrastructure (secrets, Pages, Harbor); off in the dur.io fork
+    if: github.repository_owner == 'stoatchat'
     name: Build and push to Harbor
     runs-on: ubuntu-latest
     permissions:

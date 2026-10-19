@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   release-please:
+    # upstream infrastructure (secrets, Pages, Harbor); off in the dur.io fork
+    if: github.repository_owner == 'stoatchat'
     name: Release Please
     runs-on: ubuntu-latest
     outputs:

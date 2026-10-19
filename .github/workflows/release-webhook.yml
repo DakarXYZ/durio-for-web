@@ -10,6 +10,8 @@ on:
 
 jobs:
   release-webhook:
+    # upstream infrastructure (secrets, Pages, Harbor); off in the dur.io fork
+    if: github.repository_owner == 'stoatchat'
     name: Send Release Webhook
     runs-on: ubuntu-latest
 
