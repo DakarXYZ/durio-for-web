@@ -46,17 +46,14 @@ emoji, and removes the original project's trackers and remote services. Licensed
 (`.mise/config.toml` ставит тулчейн, задачи — в `.mise/tasks/`), но не обязателен: ниже рядом с задачей mise — то
 же через pnpm.
 
-Рядом с этим репозиторием нужен клон [durio-crypt](https://github.com/DakarXYZ/durio-crypt) в папке
-`../stoat-crypto`: крипто-ядро `@durio/stoat-crypto` не публикуется в npm, клиент при разработке берёт собранный
-там архив (`packages/client/package.json` →
-`file:../../../stoat-crypto/bindings/web/build/durio-stoat-crypto-<версия>.tgz`):
+Крипто-ядро `@durio/stoat-crypto` не публикуется в npm: `packages/client/package.json` берёт архив из GitHub Release
+[durio-crypt](https://github.com/DakarXYZ/durio-crypt) (`…/releases/download/v<версия>/durio-stoat-crypto-<версия>.tgz`),
+целостность в lockfile совпадает с его `.sha256`. Новая версия ядра: поменять ссылку и выполнить `pnpm install`.
 
-```bash
-# в ../stoat-crypto
-scripts/build-wasm.sh build   # → bindings/web/build/durio-stoat-crypto-<версия>.tgz (+ .sha256)
-```
-
-В CI и релизах вместо него — архив из GitHub Release durio-crypt, целостность в lockfile сверяется с его `.sha256`.
+Проверить локальную сборку ядра до релиза: клон durio-crypt в `../stoat-crypto`, там
+`scripts/build-wasm.sh build` (→ `bindings/web/build/durio-stoat-crypto-<версия>.tgz`), и временно указать в
+`packages/client/package.json` `file:../../../stoat-crypto/bindings/web/build/durio-stoat-crypto-<версия>.tgz`.
+Такую правку не коммитить: CI соберёт клиент только с архивом из релиза.
 
 ```bash
 git clone --recursive https://github.com/DakarXYZ/durio-for-web for-web
