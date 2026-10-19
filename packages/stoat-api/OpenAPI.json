@@ -7317,6 +7317,228 @@
         ]
       }
     },
+    "/admin/@me": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Admin Status",
+        "description": "Whether the current user is an admin of this instance (dur.io fork). Clients show the admin tools only when this is true.",
+        "operationId": "status_status",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminStatus"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Find User",
+        "description": "Find a user by id or `username#discriminator` (dur.io fork, instance admins only).",
+        "operationId": "find_user_find_user",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "User id or `username#discriminator`",
+            "required": true,
+            "schema": {
+              "description": "User id or `username#discriminator`",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUser"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/admin/users/{target}/sessions": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Fetch User Sessions",
+        "description": "Sessions (devices) of a user, without tokens (dur.io fork, instance admins only).",
+        "operationId": "sessions_fetch_fetch_sessions",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SessionInfo"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "End All User Sessions",
+        "description": "End every session of a user (dur.io fork, instance admins only). Like \"log out everywhere\": all E2EE devices are removed and all sockets are closed.",
+        "operationId": "sessions_revoke_all_revoke_all_sessions",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/admin/users/{target}/sessions/{session}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "End User Session",
+        "description": "End one session of a user (dur.io fork, instance admins only). Like a logout: the session's E2EE device is removed and its sockets are closed.",
+        "operationId": "session_revoke_revoke_session",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "session",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/webhooks/{webhook_id}/{token}/{message_id}": {
       "delete": {
         "tags": [
@@ -16900,6 +17122,51 @@
           },
           "session_data": {
             "description": "Encrypted session data"
+          }
+        }
+      },
+      "AdminStatus": {
+        "title": "Instance Admin Status",
+        "type": "object",
+        "required": [
+          "admin"
+        ],
+        "properties": {
+          "admin": {
+            "description": "Whether the current user may use the `/admin` routes of this instance",
+            "type": "boolean"
+          }
+        }
+      },
+      "AdminUser": {
+        "title": "User Found by an Admin",
+        "type": "object",
+        "required": [
+          "_id",
+          "discriminator",
+          "username"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Unique Id",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username",
+            "type": "string"
+          },
+          "discriminator": {
+            "description": "Discriminator",
+            "type": "string"
+          },
+          "display_name": {
+            "description": "Display name",
+            "type": "string",
+            "nullable": true
+          },
+          "bot": {
+            "description": "Whether the user is a bot (bots have no sessions)",
+            "type": "boolean"
           }
         }
       },

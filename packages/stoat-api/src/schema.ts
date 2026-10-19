@@ -538,6 +538,24 @@ export interface paths {
     /** Create or replace an entry of the secret storage. Cross-signing keys (`m.cross_signing.*`) require an MFA ticket. */
     put: operations["secrets_store"];
   };
+  "/admin/@me": {
+    /** Whether the current user is an admin of this instance (dur.io fork). Clients show the admin tools only when this is true. */
+    get: operations["status_status"];
+  };
+  "/admin/users": {
+    /** Find a user by id or `username#discriminator` (dur.io fork, instance admins only). */
+    get: operations["find_user_find_user"];
+  };
+  "/admin/users/{target}/sessions": {
+    /** Sessions (devices) of a user, without tokens (dur.io fork, instance admins only). */
+    get: operations["sessions_fetch_fetch_sessions"];
+    /** End every session of a user (dur.io fork, instance admins only). Like "log out everywhere": all E2EE devices are removed and all sockets are closed. */
+    delete: operations["sessions_revoke_all_revoke_all_sessions"];
+  };
+  "/admin/users/{target}/sessions/{session}": {
+    /** End one session of a user (dur.io fork, instance admins only). Like a logout: the session's E2EE device is removed and its sockets are closed. */
+    delete: operations["session_revoke_revoke_session"];
+  };
   "/webhooks/{webhook_id}/{token}/{message_id}": {
     /** Deletes a message sent by a webhook */
     delete: operations["webhook_delete_message_webhook_delete_message"];
@@ -3676,6 +3694,24 @@ export interface components {
       is_verified: boolean;
       /** @description Encrypted session data */
       session_data: unknown;
+    };
+    /** Instance Admin Status */
+    AdminStatus: {
+      /** @description Whether the current user may use the `/admin` routes of this instance */
+      admin: boolean;
+    };
+    /** User Found by an Admin */
+    AdminUser: {
+      /** @description Unique Id */
+      _id: string;
+      /** @description Username */
+      username: string;
+      /** @description Discriminator */
+      discriminator: string;
+      /** @description Display name */
+      display_name?: string | null;
+      /** @description Whether the user is a bot (bots have no sessions) */
+      bot?: boolean;
     };
     /** @description New webhook information */
     DataEditWebhook: {
@@ -6952,6 +6988,102 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": unknown;
+      };
+    };
+  };
+  /** Whether the current user is an admin of this instance (dur.io fork). Clients show the admin tools only when this is true. */
+  status_status: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["AdminStatus"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Find a user by id or `username#discriminator` (dur.io fork, instance admins only). */
+  find_user_find_user: {
+    parameters: {
+      query: {
+        /** User id or `username#discriminator` */
+        query: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["AdminUser"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Sessions (devices) of a user, without tokens (dur.io fork, instance admins only). */
+  sessions_fetch_fetch_sessions: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["SessionInfo"][];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** End every session of a user (dur.io fork, instance admins only). Like "log out everywhere": all E2EE devices are removed and all sockets are closed. */
+  sessions_revoke_all_revoke_all_sessions: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** End one session of a user (dur.io fork, instance admins only). Like a logout: the session's E2EE device is removed and its sockets are closed. */
+  session_revoke_revoke_session: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        session: string;
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
       };
     };
   };
