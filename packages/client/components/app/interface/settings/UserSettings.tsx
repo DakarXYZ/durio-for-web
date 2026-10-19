@@ -5,6 +5,7 @@ import { Server } from "stoat.js";
 import { css } from "styled-system/css";
 
 import { useClient, useClientLifecycle } from "@revolt/client";
+import { instanceAdmin } from "@revolt/client/admin";
 import { logoutWithBackupCheck } from "@revolt/client/e2ee/ui/logout";
 import { useInstance } from "@revolt/instance";
 import { useUser } from "@revolt/markdown/users";
@@ -49,6 +50,8 @@ import { VoiceSettings } from "./user/voice/VoiceSettings";
 
 // dur.io: "Devices and encryption", a lazy chunk (WEB-07)
 const E2eeSettings = lazy(() => import("@revolt/client/e2ee/ui/views/Devices"));
+// dur.io: instance admins end the sessions of users, a lazy chunk
+const Administration = lazy(() => import("./user/admin/Administration"));
 
 const Config: SettingsConfiguration<{ server: Server }> = {
   /**
@@ -94,6 +97,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <Sessions />;
       case "encryption":
         return <E2eeSettings />;
+      case "administration":
+        return <Administration />;
       case "bots":
         return <MyBots />;
       case "language":
@@ -248,6 +253,13 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "feedback",
               icon: <MdRateReview {...iconSize(20)} />,
               title: <Trans>Feedback</Trans>,
+            },
+            {
+              // dur.io: only for admins of this instance (GET /admin/@me)
+              id: "administration",
+              hidden: !instanceAdmin(client())(),
+              icon: <Symbol size={20}>admin_panel_settings</Symbol>,
+              title: <Trans>Administration</Trans>,
             },
           ],
         },
