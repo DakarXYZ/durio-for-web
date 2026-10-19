@@ -4456,6 +4456,10 @@ msgstr "Это уже было отправлено."
 msgid "This invite link is for {link}, but you are signing up on {here}. Go back and choose that server to use it."
 msgstr "Эта ссылка-приглашение для сервера {link}, а вы регистрируетесь на {here}. Вернитесь назад и выберите тот сервер, чтобы воспользоваться ею."
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "This is an invite to a server (a community), not to sign up. Sign up with the invite link from an admin first, then open the server invite."
+msgstr "Это приглашение на сервер (в сообщество), а не для регистрации. Сначала зарегистрируйтесь по ссылке-приглашению от администратора, затем откройте приглашение на сервер."
+
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "This is not a key file, or it is damaged."
 msgstr "Это не файл ключей, или он повреждён."

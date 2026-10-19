@@ -4401,6 +4401,10 @@ msgstr ""
 msgid "This invite link is for {link}, but you are signing up on {here}. Go back and choose that server to use it."
 msgstr ""
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "This is an invite to a server (a community), not to sign up. Sign up with the invite link from an admin first, then open the server invite."
+msgstr ""
+
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "This is not a key file, or it is damaged."
 msgstr ""
