@@ -12,6 +12,7 @@ import { useLingui } from "@lingui/solid/macro";
 import { Channel } from "stoat.js";
 
 import { useClient } from "@revolt/client";
+import { attachmentLimit } from "@revolt/client/e2ee/limits";
 import { CONFIGURATION, debounce } from "@revolt/common";
 import { createIsTimedOut } from "@revolt/common/lib/createIsTimedOut";
 import { useInstance } from "@revolt/instance";
@@ -231,7 +232,11 @@ export function MessageComposition(props: Props) {
     if (!canUploadFiles()) return;
     const rejectedFiles: File[] = [];
     const validFiles: File[] = [];
-    const maxSize = limits().file_upload_size_limits.attachments;
+    // dur.io: the server's limit, capped for encrypted files (held in memory)
+    const maxSize = attachmentLimit(
+      limits().file_upload_size_limits?.attachments,
+      client().e2ee.isEncrypted(props.channel),
+    );
 
     for (const file of files) {
       if (file.size > maxSize) {
