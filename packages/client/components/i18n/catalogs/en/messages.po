@@ -471,6 +471,22 @@ msgstr "Add to folder"
 msgid "Admin"
 msgstr "Admin"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode is off. Enter your 2FA code to turn it on."
+msgstr "Admin mode is off. Enter your 2FA code to turn it on."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode is off. Turn it on with the 2FA code of your authenticator app; it lasts about an hour."
+msgstr "Admin mode is off. Turn it on with the 2FA code of your authenticator app; it lasts about an hour."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode is on until {time}."
+msgstr "Admin mode is on until {time}."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode needs two-factor authentication with an authenticator app. Turn it on in My Account first."
+msgstr "Admin mode needs two-factor authentication with an authenticator app. Turn it on in My Account first."
+
 #: components/app/menus/ChannelContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
 #: components/app/menus/ServerContextMenu.tsx
@@ -1902,6 +1918,10 @@ msgid "Encryption was reset"
 msgstr "Encryption was reset"
 
 #: components/app/interface/settings/user/admin/Administration.tsx
+msgid "End admin mode"
+msgstr "End admin mode"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
 msgid "End all sessions"
 msgstr "End all sessions"
 
@@ -1948,6 +1968,10 @@ msgstr "Enhanced"
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Enhanced (RNNoise)"
 msgstr "Enhanced (RNNoise)"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Enter 2FA code"
+msgstr "Enter 2FA code"
 
 #: components/modal/modals/RenameSession.tsx
 msgid "Enter a new name for this session"

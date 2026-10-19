@@ -445,6 +445,22 @@ msgstr "Добавить в папку"
 msgid "Admin"
 msgstr "Админ"
 
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode is off. Enter your 2FA code to turn it on."
+msgstr "Режим администратора выключен. Введите код 2FA, чтобы включить его."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode is off. Turn it on with the 2FA code of your authenticator app; it lasts about an hour."
+msgstr "Режим администратора выключен. Включите его кодом 2FA из приложения-аутентификатора; он действует около часа."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode is on until {time}."
+msgstr "Режим администратора включён до {time}."
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Admin mode needs two-factor authentication with an authenticator app. Turn it on in My Account first."
+msgstr "Для режима администратора нужна двухфакторная аутентификация через приложение-аутентификатор. Сначала включите её в разделе «Мой аккаунт»."
+
 #: components/app/menus/ChannelContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
 #: components/app/menus/ServerContextMenu.tsx
@@ -1854,6 +1870,10 @@ msgid "Encryption was reset"
 msgstr "Шифрование сброшено"
 
 #: components/app/interface/settings/user/admin/Administration.tsx
+msgid "End admin mode"
+msgstr "Выключить режим администратора"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
 msgid "End all sessions"
 msgstr "Завершить все сеансы"
 
@@ -1900,6 +1920,10 @@ msgstr "Улучшенный"
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Enhanced (RNNoise)"
 msgstr "Улучшенное шумоподавление (RNNoise)"
+
+#: components/app/interface/settings/user/admin/Administration.tsx
+msgid "Enter 2FA code"
+msgstr "Ввести код 2FA"
 
 #: components/modal/modals/RenameSession.tsx
 msgid "Enter a new name for this session"
