@@ -152,7 +152,12 @@ export function LoadingScreen(props: { isStoat?: boolean }) {
               symbol="wifi_off"
               label={t`This is taking longer than usual.`}
               title={t`You may be experiencing connection issues.`}
-              url={TROUBLESHOOTING_URL}
+              // dur.io: Stoat's support article only for stoat.chat itself
+              url={
+                props.isStoat || instance?.isStoat
+                  ? TROUBLESHOOTING_URL
+                  : undefined
+              }
               action={<Trans>Troubleshooting</Trans>}
             />
           )
@@ -170,7 +175,7 @@ function NoticeContent(props: {
   fill?: boolean;
   label: JSX.Element;
   title: JSX.Element;
-  url: string;
+  url?: string;
   action: JSX.Element;
 }) {
   return (
@@ -188,12 +193,16 @@ function NoticeContent(props: {
           {props.title}
         </Text>
       </Header>
-      <Button
-        variant="text"
-        onPress={() => window.open(props.url, "_blank", "noopener,noreferrer")}
-      >
-        {props.action}
-      </Button>
+      <Show when={props.url}>
+        {(url) => (
+          <Button
+            variant="text"
+            onPress={() => window.open(url(), "_blank", "noopener,noreferrer")}
+          >
+            {props.action}
+          </Button>
+        )}
+      </Show>
     </Notice>
   );
 }

@@ -31,9 +31,6 @@ import Wordmark from "../../../public/assets/web/wordmark.svg?component-solid";
 import { AppUpsell } from "./AppUpsell";
 import { BubbleMood, BubbleProvider, FlowBase, FlowBubble } from "./flows/Flow";
 
-import Bluesky from "./flows/bluesky.svg?component-solid";
-import GitHub from "./flows/github.svg?component-solid";
-
 const root = css({
   width: "100%",
   height: "100%",
@@ -134,7 +131,7 @@ const Brand = styled("div", {
 const Content = styled("section", {
   base: {
     display: "grid",
-    gridTemplateRows: "auto minmax(0, 1fr) auto",
+    gridTemplateRows: "auto minmax(0, 1fr)",
     minWidth: 0,
     minHeight: 0,
     padding: "8px clamp(12px, 2.5vw, 42px) 4px",
@@ -229,52 +226,6 @@ const FlowStack = styled("div", {
     width: "100%",
     maxWidth: "440px",
     margin: "auto 0",
-  },
-});
-
-const Footer = styled("footer", {
-  base: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    minHeight: "42px",
-    color: "var(--md-sys-color-on-surface-variant)",
-    fontSize: "0.78rem",
-
-    "& nav": {
-      display: "flex",
-      alignItems: "center",
-      gap: "18px",
-    },
-
-    "& a": {
-      color: "inherit",
-      textDecoration: "none",
-    },
-
-    "& a:hover": {
-      color: "var(--md-sys-color-primary)",
-    },
-
-    "@media (max-width: 460px)": {
-      flexDirection: "column",
-      gap: "14px",
-      paddingTop: "12px",
-    },
-  },
-});
-
-const Socials = styled("nav", {
-  base: {
-    "& a": {
-      display: "grid",
-      height: "28px",
-      placeItems: "center",
-    },
-
-    "& svg": {
-      color: "inherit",
-    },
   },
 });
 
@@ -640,36 +591,6 @@ export function AuthPage(props: { children: JSX.Element }) {
               </div>
             </FlowStack>
           </div>
-
-          <Footer>
-            <nav aria-label="Legal">
-              <a href="https://stoat.chat/terms" target="_blank">
-                <Trans>Terms</Trans>
-              </a>
-              <a href="https://stoat.chat/privacy" target="_blank">
-                <Trans>Privacy</Trans>
-              </a>
-              <a href="https://support.stoat.chat/" target="_blank">
-                <Trans>Help</Trans>
-              </a>
-            </nav>
-            <Socials aria-label="Social links">
-              <a
-                href="https://github.com/stoatchat"
-                target="_blank"
-                aria-label="GitHub"
-              >
-                <GitHub width={20} height={20} />
-              </a>
-              <a
-                href="https://bsky.app/profile/stoat.chat"
-                target="_blank"
-                aria-label="Bluesky"
-              >
-                <Bluesky width={20} height={20} />
-              </a>
-            </Socials>
-          </Footer>
         </Content>
       </Page>
     </div>

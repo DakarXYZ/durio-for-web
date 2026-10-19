@@ -35,7 +35,7 @@ export default function FlowConfirmReset() {
   return (
     <>
       <FlowTitle
-        subtitle={<Trans>Choose a new password for your Stoat account.</Trans>}
+        subtitle={<Trans>Choose a new password for your dur.io account.</Trans>}
       >
         <Trans>Reset password</Trans>
       </FlowTitle>

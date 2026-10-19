@@ -46,14 +46,6 @@ function EmailPrivacyHint() {
             you're ever locked out. We'll never sell it or send you spam.
           </Trans>
         </p>
-        <a
-          href="https://stoat.chat/privacy"
-          target="_blank"
-          rel="noopener noreferrer"
-          tabIndex={-1} // redundant for kb nav -> another link in footer
-        >
-          <Trans>Privacy policy</Trans>
-        </a>
       </div>
     </>
   );
@@ -101,7 +93,7 @@ export default function FlowCreate() {
       <FlowTitle
         subtitle={<Trans>Set up your account and make yourself at home.</Trans>}
       >
-        <Trans>Join Stoat</Trans>
+        <Trans>Join dur.io</Trans>
       </FlowTitle>
       <Form onSubmit={create} captcha={config.features.captcha.key}>
         <Fields
