@@ -3,6 +3,7 @@ import { Match, Switch } from "solid-js";
 import type { DialogProps } from "@revolt/ui";
 
 import type { E2eeModalView } from "./types";
+import { BackupOffDialog } from "./views/BackupOff";
 import { ChannelEncryptionDialog } from "./views/ChannelEncryption";
 import { DiagnosticsDialog } from "./views/Diagnostics";
 import { ExportKeysDialog, ImportKeysDialog } from "./views/KeyFiles";
@@ -52,6 +53,9 @@ export default function E2eeModal(
             rotate={v().rotate}
           />
         )}
+      </Match>
+      <Match when={view("backupOff")}>
+        <BackupOffDialog show={props.show} onClose={props.onClose} />
       </Match>
       <Match when={view("restore")}>
         <RestoreDialog show={props.show} onClose={props.onClose} />

@@ -79,6 +79,29 @@ export async function activateWithMfa(options: {
   return "done";
 }
 
+/**
+ * Turn the key backup off for the account: the server deletes a backup only with an MFA
+ * ticket, asked for up front when one exists there (or might); without one this device
+ * just stops uploading
+ * @param options What is known and how to act
+ * @returns `done`, or `cancelled` when the user closed the MFA prompt
+ * @throws whatever `turnOff` throws otherwise
+ */
+export function turnOffWithMfa(options: {
+  /** `undefined`: could not be checked */
+  existsOnServer: boolean | undefined;
+  turnOff: (ticket?: string) => Promise<void>;
+  /** Ask the user for an MFA ticket; `undefined` when they cancelled */
+  requestTicket: () => Promise<string | undefined>;
+}): Promise<"done" | "cancelled"> {
+  return activateWithMfa({
+    rotate: false,
+    existsOnServer: options.existsOnServer,
+    activate: options.turnOff,
+    requestTicket: options.requestTicket,
+  });
+}
+
 /** The first prompt of a device (AN-31, AN-32) */
 export type OnboardingPrompt = "newDevice" | "setUpRecovery";
 

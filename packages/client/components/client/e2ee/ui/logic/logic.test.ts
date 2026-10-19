@@ -11,7 +11,12 @@ import {
   passphraseStrength,
   readKeyFile,
 } from "./keyFiles";
-import { activateWithMfa, onboardingPrompt, recoveryFailure } from "./recovery";
+import {
+  activateWithMfa,
+  onboardingPrompt,
+  recoveryFailure,
+  turnOffWithMfa,
+} from "./recovery";
 import { composeReport, fingerprintGroups, reportFileName } from "./report";
 import { SAS_EMOJI_RU, sasEmojiName, sasView } from "./sas";
 
@@ -299,5 +304,51 @@ describe("store written by a newer core (CR-23)", () => {
     expect(isNewer("0.10.0", "0.9.9")).toBe(true);
     expect(isNewer("0.2.1", "0.3.0")).toBe(false);
     expect(isNewer("1.0", "0.99.0")).toBe(true);
+  });
+});
+
+describe("turning the key backup off", () => {
+  it("asks for a ticket when the server has a backup (or might)", async () => {
+    for (const existsOnServer of [true, undefined]) {
+      const turnOff = vi.fn(async (_ticket?: string) => undefined);
+      const requestTicket = vi.fn(async () => "T");
+      expect(
+        await turnOffWithMfa({ existsOnServer, turnOff, requestTicket }),
+      ).toBe("done");
+      expect(requestTicket).toHaveBeenCalledOnce();
+      expect(turnOff).toHaveBeenCalledWith("T");
+    }
+  });
+
+  it("turns off without a ticket when the server has none", async () => {
+    const turnOff = vi.fn(async (_ticket?: string) => undefined);
+    const requestTicket = vi.fn(async () => "T");
+    await turnOffWithMfa({ existsOnServer: false, turnOff, requestTicket });
+    expect(requestTicket).not.toHaveBeenCalled();
+    expect(turnOff).toHaveBeenCalledWith(undefined);
+  });
+
+  it("does nothing when the password prompt is cancelled", async () => {
+    const turnOff = vi.fn(async (_ticket?: string) => undefined);
+    expect(
+      await turnOffWithMfa({
+        existsOnServer: true,
+        turnOff,
+        requestTicket: async () => undefined,
+      }),
+    ).toBe("cancelled");
+    expect(turnOff).not.toHaveBeenCalled();
+  });
+
+  it("asks when a backup appeared meanwhile", async () => {
+    const turnOff = vi
+      .fn<(ticket?: string) => Promise<void>>()
+      .mockRejectedValueOnce(coreError("MfaRequired"))
+      .mockResolvedValueOnce(undefined);
+    const requestTicket = vi.fn(async () => "T");
+    expect(
+      await turnOffWithMfa({ existsOnServer: false, turnOff, requestTicket }),
+    ).toBe("done");
+    expect(turnOff).toHaveBeenLastCalledWith("T");
   });
 });

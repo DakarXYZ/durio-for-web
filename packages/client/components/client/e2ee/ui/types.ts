@@ -12,6 +12,8 @@ export type E2eeModalView =
   | { kind: "verifyDevice"; userId: string; deviceId: string }
   /** New recovery key, or a new backup under the same key */
   | { kind: "recovery"; rotate?: boolean }
+  /** Delete the server's backup and stop backing up */
+  | { kind: "backupOff" }
   /** Restore history with the recovery key */
   | { kind: "restore" }
   | { kind: "exportKeys" }

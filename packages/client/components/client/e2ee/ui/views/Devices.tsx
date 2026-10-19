@@ -146,7 +146,13 @@ export default function E2eeSettings() {
   }
 
   const open = (
-    kind: "recovery" | "restore" | "exportKeys" | "importKeys" | "diagnostics",
+    kind:
+      | "recovery"
+      | "backupOff"
+      | "restore"
+      | "exportKeys"
+      | "importKeys"
+      | "diagnostics",
     rotate?: boolean,
   ) => {
     openModal({
@@ -423,6 +429,13 @@ export default function E2eeSettings() {
                 onPress={() => open("recovery", true)}
               >
                 <Trans>Replace the backup (keeps the recovery key)</Trans>
+              </Button>
+              <Button
+                size="sm"
+                variant="text"
+                onPress={() => open("backupOff")}
+              >
+                <Trans>Turn off backup</Trans>
               </Button>
             </Show>
           </Buttons>
