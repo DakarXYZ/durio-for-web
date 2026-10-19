@@ -130,7 +130,8 @@ Dialog.Scrim = (
 
   return (
     <Scrim {...remote} class="dialog_scrim">
-      <ScrimSurface {...local} />
+      {/* hidden (closing, or kept mounted): let clicks through to the page */}
+      <ScrimSurface {...local} show={remote.show !== false} />
     </Scrim>
   );
 };
@@ -184,6 +185,11 @@ const ScrimSurface = styled("div", {
     pointerEvents: "all",
   },
   variants: {
+    show: {
+      false: {
+        pointerEvents: "none",
+      },
+    },
     padding: {
       true: {
         padding: "80px",
@@ -197,6 +203,7 @@ const ScrimSurface = styled("div", {
     },
   },
   defaultVariants: {
+    show: true,
     padding: true,
     overflow: true,
   },
