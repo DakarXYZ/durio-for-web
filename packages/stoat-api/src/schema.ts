@@ -562,6 +562,16 @@ export interface paths {
     /** End one session of a user (dur.io fork, instance admins only). Like a logout: the session's E2EE device is removed and its sockets are closed. */
     delete: operations["session_revoke_revoke_session"];
   };
+  "/admin/invites": {
+    /** Invites made in the app that still work, newest first (dur.io fork, instance admins only). */
+    get: operations["invites_fetch_invites"];
+    /** Make an invite for registration (dur.io fork, instance admins only): it works for `ttl_hours` (1, 4, 12 or 24) and either once or, with `multi_use`, for any number of accounts until it expires. */
+    post: operations["invites_create_invite"];
+  };
+  "/admin/invites/{code}": {
+    /** Delete an invite so nobody can register with it (dur.io fork, instance admins only). Accounts already created with it stay. */
+    delete: operations["invites_revoke_invite"];
+  };
   "/webhooks/{webhook_id}/{token}/{message_id}": {
     /** Deletes a message sent by a webhook */
     delete: operations["webhook_delete_message_webhook_delete_message"];
@@ -3734,6 +3744,40 @@ export interface components {
       /** @description Whether the user is a bot (bots have no sessions) */
       bot?: boolean;
     };
+    /**
+     * Account Invite Made by an Admin
+     * @description Share it as the link `https://<domain>/invite/<code>`.
+     */
+    AdminInvite: {
+      /** @description Invite code */
+      _id: string;
+      /** @description When the invite stops working */
+      expires_at: components["schemas"]["ISO8601 Timestamp"];
+      /** @description Whether the invite works for any number of accounts until it expires */
+      multi_use: boolean;
+      /**
+       * Format: int64
+       * @description Number of accounts created with the invite
+       */
+      uses: number;
+      /** @description Id of the admin who made the invite */
+      created_by: string;
+      /** @description When the invite was made */
+      created_at: components["schemas"]["ISO8601 Timestamp"];
+    };
+    /** Account Invite Data */
+    DataCreateAdminInvite: {
+      /**
+       * Format: uint32
+       * @description How long the invite works: 1, 4, 12 or 24 hours
+       */
+      ttl_hours: number;
+      /**
+       * @description Whether the invite works for any number of accounts until it expires, otherwise it works once
+       * @default false
+       */
+      multi_use?: boolean;
+    };
     /** @description New webhook information */
     DataEditWebhook: {
       /** @description Webhook name */
@@ -5399,17 +5443,12 @@ export interface operations {
       };
     };
   };
-  /** Fetch all server invites. */
+  /** Invites made in the app that still work, newest first (dur.io fork, instance admins only). */
   invites_fetch_invites: {
-    parameters: {
-      path: {
-        target: components["schemas"]["Id"];
-      };
-    };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Invite"][];
+          "application/json": components["schemas"]["AdminInvite"][];
         };
       };
       /** An error occurred. */
@@ -7124,6 +7163,45 @@ export interface operations {
       path: {
         target: components["schemas"]["Id"];
         session: string;
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Make an invite for registration (dur.io fork, instance admins only): it works for `ttl_hours` (1, 4, 12 or 24) and either once or, with `multi_use`, for any number of accounts until it expires. */
+  invites_create_invite: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["AdminInvite"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataCreateAdminInvite"];
+      };
+    };
+  };
+  /** Delete an invite so nobody can register with it (dur.io fork, instance admins only). Accounts already created with it stay. */
+  invites_revoke_invite: {
+    parameters: {
+      path: {
+        code: string;
       };
     };
     responses: {

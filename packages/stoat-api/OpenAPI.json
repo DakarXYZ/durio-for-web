@@ -7628,6 +7628,140 @@
         ]
       }
     },
+    "/admin/invites": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Fetch Account Invites",
+        "description": "Invites made in the app that still work, newest first (dur.io fork, instance admins only).",
+        "operationId": "invites_fetch_invites",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminInvite"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Create Account Invite",
+        "description": "Make an invite for registration (dur.io fork, instance admins only): it works for `ttl_hours` (1, 4, 12 or 24) and either once or, with `multi_use`, for any number of accounts until it expires.",
+        "operationId": "invites_create_invite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataCreateAdminInvite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminInvite"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/admin/invites/{code}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Revoke Account Invite",
+        "description": "Delete an invite so nobody can register with it (dur.io fork, instance admins only). Accounts already created with it stay.",
+        "operationId": "invites_revoke_invite",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/webhooks/{webhook_id}/{token}/{message_id}": {
       "delete": {
         "tags": [
@@ -17311,6 +17445,74 @@
           },
           "bot": {
             "description": "Whether the user is a bot (bots have no sessions)",
+            "type": "boolean"
+          }
+        }
+      },
+      "AdminInvite": {
+        "title": "Account Invite Made by an Admin",
+        "description": "Share it as the link `https://<domain>/invite/<code>`.",
+        "type": "object",
+        "required": [
+          "_id",
+          "created_at",
+          "created_by",
+          "expires_at",
+          "multi_use",
+          "uses"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Invite code",
+            "type": "string"
+          },
+          "expires_at": {
+            "description": "When the invite stops working",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ]
+          },
+          "multi_use": {
+            "description": "Whether the invite works for any number of accounts until it expires",
+            "type": "boolean"
+          },
+          "uses": {
+            "description": "Number of accounts created with the invite",
+            "type": "integer",
+            "format": "int64"
+          },
+          "created_by": {
+            "description": "Id of the admin who made the invite",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "When the invite was made",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ]
+          }
+        }
+      },
+      "DataCreateAdminInvite": {
+        "title": "Account Invite Data",
+        "type": "object",
+        "required": [
+          "ttl_hours"
+        ],
+        "properties": {
+          "ttl_hours": {
+            "description": "How long the invite works: 1, 4, 12 or 24 hours",
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0
+          },
+          "multi_use": {
+            "description": "Whether the invite works for any number of accounts until it expires, otherwise it works once",
+            "default": false,
             "type": "boolean"
           }
         }

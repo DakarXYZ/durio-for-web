@@ -250,6 +250,10 @@ export type APIRoutes =
 | { method: 'delete', path: '-/admin/users/{target}/sessions', parts: 4, params: undefined, response: undefined }
 | { method: 'delete', path: `/admin/users/${string}/sessions/${string}`, parts: 5, params: undefined, response: undefined }
 | { method: 'delete', path: '-/admin/users/{target}/sessions/{session}', parts: 5, params: undefined, response: undefined }
+| { method: 'get', path: `/admin/invites`, parts: 2, params: undefined, response: paths['/admin/invites']['get']['responses']['200']['content']['application/json'] }
+| { method: 'post', path: `/admin/invites`, parts: 2, params: paths['/admin/invites']['post']['requestBody']['content']['application/json'], response: paths['/admin/invites']['post']['responses']['200']['content']['application/json'] }
+| { method: 'delete', path: `/admin/invites/${string}`, parts: 3, params: undefined, response: undefined }
+| { method: 'delete', path: '-/admin/invites/{code}', parts: 3, params: undefined, response: undefined }
 | { method: 'delete', path: `/webhooks/${string}/${string}/${string}`, parts: 4, params: undefined, response: undefined }
 | { method: 'delete', path: '-/webhooks/{webhook_id}/{token}/{message_id}', parts: 4, params: undefined, response: undefined }
 | { method: 'patch', path: `/webhooks/${string}/${string}/${string}`, parts: 4, params: paths['/webhooks/{webhook_id}/{token}/{message_id}']['patch']['requestBody']['content']['application/json'], response: paths['/webhooks/{webhook_id}/{token}/{message_id}']['patch']['responses']['200']['content']['application/json'] }
