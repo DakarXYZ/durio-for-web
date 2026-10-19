@@ -39,6 +39,10 @@ import { VoiceCallCardContext } from "@revolt/ui/components/features/voice/callC
 import { Device, useDevice } from "@revolt/common";
 import { InRoom } from "./components/InRoom";
 import { RoomAudioManager } from "./components/RoomAudioManager";
+import {
+  pickScreenShareQuality,
+  SCREEN_SHARE_1080P60,
+} from "./screenShareQuality";
 import { VoiceProcessor } from "./VoiceProcessor";
 
 type State =
@@ -453,6 +457,14 @@ class Voice {
         contentHint: "motion",
         encoding: ScreenSharePresets.h1080fps30.encoding,
       };
+      // dur.io: same limit as 1080p 30 fps; motion keeps the frame rate on a slow link
+      qualities.high60 = {
+        name: "high60",
+        resolution: SCREEN_SHARE_1080P60.resolution,
+        fullName: `1080p 60FPS`,
+        contentHint: "motion",
+        encoding: SCREEN_SHARE_1080P60.encoding,
+      };
       const originalResolution = ScreenSharePresets.original.resolution;
       originalResolution.frameRate = 5;
       originalResolution.aspectRatio = 0;
@@ -520,10 +532,11 @@ class Voice {
       }
 
       try {
-        const chosenQuality =
-          this.getEnabledScreenShareQualities()[
-            this.#settings.screenShareQuality || "low"
-          ];
+        // dur.io: a saved quality above the server's limit falls back to one it allows
+        const chosenQuality = pickScreenShareQuality(
+          this.getEnabledScreenShareQualities(),
+          this.#settings.screenShareQuality,
+        );
         const localTrack = await room.localParticipant.setScreenShareEnabled(
           true,
           {
@@ -563,7 +576,7 @@ class Voice {
             qualityName: ScreenShareQualityName,
             audio: boolean,
           ) => {
-            const quality = qualities[qualityName] || qualities.low!;
+            const quality = pickScreenShareQuality(qualities, qualityName);
 
             if (localTrack.videoTrack) {
               await localTrack.videoTrack.applyScreenShareConstraints(
