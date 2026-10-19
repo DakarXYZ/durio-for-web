@@ -7,4 +7,4 @@
 	update = none
 [submodule "packages/solid-livekit-components"]
 	path = packages/solid-livekit-components
-	url = https://github.com/DakarXYZ/durio-solid-livekit-components.git
+	url = https://github.com/DakarXYZ/durio-javascript-solid-livekit-components.git
