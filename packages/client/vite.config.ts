@@ -12,6 +12,7 @@ import solidSvg from "vite-plugin-solid-svg";
 
 import codegenPlugin from "./codegen.plugin";
 import { durioDesktop, withoutDesktop } from "./desktop/plugin";
+import { packageEmoji } from "./emoji.plugin";
 import { addFontPreload } from "./fontpreload.plugin";
 
 const base = process.env.BASE_PATH ?? "/";
@@ -36,6 +37,8 @@ export default defineConfig({
       defaultAsComponent: false,
     }),
     addFontPreload(),
+    // dur.io: emoji images packaged, not from static.stoat.chat (Q63)
+    packageEmoji(),
     legacy({
       // Chrome, Edge and Firefox are set by Uint8Array.prototype.toBase64.
       // Safari stays at 17 on purpose: iPad 6 and similar devices can't update past iPadOS 17

@@ -120,3 +120,15 @@ export function toCodepoint(input: string) {
 
   return "";
 }
+
+/**
+ * File name of an emoji in the Twemoji set: code points joined by "-", U+FE0F dropped
+ * unless the sequence has a ZWJ (Twemoji's own rule); pack markers and ZWNJ ignored
+ * @param text Emoji
+ */
+export function twemojiName(text: string) {
+  const emoji = text.replace(/[\u200C\uE0E0-\uE0E6]/g, "");
+  return toCodepoint(
+    emoji.includes("\u200D") ? emoji : emoji.replace(/\uFE0F/g, ""),
+  );
+}

@@ -6,6 +6,7 @@ import { styled } from "styled-system/jsx";
 
 import { useUser } from "@revolt/client";
 import {
+  EMOJI_PACK_CHOICE,
   UNICODE_EMOJI_PACKS,
   UnicodeEmoji,
   UnicodeEmojiPacks,
@@ -411,20 +412,23 @@ export function AppearanceMenu() {
           <Trans>Show send message button</Trans>
         </Checkbox>
 
-        <FloatingSelect
-          label={t`Emoji Pack (affects your messages only)`}
-          value={state.settings.getValue("appearance:unicode_emoji")}
-          onChange={(e) =>
-            state.settings.setValue(
-              "appearance:unicode_emoji",
-              e.currentTarget.value as never,
-            )
-          }
-        >
-          <For each={UNICODE_EMOJI_PACKS}>
-            {(pack) => <EmojiPack pack={pack} />}
-          </For>
-        </FloatingSelect>
+        {/* dur.io (Q63): one packaged emoji set */}
+        <Show when={EMOJI_PACK_CHOICE}>
+          <FloatingSelect
+            label={t`Emoji Pack (affects your messages only)`}
+            value={state.settings.getValue("appearance:unicode_emoji")}
+            onChange={(e) =>
+              state.settings.setValue(
+                "appearance:unicode_emoji",
+                e.currentTarget.value as never,
+              )
+            }
+          >
+            <For each={UNICODE_EMOJI_PACKS}>
+              {(pack) => <EmojiPack pack={pack} />}
+            </For>
+          </FloatingSelect>
+        </Show>
       </Column>
     </Column>
   );

@@ -428,6 +428,9 @@ importers:
       '@solid-devtools/transform':
         specifier: ^0.10.4
         version: 0.10.4(solid-js@1.9.14)(vite@6.4.3(@types/node@24.7.1)(jiti@2.7.0)(lightningcss@1.31.1)(terser@5.49.2)(yaml@2.7.1))
+      '@twemoji/svg':
+        specifier: 15.0.0
+        version: 15.0.0
       '@types/hast':
         specifier: ^3.0.4
         version: 3.0.4
@@ -3182,6 +3185,9 @@ packages:
 
   '@ts-morph/common@0.29.0':
     resolution: {integrity: sha512-35oUmphHbJvQ/+UTwFNme/t2p3FoKiGJ5auTjjpNTop2dyREspirjMy82PLSC1pnDJ8ah1GU98hwpVt64YXQsg==}
+
+  '@twemoji/svg@15.0.0':
+    resolution: {integrity: sha512-ZSPef2B6nBaYnfgdTbAy4jgW95o7pi2xPGwGCU+WMTxo7J6B1lMPTWwSq/wTuiMq+N0khQ90CcvYp1wFoQpo/w==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -10030,6 +10036,8 @@ snapshots:
       minimatch: 10.0.1
       path-browserify: 1.0.1
       tinyglobby: 0.2.15
+
+  '@twemoji/svg@15.0.0': {}
 
   '@types/babel__core@7.20.5':
     dependencies:
