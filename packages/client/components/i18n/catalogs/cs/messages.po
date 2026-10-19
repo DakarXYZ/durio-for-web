@@ -1572,12 +1572,12 @@ msgid "Don't show this again"
 msgstr "Již mi tohle neukazujte"
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Donate"
-msgstr "Přispějte nám"
+#~ msgid "Donate"
+#~ msgstr "Přispějte nám"
 
 #: src/interface/Home.tsx
-msgid "Donate to Stoat"
-msgstr "Přispívat Stoatu"
+#~ msgid "Donate to Stoat"
+#~ msgstr "Přispívat Stoatu"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Donated to Stoat"
@@ -1893,7 +1893,6 @@ msgstr "Nepodařilo se ověřit!"
 msgid "Fair. A longer passphrase is safer."
 msgstr ""
 
-#: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
 msgstr "Zpětná vazba"
@@ -2010,8 +2009,12 @@ msgid "GIFs are now powered by Gifbox"
 msgstr "GIFy jsou teď poháněny od Gifboxu"
 
 #: src/interface/Home.tsx
-msgid "Give feedback on Stoat"
-msgstr "Dejte zpětnou vazbu na Stoat"
+msgid "Give feedback on dur.io"
+msgstr ""
+
+#: src/interface/Home.tsx
+#~ msgid "Give feedback on Stoat"
+#~ msgstr "Dejte zpětnou vazbu na Stoat"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -3878,8 +3881,8 @@ msgid "Submit feature suggestion"
 msgstr "Poslat návrh na funkci"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Submit feedback"
-msgstr "Poslat zpětnou vazbu"
+#~ msgid "Submit feedback"
+#~ msgstr "Poslat zpětnou vazbu"
 
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Submit to Discover"
@@ -3890,12 +3893,16 @@ msgid "Subscriptions"
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Suggest new Stoat features on GitHub discussions."
+msgid "Suggest new dur.io features on GitHub."
 msgstr ""
 
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Suggest new Stoat features on GitHub discussions."
+#~ msgstr ""
+
 #: src/interface/Home.tsx
-msgid "Support the project by donating - thank you!"
-msgstr "Podpořte projekt finančním darem - děkujeme!"
+#~ msgid "Support the project by donating - thank you!"
+#~ msgstr "Podpořte projekt finančním darem - děkujeme!"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"

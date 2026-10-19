@@ -26,6 +26,9 @@ const CHANGELOG_ENDPOINT = import.meta.env.VITE_CHANGELOG_URL as
   | string
   | undefined;
 
+/** Whether this build has a changelog ("What's New") at all */
+export const CHANGELOG_ENABLED = !!CHANGELOG_ENDPOINT;
+
 export async function fetchLatestChangelog(): Promise<ChangelogResponse | null> {
   if (!CHANGELOG_ENDPOINT) return null;
 

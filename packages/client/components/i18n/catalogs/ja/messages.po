@@ -1568,12 +1568,12 @@ msgid "Don't show this again"
 msgstr "今後表示しない"
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Donate"
-msgstr "寄付"
+#~ msgid "Donate"
+#~ msgstr "寄付"
 
 #: src/interface/Home.tsx
-msgid "Donate to Stoat"
-msgstr "Stoatに寄付"
+#~ msgid "Donate to Stoat"
+#~ msgstr "Stoatに寄付"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Donated to Stoat"
@@ -1889,7 +1889,6 @@ msgstr "認証に失敗しました!"
 msgid "Fair. A longer passphrase is safer."
 msgstr ""
 
-#: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
 msgstr "フィードバック"
@@ -2005,8 +2004,12 @@ msgid "GIFs are now powered by Gifbox"
 msgstr "GIFがGifboxでの提供になりました"
 
 #: src/interface/Home.tsx
-msgid "Give feedback on Stoat"
-msgstr "Stoatにフィードバックを送信"
+msgid "Give feedback on dur.io"
+msgstr ""
+
+#: src/interface/Home.tsx
+#~ msgid "Give feedback on Stoat"
+#~ msgstr "Stoatにフィードバックを送信"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -3865,8 +3868,8 @@ msgid "Submit feature suggestion"
 msgstr "機能を提案する"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Submit feedback"
-msgstr "フィードバックを送信する"
+#~ msgid "Submit feedback"
+#~ msgstr "フィードバックを送信する"
 
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Submit to Discover"
@@ -3877,12 +3880,16 @@ msgid "Subscriptions"
 msgstr "サブスクリプション"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Suggest new Stoat features on GitHub discussions."
-msgstr "GitHub Discussionsで、Stoatの新機能を提案しましょう。"
+msgid "Suggest new dur.io features on GitHub."
+msgstr ""
+
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Suggest new Stoat features on GitHub discussions."
+#~ msgstr "GitHub Discussionsで、Stoatの新機能を提案しましょう。"
 
 #: src/interface/Home.tsx
-msgid "Support the project by donating - thank you!"
-msgstr "寄付でプロジェクトを支援する - ありがとうございます!"
+#~ msgid "Support the project by donating - thank you!"
+#~ msgstr "寄付でプロジェクトを支援する - ありがとうございます!"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"

@@ -1635,12 +1635,12 @@ msgid "Don't show this again"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Donate"
-msgstr ""
+#~ msgid "Donate"
+#~ msgstr ""
 
 #: src/interface/Home.tsx
-msgid "Donate to Stoat"
-msgstr ""
+#~ msgid "Donate to Stoat"
+#~ msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Donated to Stoat"
@@ -1956,7 +1956,6 @@ msgstr "验证失败！"
 msgid "Fair. A longer passphrase is safer."
 msgstr ""
 
-#: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
 msgstr "反馈"
@@ -2072,8 +2071,12 @@ msgid "GIFs are now powered by Gifbox"
 msgstr ""
 
 #: src/interface/Home.tsx
-msgid "Give feedback on Stoat"
+msgid "Give feedback on dur.io"
 msgstr ""
+
+#: src/interface/Home.tsx
+#~ msgid "Give feedback on Stoat"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -3953,8 +3956,8 @@ msgid "Submit feature suggestion"
 msgstr "提交功能建议"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Submit feedback"
-msgstr "提交反馈"
+#~ msgid "Submit feedback"
+#~ msgstr "提交反馈"
 
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Submit to Discover"
@@ -3965,12 +3968,16 @@ msgid "Subscriptions"
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Suggest new Stoat features on GitHub discussions."
+msgid "Suggest new dur.io features on GitHub."
 msgstr ""
 
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Suggest new Stoat features on GitHub discussions."
+#~ msgstr ""
+
 #: src/interface/Home.tsx
-msgid "Support the project by donating - thank you!"
-msgstr "捐赠以支持此项目——谢谢！"
+#~ msgid "Support the project by donating - thank you!"
+#~ msgstr "捐赠以支持此项目——谢谢！"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"

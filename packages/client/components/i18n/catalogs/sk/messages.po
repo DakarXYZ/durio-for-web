@@ -1672,12 +1672,12 @@ msgid "Don't show this again"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Donate"
-msgstr "Prispieť"
+#~ msgid "Donate"
+#~ msgstr "Prispieť"
 
 #: src/interface/Home.tsx
-msgid "Donate to Stoat"
-msgstr "Prispieť pre Stoat"
+#~ msgid "Donate to Stoat"
+#~ msgstr "Prispieť pre Stoat"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Donated to Stoat"
@@ -1993,7 +1993,6 @@ msgstr "Chyba overenia!"
 msgid "Fair. A longer passphrase is safer."
 msgstr ""
 
-#: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
 msgstr "Spätná väzba"
@@ -2110,8 +2109,12 @@ msgid "GIFs are now powered by Gifbox"
 msgstr ""
 
 #: src/interface/Home.tsx
-msgid "Give feedback on Stoat"
-msgstr "Ohodnoťte Stoat-a"
+msgid "Give feedback on dur.io"
+msgstr ""
+
+#: src/interface/Home.tsx
+#~ msgid "Give feedback on Stoat"
+#~ msgstr "Ohodnoťte Stoat-a"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -4001,8 +4004,8 @@ msgid "Submit feature suggestion"
 msgstr "Odošlite návrh Funkcie"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Submit feedback"
-msgstr "Odoslať spätnú väzbu"
+#~ msgid "Submit feedback"
+#~ msgstr "Odoslať spätnú väzbu"
 
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Submit to Discover"
@@ -4013,12 +4016,16 @@ msgid "Subscriptions"
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Suggest new Stoat features on GitHub discussions."
+msgid "Suggest new dur.io features on GitHub."
 msgstr ""
 
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Suggest new Stoat features on GitHub discussions."
+#~ msgstr ""
+
 #: src/interface/Home.tsx
-msgid "Support the project by donating - thank you!"
-msgstr "Podporte projekt príspevkom - ďakujeme!"
+#~ msgid "Support the project by donating - thank you!"
+#~ msgstr "Podporte projekt príspevkom - ďakujeme!"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"

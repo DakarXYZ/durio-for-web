@@ -7,13 +7,15 @@ import { styled } from "styled-system/jsx";
 
 import MdGroups3 from "@material-design-icons/svg/filled/groups_3.svg?component-solid";
 import MdBugReport from "@material-design-icons/svg/outlined/bug_report.svg?component-solid";
-import MdFormatListNumbered from "@material-design-icons/svg/outlined/format_list_numbered.svg?component-solid";
 import MdStar from "@material-design-icons/svg/outlined/star_outline.svg?component-solid";
 
 import { useClient } from "@revolt/client";
 import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { CategoryButton, Column, iconSize } from "@revolt/ui";
+
+/** dur.io: where feedback and bug reports go */
+const FEEDBACK_REPOSITORY = "https://github.com/DakarXYZ/durio-for-desktop";
 
 /**
  * Feedback
@@ -44,38 +46,18 @@ export function Feedback() {
             <Trans>Roadmap</Trans>
           </CategoryButton>
         </Link> */}
-        <Link
-          href="https://github.com/orgs/stoatchat/discussions/categories/feature-suggestions"
-          target="_blank"
-        >
+        {/* dur.io: our issue tracker, not Stoat's discussions */}
+        <Link href={`${FEEDBACK_REPOSITORY}/issues/new`} target="_blank">
           <CategoryButton
             action="external"
             icon={<MdStar {...iconSize(22)} />}
             ignoreClick
-            description={
-              <Trans>Suggest new Stoat features on GitHub discussions.</Trans>
-            }
+            description={<Trans>Suggest new dur.io features on GitHub.</Trans>}
           >
             <Trans>Submit feature suggestion</Trans>
           </CategoryButton>
         </Link>
-        <Link
-          href="https://github.com/orgs/stoatchat/discussions/categories/feedback"
-          target="_blank"
-        >
-          <CategoryButton
-            action="external"
-            icon={<MdFormatListNumbered {...iconSize(22)} />}
-            ignoreClick
-            description={<Trans>Submit feedback</Trans>}
-          >
-            <Trans>Feedback</Trans>
-          </CategoryButton>
-        </Link>
-        <Link
-          href="https://github.com/stoatchat/for-web/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug"
-          target="_blank"
-        >
+        <Link href={`${FEEDBACK_REPOSITORY}/issues`} target="_blank">
           <CategoryButton
             action="external"
             icon={<MdBugReport {...iconSize(22)} />}

@@ -1638,12 +1638,12 @@ msgid "Don't show this again"
 msgstr "Більше не показувати"
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Donate"
-msgstr "Задонатити"
+#~ msgid "Donate"
+#~ msgstr "Задонатити"
 
 #: src/interface/Home.tsx
-msgid "Donate to Stoat"
-msgstr "Пожертвувати Stoat"
+#~ msgid "Donate to Stoat"
+#~ msgstr "Пожертвувати Stoat"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Donated to Stoat"
@@ -1959,7 +1959,6 @@ msgstr "Не вдалося перевірити!"
 msgid "Fair. A longer passphrase is safer."
 msgstr ""
 
-#: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
 msgstr "Зворотній зв'язок"
@@ -2075,8 +2074,12 @@ msgid "GIFs are now powered by Gifbox"
 msgstr "Гіфки тепер забезпечуються завдяки Gifbox"
 
 #: src/interface/Home.tsx
-msgid "Give feedback on Stoat"
-msgstr "Надіслати відгук про Stoat"
+msgid "Give feedback on dur.io"
+msgstr ""
+
+#: src/interface/Home.tsx
+#~ msgid "Give feedback on Stoat"
+#~ msgstr "Надіслати відгук про Stoat"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -3956,8 +3959,8 @@ msgid "Submit feature suggestion"
 msgstr "Надіслати запропоновані функції"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Submit feedback"
-msgstr "Надіслати відгук"
+#~ msgid "Submit feedback"
+#~ msgstr "Надіслати відгук"
 
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Submit to Discover"
@@ -3968,12 +3971,16 @@ msgid "Subscriptions"
 msgstr "Підписки"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Suggest new Stoat features on GitHub discussions."
-msgstr "Запропонувати нові фічі для Stoat можна на GitHub."
+msgid "Suggest new dur.io features on GitHub."
+msgstr ""
+
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Suggest new Stoat features on GitHub discussions."
+#~ msgstr "Запропонувати нові фічі для Stoat можна на GitHub."
 
 #: src/interface/Home.tsx
-msgid "Support the project by donating - thank you!"
-msgstr "Підтримайте проєкт пожертвуванням - дякуємо!"
+#~ msgid "Support the project by donating - thank you!"
+#~ msgstr "Підтримайте проєкт пожертвуванням - дякуємо!"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"
