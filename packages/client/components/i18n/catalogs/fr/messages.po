@@ -1239,8 +1239,8 @@ msgid "Could not find what you requested."
 msgstr "Impossible de trouver ce que vous avez demandé."
 
 #: components/instance/index.tsx
-msgid "Couldn't fetch Stoat configuration from {hStr}."
-msgstr "Impossible de récupérer la configuration de Stoat depuis {hStr}."
+msgid "Couldn't fetch dur.io configuration from {hStr}."
+msgstr "Impossible de récupérer la configuration de dur.io depuis {hStr}."
 
 #: components/ui/components/design/ImageCropper.tsx
 msgid "Couldn't load this image."
@@ -1714,6 +1714,18 @@ msgstr "Télécharger pour ordinateur"
 msgid "Drugs or illegal goods"
 msgstr "Drogues ou marchandises illégales"
 
+#: components/app/interface/settings/user/Native.tsx
+msgid "dur.io for Desktop"
+msgstr "dur.io pour ordinateur de bureau"
+
+#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
+msgid "dur.io rocks!"
+msgstr "dur.io, c'est génial !"
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "dur.io will start in the system tray."
+msgstr "dur.io démarrera dans la barre de tâches."
+
 #: components/modal/modals/TimeoutMember.tsx
 msgid "Duration"
 msgstr "Durée"
@@ -2014,8 +2026,8 @@ msgid "Extreme violence, gore or animal cruelty"
 msgstr "Violence extrême, scènes sanglantes (gore) ou cruauté envers les animaux"
 
 #: components/client/NotificationsController.ts
-msgid "Failed to enable notifications. Stoat does not have notification permission."
-msgstr "Échec de l'activation des notifications. Stoat ne dispose pas de l'autorisation pour les notifications."
+msgid "Failed to enable notifications. dur.io does not have notification permission."
+msgstr "Échec de l'activation des notifications. dur.io ne dispose pas de l'autorisation pour les notifications."
 
 #: components/client/NotificationsController.ts
 msgid "Failed to enable push notifications. Please try again later."
@@ -2152,8 +2164,8 @@ msgid "Get the desktop app for Windows, macOS and Linux and keep your conversati
 msgstr "Téléchargez l'application de bureau pour Windows, macOS et Linux et accédez à vos conversations en un seul clic."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
-msgid "Gifbox is our own GIF service, so you can keep sharing GIFs right here on Stoat."
-msgstr "Gifbox est notre propre service de GIFs, vous pouvez donc continuer à partager des GIFs directement ici, sur Stoat."
+msgid "Gifbox is our own GIF service, so you can keep sharing GIFs right here on dur.io."
+msgstr "Gifbox est notre propre service de GIFs, vous pouvez donc continuer à partager des GIFs directement ici, sur dur.io."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "GIFs are now powered by Gifbox"
@@ -2330,8 +2342,8 @@ msgid "Input Volume"
 msgstr "Volume d'entré"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Instead of closing, Stoat will hide in your tray."
-msgstr "Au lieu de se fermer, Stoat se minimisera dans votre barre de tâches."
+msgid "Instead of closing, dur.io will hide in your tray."
+msgstr "Au lieu de se fermer, dur.io se minimisera dans votre barre de tâches."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Interface Font"
@@ -2490,8 +2502,8 @@ msgid "Latest"
 msgstr "Récents"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Launch Stoat when you log into your computer."
-msgstr "Démarrer Stoat lorsque vous démarrez votre ordinateur."
+msgid "Launch dur.io when you log into your computer."
+msgstr "Démarrer dur.io lorsque vous démarrez votre ordinateur."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Learn more"
@@ -2522,8 +2534,8 @@ msgid "Leave server"
 msgstr "Quitter le serveur"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Let Stoat use its own custom titlebar."
-msgstr "Permettre à Stoat d'utiliser sa propre barre de titre personnalisée."
+msgid "Let dur.io use its own custom titlebar."
+msgstr "Permettre à dur.io d'utiliser sa propre barre de titre personnalisée."
 
 #: src/interface/Home.tsx
 msgid "Let us know how we can improve our app by giving us feedback."
@@ -2924,13 +2936,13 @@ msgstr "Nouveau Mot de Passe"
 msgid "New recovery key"
 msgstr ""
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "New to dur.io"
+msgstr "Nouveau sur dur.io"
+
 #: components/auth/src/AuthPage.tsx
 msgid "New to dur.io?"
 msgstr ""
-
-#: components/app/interface/channels/text/Message.tsx
-msgid "New to Stoat"
-msgstr "Nouveau sur Stoat"
 
 #: components/auth/src/AuthPage.tsx
 #~ msgid "New to Stoat?"
@@ -3457,8 +3469,8 @@ msgid "Rename Session"
 msgstr "Renommer la session"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Rep Stoat using Discord rich presence."
-msgstr "Rep Stoat utilisant Discord Rich Presence."
+msgid "Rep dur.io using Discord rich presence."
+msgstr "Rep dur.io utilisant Discord Rich Presence."
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "Repeat the passphrase"
@@ -4037,24 +4049,12 @@ msgstr "Statut"
 msgid "Stoat Developer"
 msgstr "Développeur Stoat"
 
-#: components/app/interface/settings/user/Native.tsx
-msgid "Stoat for Desktop"
-msgstr "Stoat pour ordinateur de bureau"
-
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Stoat Founder"
 msgstr "Fondateur de Stoat"
 
 #~ msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 #~ msgstr "Stoat est l'un des meilleurs moyens de rester en contact avec vos amis et votre communauté, partout et à tout moment."
-
-#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
-msgid "Stoat rocks!"
-msgstr "Stoat, c'est génial !"
-
-#: components/app/interface/settings/user/Native.tsx
-msgid "Stoat will start in the system tray."
-msgstr "Stoat démarrera dans la barre de tâches."
 
 #: src/AndroidNag.tsx
 msgid "Stoat works best as an app"
@@ -4642,8 +4642,8 @@ msgstr "Débloquer l'utilisateur"
 
 #. placeholder {0}: err.type
 #: components/i18n/errors.tsx
-msgid "Uncaught Stoat error: {0}"
-msgstr "Erreur non interceptée Stoat : {0}"
+msgid "Uncaught dur.io error: {0}"
+msgstr "Erreur non interceptée dur.io : {0}"
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
@@ -5192,8 +5192,8 @@ msgid "You've been logged out"
 msgstr "Vous avez été déconnecté(e)"
 
 #: components/modal/modals/SignedOut.tsx
-msgid "You've been signed out of Stoat!"
-msgstr "Vous avez été déconnecté de Stoat !"
+msgid "You've been signed out of dur.io!"
+msgstr "Vous avez été déconnecté de dur.io !"
 
 #: components/i18n/errors.tsx
 msgid "You've reached your personal bot limit."

@@ -26,7 +26,7 @@ export function useNotifications() {
     settings.resetNotificationsState("denied");
     if (showModal) {
       showError(
-        t`Failed to enable notifications. Stoat does not have notification permission.`,
+        t`Failed to enable notifications. dur.io does not have notification permission.`,
       );
     }
     await killServiceWorkerSubscription(getClient());

@@ -56,7 +56,7 @@ function HostContext(props: { host: string; children?: JSXElement }) {
   function onError(e: unknown) {
     if ((e as Error).message === "Failed to fetch") {
       const hStr = `'${host || DefaultHost}'`;
-      e = t`Couldn't fetch Stoat configuration from ${hStr}.`;
+      e = t`Couldn't fetch dur.io configuration from ${hStr}.`;
     }
     snackbar.showError(e);
     if (appLoadedOnce) nav(-1);

@@ -1188,7 +1188,7 @@ msgid "Could not find what you requested."
 msgstr "指定されたリクエスト先が見つかりませんでした。"
 
 #: components/instance/index.tsx
-msgid "Couldn't fetch Stoat configuration from {hStr}."
+msgid "Couldn't fetch dur.io configuration from {hStr}."
 msgstr ""
 
 #: components/ui/components/design/ImageCropper.tsx
@@ -1663,6 +1663,18 @@ msgstr "デスクトップ版をダウンロード"
 msgid "Drugs or illegal goods"
 msgstr "薬物または違法物品"
 
+#: components/app/interface/settings/user/Native.tsx
+msgid "dur.io for Desktop"
+msgstr "デスクトップ版dur.io"
+
+#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
+msgid "dur.io rocks!"
+msgstr "dur.io最高！"
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "dur.io will start in the system tray."
+msgstr ""
+
 #: components/modal/modals/TimeoutMember.tsx
 msgid "Duration"
 msgstr "期間"
@@ -1963,8 +1975,8 @@ msgid "Extreme violence, gore or animal cruelty"
 msgstr "過激な暴力、残虐な描写、または動物虐待"
 
 #: components/client/NotificationsController.ts
-msgid "Failed to enable notifications. Stoat does not have notification permission."
-msgstr "通知を有効にできませんでした。Stoatに通知の許可が与えられていません。"
+msgid "Failed to enable notifications. dur.io does not have notification permission."
+msgstr "通知を有効にできませんでした。dur.ioに通知の許可が与えられていません。"
 
 #: components/client/NotificationsController.ts
 msgid "Failed to enable push notifications. Please try again later."
@@ -2101,8 +2113,8 @@ msgid "Get the desktop app for Windows, macOS and Linux and keep your conversati
 msgstr "Windows、macOS、Linux向けのデスクトップアプリを手に入れて、会話にワンクリックでアクセスしましょう。"
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
-msgid "Gifbox is our own GIF service, so you can keep sharing GIFs right here on Stoat."
-msgstr "GifboxはStoat独自のGIFサービスです。Stoatの中で、これまでどおりGIFを共有できます。"
+msgid "Gifbox is our own GIF service, so you can keep sharing GIFs right here on dur.io."
+msgstr "Gifboxはdur.io独自のGIFサービスです。dur.ioの中で、これまでどおりGIFを共有できます。"
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "GIFs are now powered by Gifbox"
@@ -2279,8 +2291,8 @@ msgid "Input Volume"
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Instead of closing, Stoat will hide in your tray."
-msgstr "Stoatを終了する代わりに、システムトレイに格納します。"
+msgid "Instead of closing, dur.io will hide in your tray."
+msgstr "dur.ioを終了する代わりに、システムトレイに格納します。"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Interface Font"
@@ -2439,8 +2451,8 @@ msgid "Latest"
 msgstr "最新"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Launch Stoat when you log into your computer."
-msgstr "コンピューターへのログイン時にStoatを起動します。"
+msgid "Launch dur.io when you log into your computer."
+msgstr "コンピューターへのログイン時にdur.ioを起動します。"
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Learn more"
@@ -2471,8 +2483,8 @@ msgid "Leave server"
 msgstr "サーバーから脱退"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Let Stoat use its own custom titlebar."
-msgstr "Stoat独自のカスタムタイトルバーを使用します。"
+msgid "Let dur.io use its own custom titlebar."
+msgstr "dur.io独自のカスタムタイトルバーを使用します。"
 
 #: src/interface/Home.tsx
 msgid "Let us know how we can improve our app by giving us feedback."
@@ -2873,13 +2885,13 @@ msgstr "新しいパスワード"
 msgid "New recovery key"
 msgstr ""
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "New to dur.io"
+msgstr "新しいdur.ioユーザー"
+
 #: components/auth/src/AuthPage.tsx
 msgid "New to dur.io?"
 msgstr ""
-
-#: components/app/interface/channels/text/Message.tsx
-msgid "New to Stoat"
-msgstr "新しいStoatユーザー"
 
 #: components/auth/src/AuthPage.tsx
 #~ msgid "New to Stoat?"
@@ -3406,8 +3418,8 @@ msgid "Rename Session"
 msgstr "セッション名を変更"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Rep Stoat using Discord rich presence."
-msgstr "Discord Rich Presenceを通じて、Stoatをみんなに伝えよう。"
+msgid "Rep dur.io using Discord rich presence."
+msgstr "Discord Rich Presenceを通じて、dur.ioをみんなに伝えよう。"
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "Repeat the passphrase"
@@ -3986,24 +3998,12 @@ msgstr ""
 msgid "Stoat Developer"
 msgstr "Stoat開発者"
 
-#: components/app/interface/settings/user/Native.tsx
-msgid "Stoat for Desktop"
-msgstr "デスクトップ版Stoat"
-
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Stoat Founder"
 msgstr "Stoat創設者"
 
 #~ msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 #~ msgstr ""
-
-#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
-msgid "Stoat rocks!"
-msgstr "Stoat最高！"
-
-#: components/app/interface/settings/user/Native.tsx
-msgid "Stoat will start in the system tray."
-msgstr ""
 
 #: src/AndroidNag.tsx
 msgid "Stoat works best as an app"
@@ -4591,7 +4591,7 @@ msgstr "ユーザーのブロック解除"
 
 #. placeholder {0}: err.type
 #: components/i18n/errors.tsx
-msgid "Uncaught Stoat error: {0}"
+msgid "Uncaught dur.io error: {0}"
 msgstr ""
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
@@ -5141,8 +5141,8 @@ msgid "You've been logged out"
 msgstr ""
 
 #: components/modal/modals/SignedOut.tsx
-msgid "You've been signed out of Stoat!"
-msgstr "Stoatからログアウトしました。"
+msgid "You've been signed out of dur.io!"
+msgstr "dur.ioからログアウトしました。"
 
 #: components/i18n/errors.tsx
 msgid "You've reached your personal bot limit."

@@ -303,7 +303,7 @@ export function Message(props: Props) {
               }
             >
               <NewUser>
-                <Tooltip content={t`New to Stoat`} placement="top">
+                <Tooltip content={t`New to dur.io`} placement="top">
                   <Symbol size={16} fill>
                     spa
                   </Symbol>

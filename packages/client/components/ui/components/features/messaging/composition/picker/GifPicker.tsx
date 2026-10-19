@@ -152,7 +152,7 @@ function GifboxExplainer() {
         <ExplainerBody>
           <Trans>
             Gifbox is our own GIF service, so you can keep sharing GIFs right
-            here on Stoat.
+            here on dur.io.
           </Trans>
         </ExplainerBody>
         <ExplainerActions>

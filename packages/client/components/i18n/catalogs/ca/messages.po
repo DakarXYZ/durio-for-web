@@ -1251,8 +1251,8 @@ msgid "Could not find what you requested."
 msgstr "No s’ha pogut trobar el que has sol·licitat."
 
 #: components/instance/index.tsx
-msgid "Couldn't fetch Stoat configuration from {hStr}."
-msgstr "No s'ha pogut recuperar la configuració Stoat de {hStr}."
+msgid "Couldn't fetch dur.io configuration from {hStr}."
+msgstr "No s'ha pogut recuperar la configuració dur.io de {hStr}."
 
 #: components/ui/components/design/ImageCropper.tsx
 msgid "Couldn't load this image."
@@ -1732,6 +1732,18 @@ msgstr "Descarregar per a ordinador"
 msgid "Drugs or illegal goods"
 msgstr "Drogues o béns il·legals"
 
+#: components/app/interface/settings/user/Native.tsx
+msgid "dur.io for Desktop"
+msgstr "dur.io per a escriptori"
+
+#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
+msgid "dur.io rocks!"
+msgstr "dur.io és genial!"
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "dur.io will start in the system tray."
+msgstr "dur.io s'iniciarà a la safata del sistema."
+
 #: components/modal/modals/TimeoutMember.tsx
 msgid "Duration"
 msgstr "Duració"
@@ -2032,8 +2044,8 @@ msgid "Extreme violence, gore or animal cruelty"
 msgstr "Violència extrema, gore o crueltat amb animals"
 
 #: components/client/NotificationsController.ts
-msgid "Failed to enable notifications. Stoat does not have notification permission."
-msgstr "No s'han pogut activar les notificacions. Stoat no té permis per enviar-te notificacions."
+msgid "Failed to enable notifications. dur.io does not have notification permission."
+msgstr "No s'han pogut activar les notificacions. dur.io no té permis per enviar-te notificacions."
 
 #: components/client/NotificationsController.ts
 msgid "Failed to enable push notifications. Please try again later."
@@ -2170,8 +2182,8 @@ msgid "Get the desktop app for Windows, macOS and Linux and keep your conversati
 msgstr "Descarrega't l'aplicació per a Windows, macOS, i Linux i tingues les teves converses a mà."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
-msgid "Gifbox is our own GIF service, so you can keep sharing GIFs right here on Stoat."
-msgstr "Gifbox és el nostre propi servei de GIF, perquè puguis continuar compartint GIFs aquí a Stoat."
+msgid "Gifbox is our own GIF service, so you can keep sharing GIFs right here on dur.io."
+msgstr "Gifbox és el nostre propi servei de GIF, perquè puguis continuar compartint GIFs aquí a dur.io."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "GIFs are now powered by Gifbox"
@@ -2351,8 +2363,8 @@ msgid "Input Volume"
 msgstr "Volum d'entrada"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Instead of closing, Stoat will hide in your tray."
-msgstr "En lloc de tancar-se, Stoat s’amagarà a la safata."
+msgid "Instead of closing, dur.io will hide in your tray."
+msgstr "En lloc de tancar-se, dur.io s’amagarà a la safata."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Interface Font"
@@ -2514,8 +2526,8 @@ msgid "Latest"
 msgstr "Més recents"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Launch Stoat when you log into your computer."
-msgstr "Inicia Stoat quan iniciïs sessió al teu ordinador."
+msgid "Launch dur.io when you log into your computer."
+msgstr "Inicia dur.io quan iniciïs sessió al teu ordinador."
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Learn more"
@@ -2546,8 +2558,8 @@ msgid "Leave server"
 msgstr "Abandonar servidor"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Let Stoat use its own custom titlebar."
-msgstr "Permet que Stoat utilitzi la seva pròpia barra de títol personalitzada."
+msgid "Let dur.io use its own custom titlebar."
+msgstr "Permet que dur.io utilitzi la seva pròpia barra de títol personalitzada."
 
 #: src/interface/Home.tsx
 msgid "Let us know how we can improve our app by giving us feedback."
@@ -2948,13 +2960,13 @@ msgstr "Contrasenya nova"
 msgid "New recovery key"
 msgstr ""
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "New to dur.io"
+msgstr "Nou a dur.io"
+
 #: components/auth/src/AuthPage.tsx
 msgid "New to dur.io?"
 msgstr ""
-
-#: components/app/interface/channels/text/Message.tsx
-msgid "New to Stoat"
-msgstr "Nou a Stoat"
 
 #: components/auth/src/AuthPage.tsx
 #~ msgid "New to Stoat?"
@@ -3486,8 +3498,8 @@ msgstr "Canviar el nom de la sessió"
 
 #: components/app/interface/settings/user/Native.tsx
 #, fuzzy
-msgid "Rep Stoat using Discord rich presence."
-msgstr "Representa l'Stoat utilitzant la funció \"Rich Presence\" de Discord."
+msgid "Rep dur.io using Discord rich presence."
+msgstr "Representa l'dur.io utilitzant la funció \"Rich Presence\" de Discord."
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "Repeat the passphrase"
@@ -4079,24 +4091,12 @@ msgstr "Estat"
 msgid "Stoat Developer"
 msgstr "Desenvolupador de Stoat"
 
-#: components/app/interface/settings/user/Native.tsx
-msgid "Stoat for Desktop"
-msgstr "Stoat per a escriptori"
-
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Stoat Founder"
 msgstr "Fundador de Stoat"
 
 #~ msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 #~ msgstr ""
-
-#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
-msgid "Stoat rocks!"
-msgstr "Stoat és genial!"
-
-#: components/app/interface/settings/user/Native.tsx
-msgid "Stoat will start in the system tray."
-msgstr "Stoat s'iniciarà a la safata del sistema."
 
 #: src/AndroidNag.tsx
 msgid "Stoat works best as an app"
@@ -4684,7 +4684,7 @@ msgstr "Desbloquejar usuari"
 
 #. placeholder {0}: err.type
 #: components/i18n/errors.tsx
-msgid "Uncaught Stoat error: {0}"
+msgid "Uncaught dur.io error: {0}"
 msgstr ""
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
@@ -5240,7 +5240,7 @@ msgid "You've been logged out"
 msgstr ""
 
 #: components/modal/modals/SignedOut.tsx
-msgid "You've been signed out of Stoat!"
+msgid "You've been signed out of dur.io!"
 msgstr ""
 
 #: components/i18n/errors.tsx
