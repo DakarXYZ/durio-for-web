@@ -213,6 +213,10 @@ msgstr "O castigo de {0} será removido, e poderá voltar a interagir com o serv
 #~ msgid "{h} hours"
 #~ msgstr "{h} horas"
 
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "{hours} h"
+msgstr ""
+
 #~ msgid "{m} minutes"
 #~ msgstr "{m} minutos"
 
@@ -393,6 +397,10 @@ msgstr "Aceitar"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Accept friend request"
 msgstr "Aceitar solicitação de amizade"
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "accounts made: {uses}"
+msgstr ""
 
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
@@ -590,6 +598,10 @@ msgstr ""
 msgid "Are you sure you want to unpin this message?"
 msgstr "Tem certeza de que deseja desafixar esta mensagem?"
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Ask an admin of this server for an invite link and paste it here."
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Assign lower-ranked roles to lower-ranking members"
 msgstr "Atribuir cargos mais baixos a membros de nível inferior"
@@ -778,6 +790,7 @@ msgid "Can't get discover request status right now"
 msgstr "Não foi possível verificar o status da solicitação do Descobrir no momento"
 
 #: components/app/interface/settings/user/admin/Administration.tsx
+#: components/app/interface/settings/user/admin/Invites.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -1144,6 +1157,7 @@ msgstr "Copiado!"
 msgid "Copied. The clipboard is cleared in a minute."
 msgstr ""
 
+#: components/app/interface/settings/user/admin/Invites.tsx
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Copy"
 msgstr ""
@@ -1291,6 +1305,10 @@ msgstr "Criar conta"
 
 #~ msgid "Create an account"
 #~ msgstr "Criar uma conta"
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Create and copy link"
+msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Create and edit server roles"
@@ -1958,8 +1976,8 @@ msgid "Enter your email and we'll send you a fresh link."
 msgstr "Digite seu e-mail e enviaremos um novo link."
 
 #: components/auth/src/flows/Form.tsx
-msgid "Enter your invite code."
-msgstr "Digite seu código de convite."
+#~ msgid "Enter your invite code."
+#~ msgstr "Digite seu código de convite."
 
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
@@ -1975,6 +1993,10 @@ msgstr ""
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Everyone"
 msgstr "Todos"
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "expires <0/>"
+msgstr ""
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "Export and save"
@@ -2337,9 +2359,16 @@ msgid "Invite Bot"
 msgstr "Convidar bot"
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
-#: components/auth/src/flows/Form.tsx
 msgid "Invite Code"
 msgstr "Código de convite"
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Invite link copied."
+msgstr ""
+
+#: components/auth/src/flows/Form.tsx
+msgid "Invite link or code"
+msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Invite Others"
@@ -2354,6 +2383,7 @@ msgid "Inviter"
 msgstr "Convidante"
 
 #: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/user/admin/Invites.tsx
 msgid "Invites"
 msgstr "Convites"
 
@@ -2799,6 +2829,10 @@ msgstr "Mover membros entre canais de voz"
 msgid "Multi-factor authentication is already enabled for this account."
 msgstr "A autenticação de múltiplos fatores já está ativada para esta conta."
 
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "multi-use"
+msgstr ""
+
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 #: components/app/menus/UserContextMenu.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
@@ -2923,6 +2957,10 @@ msgstr "Novos não lidos"
 msgid "Nickname"
 msgstr "Apelido"
 
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "No active invites."
+msgstr ""
+
 #: components/client/e2ee/ui/views/ChannelEncryption.tsx
 msgid "No device of this person can read encrypted messages yet: they need the dur.io app and to sign in again."
 msgstr ""
@@ -2953,6 +2991,10 @@ msgstr "Nenhuma substituição de cargo foi configurada."
 
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "No user with this id or name."
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Nobody can sign up with the link any more. Accounts already made with it stay."
 msgstr ""
 
 #: src/interface/Friends.tsx
@@ -3126,6 +3168,10 @@ msgstr "Senha"
 #: components/modal/modals/EditPassword.tsx
 msgid "Password changed successfully."
 msgstr "Senha alterada com sucesso."
+
+#: components/auth/src/flows/Form.tsx
+msgid "Paste the invite link or code."
+msgstr ""
 
 #: src/interface/Friends.tsx
 msgid "Pending"
@@ -3560,6 +3606,14 @@ msgstr "Vingança ou pornografia infantil"
 msgid "Review policy changes"
 msgstr "Revisar as alterações na política"
 
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Revoke"
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Revoke this invite?"
+msgstr ""
+
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Role Colour"
 msgstr "Cor do cargo"
@@ -3836,6 +3890,10 @@ msgstr "Configurar códigos de recuperação"
 msgid "Several people are typing…"
 msgstr "Várias pessoas estão digitando…"
 
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Several people can sign up with it until it expires"
+msgstr ""
+
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Share audio"
@@ -3867,6 +3925,14 @@ msgstr "Mostrar botão de enviar mensagem"
 #~ msgid "Sign Up"
 #~ msgstr "Registrar-se"
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Sign-up is by invitation"
+msgstr ""
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "Sign-up on this server is by invitation. Make a link and send it to the person."
+msgstr ""
+
 #: components/app/interface/settings/user/admin/Administration.tsx
 #: components/client/e2ee/ui/views/Devices.tsx
 msgid "Signed in <0/>"
@@ -3875,6 +3941,10 @@ msgstr ""
 #: components/app/interface/channels/text/Message.tsx
 msgid "Silent"
 msgstr "Silencioso"
+
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "single use"
+msgstr ""
 
 #: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Slowmode Immune"
@@ -4214,6 +4284,10 @@ msgstr ""
 msgid "The key backup was turned off on another device. The keys of this device are no longer backed up: set up a new recovery key to turn the backup on again."
 msgstr ""
 
+#: components/app/interface/settings/user/admin/Invites.tsx
+msgid "The link works for"
+msgstr ""
+
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "The passphrases do not match."
 msgstr ""
@@ -4371,6 +4445,10 @@ msgstr "Esse grupo é grande demais, você pode ter até no máximo {0} usuário
 #: components/i18n/errors.tsx
 msgid "This has already been sent."
 msgstr "Isso já foi enviado."
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "This invite link is for {link}, but you are signing up on {here}. Go back and choose that server to use it."
+msgstr ""
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "This is not a key file, or it is damaged."
