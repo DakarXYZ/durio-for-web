@@ -1,8 +1,13 @@
 import { Trans } from "@lingui/solid/macro";
-import { Show } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { styled } from "styled-system/jsx";
 
 import { useApi, useClientLifecycle } from "@revolt/client";
+import {
+  parseInvite,
+  sameHost,
+  serverHost,
+} from "@revolt/common/lib/inviteLink";
 import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { A, useNavigate, useParams } from "@revolt/routing";
@@ -30,6 +35,30 @@ const BackAction = styled("div", {
 });
 
 /**
+ * The pasted invite link belongs to another server
+ */
+function OtherServer(props: { link: string; here: string }) {
+  // eslint-disable-next-line solid/reactivity
+  const { link, here } = props;
+  return (
+    <InviteHostWarning role="alert">
+      <Trans>
+        This invite link is for {link}, but you are signing up on {here}. Go
+        back and choose that server to use it.
+      </Trans>
+    </InviteHostWarning>
+  );
+}
+
+const InviteHostWarning = styled("p", {
+  base: {
+    margin: 0,
+    fontSize: "0.85rem",
+    color: "var(--md-sys-color-error)",
+  },
+});
+
+/**
  * Reassurance shown while typing an email address to sign up with
  */
 function EmailPrivacyHint() {
@@ -52,6 +81,27 @@ function EmailPrivacyHint() {
 }
 
 /**
+ * What the invite field is for, while it has focus (dur.io)
+ */
+function InviteHint() {
+  return (
+    <>
+      <Symbol size={20}>mail</Symbol>
+      <div>
+        <strong>
+          <Trans>Sign-up is by invitation</Trans>
+        </strong>
+        <p>
+          <Trans>
+            Ask an admin of this server for an invite link and paste it here.
+          </Trans>
+        </p>
+      </div>
+    </>
+  );
+}
+
+/**
  * Flow for creating a new account
  */
 export default function FlowCreate() {
@@ -60,7 +110,17 @@ export default function FlowCreate() {
   const { code } = useParams();
   const modals = useModals();
   const { login } = useClientLifecycle();
-  const { config, isStoat } = useInstance();
+  const { config, isStoat, apiUrl } = useInstance();
+
+  // dur.io: a pasted invite link of another server (not switched automatically)
+  const thisHost = serverHost(apiUrl);
+  const [otherHost, setOtherHost] = createSignal<string>();
+  function onInviteInput(event: InputEvent) {
+    const field = event.target as { name?: string; value?: string };
+    if (field.name !== "invite") return;
+    const host = parseInvite(field.value ?? "")?.host;
+    setOtherHost(host && !sameHost(host, thisHost) ? host : undefined);
+  }
 
   /**
    * Create an account
@@ -70,7 +130,9 @@ export default function FlowCreate() {
     const email = data.get("email") as string;
     const password = data.get("new-password") as string;
     const captcha = data.get("captcha") as string;
-    const invite = data.get("invite") as string;
+    // dur.io: the field takes the invite link too
+    const rawInvite = (data.get("invite") as string | null) ?? "";
+    const invite = parseInvite(rawInvite)?.code ?? rawInvite.trim();
 
     await api.post("/auth/account/create", {
       email,
@@ -104,7 +166,14 @@ export default function FlowCreate() {
           ]}
         />
         <Show when={config.features.invite_only}>
-          <Fields fields={[{ field: "invite", value: code }]} />
+          <div onInput={onInviteInput}>
+            <Fields
+              fields={[{ field: "invite", value: code, hint: <InviteHint /> }]}
+            />
+          </div>
+          <Show when={otherHost()} keyed>
+            {(host) => <OtherServer link={host} here={thisHost} />}
+          </Show>
         </Show>
         <Button type="submit" size="md">
           <Trans>Create account</Trans>

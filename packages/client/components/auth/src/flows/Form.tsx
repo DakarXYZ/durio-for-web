@@ -82,8 +82,9 @@ const useFieldConfiguration = () => {
       minLength: 1,
       type: "text" as const,
       autocomplete: "none",
-      name: () => t`Invite Code`,
-      placeholder: () => t`Enter your invite code.`,
+      // dur.io: the link from the admin or its code (see `parseInvite`)
+      name: () => t`Invite link or code`,
+      placeholder: () => t`Paste the invite link or code.`,
     },
   };
 };
