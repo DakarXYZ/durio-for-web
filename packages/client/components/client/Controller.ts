@@ -16,6 +16,7 @@ import Instance from "../instance/Instance";
 import { disposeClient } from "../instance/dispose";
 import { killServiceWorkerSubscription } from "./NotificationsController";
 import { attachE2ee, forgetE2eeAccount } from "./e2ee";
+import { preloadServerEmojis } from "./emojiPreload";
 
 export enum State {
   Ready = "Ready",
@@ -139,6 +140,8 @@ class Lifecycle {
     this.client.on("ready", this.onReady);
     this.client.on("policyChanges", this.onPolicyChanges);
     attachE2ee(this.client, this.#controller.instance);
+    // dur.io: server emoji into the HTTP cache in the background
+    preloadServerEmojis(this.client);
     this.#setLoadedOnce(false);
   }
 
