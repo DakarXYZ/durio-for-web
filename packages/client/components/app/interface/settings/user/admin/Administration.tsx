@@ -5,6 +5,7 @@ import {
   Switch,
   createResource,
   createSignal,
+  onMount,
 } from "solid-js";
 
 import { Trans, useLingui } from "@lingui/solid/macro";
@@ -13,6 +14,7 @@ import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
 import { Buttons, Notice } from "@revolt/client/e2ee/ui/parts";
+import { useModals } from "@revolt/modal";
 import {
   Button,
   CircularProgress,
@@ -23,7 +25,12 @@ import {
   Time,
 } from "@revolt/ui";
 
-import { type AdminFailure, adminFailure, userTag } from "./logic";
+import {
+  type AdminFailure,
+  adminFailure,
+  userTag,
+  withElevation,
+} from "./logic";
 
 type Confirm = { user: API.AdminUser; session?: AdminSession };
 
@@ -42,6 +49,12 @@ function FailureText(props: { failure: AdminFailure; ending?: boolean }) {
       <Match when={props.failure === "forbidden"}>
         <Trans>Only administrators can do this.</Trans>
       </Match>
+      <Match when={props.failure === "elevation"}>
+        <Trans>Admin mode is off. Enter your 2FA code to turn it on.</Trans>
+      </Match>
+      <Match when={props.failure === "totpRequired"}>
+        <TotpRequiredText />
+      </Match>
       <Match when={props.failure === "bot"}>
         <Trans>Bots have no sessions.</Trans>
       </Match>
@@ -53,13 +66,97 @@ function FailureText(props: { failure: AdminFailure; ending?: boolean }) {
 }
 
 /**
+ * Admin mode needs an authenticator app
+ */
+function TotpRequiredText() {
+  return (
+    <Trans>
+      Admin mode needs two-factor authentication with an authenticator app. Turn
+      it on in My Account first.
+    </Trans>
+  );
+}
+
+/**
+ * When admin mode ends, as HH:MM
+ */
+function UntilText(props: { until: Date }) {
+  // eslint-disable-next-line solid/reactivity
+  const time = props.until.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return <Trans>Admin mode is on until {time}.</Trans>;
+}
+
+/**
  * "Administration" (dur.io): an admin of the instance finds a user and ends their
  * sessions, e.g. after a lost phone. Only shown to admins (`GET /admin/@me`); the server
- * checks every call.
+ * checks every call. Every action needs admin mode (about an hour, turned on with the
+ * 2FA code of an authenticator app), asked for when the page opens and whenever the
+ * server says it is off.
  */
 export default function Administration() {
   const client = useClient();
   const { t } = useLingui();
+  const { mfaFlow } = useModals();
+
+  // admin mode of this session: undefined = off
+  const [until, setUntil] = createSignal<Date>();
+  const [totpMissing, setTotpMissing] = createSignal(false);
+  const [elevating, setElevating] = createSignal(false);
+  const [modeFailure, setModeFailure] = createSignal<AdminFailure>();
+
+  /**
+   * Ask for the 2FA code and turn admin mode on
+   * @returns Whether admin mode is on
+   */
+  async function elevate(): Promise<boolean> {
+    if (elevating()) return false;
+    setElevating(true);
+    setModeFailure(undefined);
+    setUntil(undefined);
+    try {
+      const mfa = await client().account.mfa();
+      if (!mfa.authenticatorEnabled) {
+        setTotpMissing(true);
+        return false;
+      }
+      const ticket = await mfaFlow(mfa as never);
+      if (!ticket) return false;
+      setUntil(await client().admin.elevate(ticket));
+      return true;
+    } catch (e) {
+      const failure = adminFailure(e);
+      if (failure === "totpRequired") setTotpMissing(true);
+      else setModeFailure(failure);
+      return false;
+    } finally {
+      setElevating(false);
+    }
+  }
+
+  async function endMode() {
+    try {
+      await client().admin.endElevation();
+      setUntil(undefined);
+    } catch (e) {
+      setModeFailure(adminFailure(e));
+    }
+  }
+
+  const admin = <T,>(call: () => Promise<T>) => withElevation(call, elevate);
+
+  // the 2FA prompt up front when admin mode is off
+  onMount(async () => {
+    try {
+      const status = await client().admin.status();
+      if (status.elevatedUntil) setUntil(status.elevatedUntil);
+      else if (status.admin) await elevate();
+    } catch (e) {
+      setModeFailure(adminFailure(e));
+    }
+  });
 
   const [query, setQuery] = createSignal("");
   const [searching, setSearching] = createSignal(false);
@@ -69,7 +166,12 @@ export default function Administration() {
 
   const [sessions, { refetch }] = createResource(
     () => (user() && !user()!.bot ? user()!._id : undefined),
-    (id) => client().admin.sessions(id),
+    // a fetcher runs untracked: the client is read once per user
+    // eslint-disable-next-line solid/reactivity
+    (id) => {
+      const api = client().admin;
+      return admin(() => api.sessions(id));
+    },
   );
 
   const [confirm, setConfirm] = createSignal<Confirm>();
@@ -83,9 +185,14 @@ export default function Administration() {
     setEndFailure(undefined);
     setNotFound(false);
     try {
-      const found = await client().admin.findUser(query());
-      setUser(found);
-      setNotFound(!found);
+      const api = client().admin;
+      const text = query();
+      const found = await admin(async () => ({
+        user: await api.findUser(text),
+      }));
+      if (!found) return;
+      setUser(found.user);
+      setNotFound(!found.user);
     } catch (e) {
       setUser(undefined);
       setSearchFailure(adminFailure(e));
@@ -98,9 +205,11 @@ export default function Administration() {
     setEnding(true);
     setEndFailure(undefined);
     try {
-      if (target.session)
-        await client().admin.endSession(target.user._id, target.session.id);
-      else await client().admin.endAllSessions(target.user._id);
+      await admin(() =>
+        target.session
+          ? client().admin.endSession(target.user._id, target.session.id)
+          : client().admin.endAllSessions(target.user._id),
+      );
     } catch (e) {
       setEndFailure(adminFailure(e));
     } finally {
@@ -121,6 +230,50 @@ export default function Administration() {
           they are signed in. End a session when a device is lost or stolen.
         </Trans>
       </Text>
+
+      <Switch>
+        <Match when={totpMissing()}>
+          <Notice kind="warning">
+            <TotpRequiredText />
+          </Notice>
+        </Match>
+        <Match when={until()}>
+          {(time) => (
+            <Notice
+              icon="admin_panel_settings"
+              action={
+                <Button size="sm" variant="text" onPress={() => void endMode()}>
+                  <Trans>End admin mode</Trans>
+                </Button>
+              }
+            >
+              <UntilText until={time()} />
+            </Notice>
+          )}
+        </Match>
+        <Match when={!elevating()}>
+          <Notice
+            kind="warning"
+            action={
+              <Button size="sm" onPress={() => void elevate()}>
+                <Trans>Enter 2FA code</Trans>
+              </Button>
+            }
+          >
+            <Trans>
+              Admin mode is off. Turn it on with the 2FA code of your
+              authenticator app; it lasts about an hour.
+            </Trans>
+          </Notice>
+        </Match>
+      </Switch>
+      <Show when={modeFailure()}>
+        {(failure) => (
+          <Notice kind="error">
+            <FailureText failure={failure()} />
+          </Notice>
+        )}
+      </Show>
 
       <SearchRow>
         <TextField

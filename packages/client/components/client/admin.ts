@@ -16,10 +16,13 @@ export function instanceAdmin(client: Client): Accessor<boolean> {
   if (!admin) {
     const [get, set] = createSignal(false);
     known.set(client, (admin = get));
-    client.admin.status().then(set, () => {
-      // no answer: ask again the next time
-      known.delete(client);
-    });
+    client.admin.status().then(
+      (status) => set(status.admin),
+      () => {
+        // no answer: ask again the next time
+        known.delete(client);
+      },
+    );
   }
 
   return admin;
