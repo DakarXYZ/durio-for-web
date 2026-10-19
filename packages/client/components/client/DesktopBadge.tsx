@@ -5,9 +5,10 @@ import { durioNative } from "@revolt/common/lib/desktop";
 import { useClient } from ".";
 
 /**
- * Badge of the desktop app's taskbar button (dur.io, stage 7, D5): the number of
- * unread mentions (every message of a DM or group counts as one), `-1` for unread
- * messages without mentions, `0` for none. Muted channels do not count. Renders nothing.
+ * Badge of the desktop app's taskbar button (dur.io, stage 7, D5): unread mentions
+ * plus one for every DM or group with unread messages (encrypted messages carry no
+ * mentions for the server), `-1` for other unread messages, `0` for none. Muted
+ * channels do not count. Renders nothing.
  */
 export function DesktopBadge() {
   const client = useClient();
@@ -19,7 +20,12 @@ export function DesktopBadge() {
     let unread = false;
     for (const channel of client().channels.values()) {
       if (channel.muted) continue;
-      mentions += channel.mentions?.size ?? 0;
+      const direct =
+        channel.type === "DirectMessage" || channel.type === "Group";
+      mentions += Math.max(
+        channel.mentions?.size ?? 0,
+        direct && channel.unread ? 1 : 0,
+      );
       unread ||= channel.unread;
     }
 
