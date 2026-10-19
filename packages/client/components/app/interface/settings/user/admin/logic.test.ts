@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { adminFailure, userTag, withElevation } from "./logic";
+import { adminFailure, shortCode, userTag, withElevation } from "./logic";
 
 describe("administration page", () => {
   it("names the failures of admin calls", () => {
@@ -58,5 +58,10 @@ describe("administration page", () => {
         async () => true,
       ),
     ).rejects.toEqual({ status: 404 });
+  });
+
+  it("shortens long invite codes for the list", () => {
+    expect(shortCode("AbC12")).toBe("AbC12");
+    expect(shortCode("0123456789abcdefXYZW")).toBe("012345…XYZW");
   });
 });
