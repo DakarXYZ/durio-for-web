@@ -591,6 +591,10 @@ msgstr "Аватар"
 msgid "Back"
 msgstr "Назад"
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Backup is off. The server no longer keeps your keys. A new recovery key turns it on again."
+msgstr "Бэкап выключен. Сервер больше не хранит ваши ключи. Новый ключ восстановления снова включит его."
+
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Backup is on. The keys of your encrypted chats are backed up from now on."
 msgstr "Бэкап включён. Ключи ваших зашифрованных чатов теперь сохраняются."
@@ -738,6 +742,7 @@ msgid "Can't get discover request status right now"
 msgstr "Сейчас не получается проверить статус запроса"
 
 #: components/auth/src/flows/FlowLogin.tsx
+#: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 #: components/client/e2ee/ui/views/Prompts.tsx
 #: components/client/e2ee/ui/views/Recovery.tsx
@@ -924,8 +929,12 @@ msgid "Choose a key file exported from dur.io or another Matrix app and enter it
 msgstr "Выберите файл ключей из dur.io или другого Matrix-приложения и введите его пароль. Уже имеющиеся ключи сохранятся; сообщения, ждущие этих ключей, станут читаемыми."
 
 #: components/auth/src/flows/FlowConfirmReset.tsx
-msgid "Choose a new password for your Stoat account."
-msgstr "Выберите новый пароль для своей учетной записи Stoat ."
+msgid "Choose a new password for your dur.io account."
+msgstr "Выберите новый пароль для своей учётной записи dur.io."
+
+#: components/auth/src/flows/FlowConfirmReset.tsx
+#~ msgid "Choose a new password for your Stoat account."
+#~ msgstr "Выберите новый пароль для своей учетной записи Stoat ."
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1515,6 +1524,10 @@ msgstr "Удалить Сервер"
 msgid "Delete session"
 msgstr "Удалить сессию"
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Deletes the backup of your encryption keys from the server. This device stops backing up its keys, and so do your other devices. Needs your password."
+msgstr "Удаляет бэкап ключей шифрования с сервера. Это устройство перестаёт сохранять свои ключи, как и остальные ваши устройства. Нужен пароль."
+
 #: components/modal/modals/DeleteEmoji.tsx
 msgid "Deleting this emoji will disallow future use. All past uses will remain."
 msgstr "Эмодзи станет недоступен для новых сообщений. В старых он сохранится."
@@ -1639,6 +1652,7 @@ msgstr "Больше не показывать это"
 msgid "Donated to Stoat"
 msgstr "Пожертвовал Stoat"
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 #: components/client/e2ee/ui/views/Recovery.tsx
 #: components/client/e2ee/ui/views/Restore.tsx
@@ -2141,8 +2155,8 @@ msgstr "Слышать других людей и смотреть их виде
 #~ msgstr "Привет!"
 
 #: components/auth/src/AuthPage.tsx
-msgid "Help"
-msgstr "Помощь"
+#~ msgid "Help"
+#~ msgstr "Помощь"
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "Help contribute to an existing or new language"
@@ -2299,8 +2313,12 @@ msgid "Join a server"
 msgstr "Присоедениться к серверу"
 
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "Join Stoat"
-msgstr "Присоединиться к Stoat"
+msgid "Join dur.io"
+msgstr "Присоединиться к dur.io"
+
+#: components/auth/src/flows/FlowCreate.tsx
+#~ msgid "Join Stoat"
+#~ msgstr "Присоединиться к Stoat"
 
 #: components/app/interface/settings/user/Feedback.tsx
 #: src/interface/Home.tsx
@@ -3109,13 +3127,12 @@ msgid "Preview"
 msgstr "Предпросмотр"
 
 #: components/app/interface/settings/UserSettings.tsx
-#: components/auth/src/AuthPage.tsx
 msgid "Privacy"
 msgstr "Конфиденциальность"
 
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "Privacy policy"
-msgstr "Политика конфиденциальности"
+#~ msgid "Privacy policy"
+#~ msgstr "Политика конфиденциальности"
 
 #~ msgid "Privacy Policy"
 #~ msgstr "Политика конфиденциальности"
@@ -4009,7 +4026,6 @@ msgid "Temporarily prevent lower-ranking members from interacting"
 msgstr "Временно ограничить низкоранговых участников от взаимодействий"
 
 #: components/app/interface/settings/UserSettings.tsx
-#: components/auth/src/AuthPage.tsx
 msgid "Terms"
 msgstr "Условия"
 
@@ -4395,6 +4411,15 @@ msgstr "Устранение неполадок"
 msgid "Try again"
 msgstr "Время ожидания истекло"
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Turn off backup"
+msgstr "Выключить бэкап"
+
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Turn off key backup"
+msgstr "Выключить бэкап ключей"
+
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Turn on backup"
 msgstr "Включить бэкап"
@@ -4410,6 +4435,10 @@ msgstr "Включить сквозное шифрование (бета)"
 #: components/modal/modals/EnableEncryption.tsx
 msgid "Turn on end-to-end encryption? (beta)"
 msgstr "Включить сквозное шифрование? (бета)"
+
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Turning off the backup…"
+msgstr "Выключаем бэкап…"
 
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Turning on the backup…"
@@ -4798,6 +4827,10 @@ msgstr "Вместе с {0}"
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "with {0} others"
 msgstr "с {0} другими"
+
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Without a backup, a new device can read your earlier encrypted messages only if you verify it with another device or load a key file. Your recovery key stops working."
+msgstr "Без бэкапа новое устройство прочитает ваши прежние зашифрованные сообщения, только если вы подтвердите его другим устройством или загрузите файл ключей. Ключ восстановления перестанет работать."
 
 #: components/client/e2ee/ui/views/Prompts.tsx
 msgid "Without a recovery key or another device, earlier encrypted messages cannot be read on this device afterwards."

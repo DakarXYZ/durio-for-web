@@ -597,6 +597,10 @@ msgstr "Avatar"
 msgid "Back"
 msgstr ""
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Backup is off. The server no longer keeps your keys. A new recovery key turns it on again."
+msgstr ""
+
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Backup is on. The keys of your encrypted chats are backed up from now on."
 msgstr ""
@@ -744,6 +748,7 @@ msgid "Can't get discover request status right now"
 msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
+#: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 #: components/client/e2ee/ui/views/Prompts.tsx
 #: components/client/e2ee/ui/views/Recovery.tsx
@@ -930,8 +935,12 @@ msgid "Choose a key file exported from dur.io or another Matrix app and enter it
 msgstr ""
 
 #: components/auth/src/flows/FlowConfirmReset.tsx
-msgid "Choose a new password for your Stoat account."
+msgid "Choose a new password for your dur.io account."
 msgstr ""
+
+#: components/auth/src/flows/FlowConfirmReset.tsx
+#~ msgid "Choose a new password for your Stoat account."
+#~ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1522,6 +1531,10 @@ msgstr ""
 msgid "Delete session"
 msgstr ""
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Deletes the backup of your encryption keys from the server. This device stops backing up its keys, and so do your other devices. Needs your password."
+msgstr ""
+
 #: components/modal/modals/DeleteEmoji.tsx
 msgid "Deleting this emoji will disallow future use. All past uses will remain."
 msgstr ""
@@ -1649,6 +1662,7 @@ msgstr ""
 msgid "Donated to Stoat"
 msgstr ""
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 #: components/client/e2ee/ui/views/Recovery.tsx
 #: components/client/e2ee/ui/views/Restore.tsx
@@ -2151,8 +2165,8 @@ msgstr ""
 #~ msgstr "Kumusta!"
 
 #: components/auth/src/AuthPage.tsx
-msgid "Help"
-msgstr ""
+#~ msgid "Help"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "Help contribute to an existing or new language"
@@ -2312,8 +2326,12 @@ msgstr ""
 #~ msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "Join Stoat"
+msgid "Join dur.io"
 msgstr ""
+
+#: components/auth/src/flows/FlowCreate.tsx
+#~ msgid "Join Stoat"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
 #: src/interface/Home.tsx
@@ -3122,13 +3140,12 @@ msgid "Preview"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
-#: components/auth/src/AuthPage.tsx
 msgid "Privacy"
 msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "Privacy policy"
-msgstr ""
+#~ msgid "Privacy policy"
+#~ msgstr ""
 
 #~ msgid "Privacy Policy"
 #~ msgstr "Patakaran sa Pagkapribado"
@@ -4031,7 +4048,6 @@ msgid "Temporarily prevent lower-ranking members from interacting"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
-#: components/auth/src/AuthPage.tsx
 msgid "Terms"
 msgstr ""
 
@@ -4417,6 +4433,15 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
+#: components/client/e2ee/ui/views/BackupOff.tsx
+#: components/client/e2ee/ui/views/Devices.tsx
+msgid "Turn off backup"
+msgstr ""
+
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Turn off key backup"
+msgstr ""
+
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Turn on backup"
 msgstr ""
@@ -4431,6 +4456,10 @@ msgstr ""
 
 #: components/modal/modals/EnableEncryption.tsx
 msgid "Turn on end-to-end encryption? (beta)"
+msgstr ""
+
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Turning off the backup…"
 msgstr ""
 
 #: components/client/e2ee/ui/views/Recovery.tsx
@@ -4819,6 +4848,10 @@ msgstr ""
 #. placeholder {0}: names.length
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "with {0} others"
+msgstr ""
+
+#: components/client/e2ee/ui/views/BackupOff.tsx
+msgid "Without a backup, a new device can read your earlier encrypted messages only if you verify it with another device or load a key file. Your recovery key stops working."
 msgstr ""
 
 #: components/client/e2ee/ui/views/Prompts.tsx
