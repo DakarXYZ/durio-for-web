@@ -172,6 +172,7 @@ export type E2eeKeysBackup = components['schemas']['E2eeKeysBackup'];
 export type E2eeRoomKeyBackup = components['schemas']['E2eeRoomKeyBackup'];
 export type E2eeKeyBackupData = components['schemas']['E2eeKeyBackupData'];
 export type AdminStatus = components['schemas']['AdminStatus'];
+export type AdminElevation = components['schemas']['AdminElevation'];
 export type AdminUser = components['schemas']['AdminUser'];
 export type DataEditWebhook = components['schemas']['DataEditWebhook'];
 export type FieldsWebhook = components['schemas']['FieldsWebhook'];

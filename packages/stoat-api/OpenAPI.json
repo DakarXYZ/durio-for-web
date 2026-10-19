@@ -7323,7 +7323,7 @@
           "Admin"
         ],
         "summary": "Admin Status",
-        "description": "Whether the current user is an admin of this instance (dur.io fork). Clients show the admin tools only when this is true.",
+        "description": "Whether the current user is an admin of this instance (dur.io fork) and, if admin actions are allowed from this session, until when. Clients show the admin tools only when `admin` is true and ask for 2FA (`POST /admin/elevate`) without `elevated_until`.",
         "operationId": "status_status",
         "responses": {
           "200": {
@@ -7348,6 +7348,83 @@
           }
         },
         "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/admin/elevate": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Elevate Admin Session",
+        "description": "Allow admin actions from the current session for `[api.admins] elevation_minutes` (dur.io fork, instance admins only). Needs a validated MFA ticket (`PUT /auth/mfa/ticket`) in `x-mfa-ticket` and an authenticator app (TOTP) on the account; the ticket is used up.",
+        "operationId": "elevate_elevate",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminElevation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "MFA Ticket": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "End Admin Elevation",
+        "description": "Stop allowing admin actions from the current session before the elevation runs out (dur.io fork).",
+        "operationId": "elevate_end_elevation",
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
           {
             "Session Token": []
           }
@@ -7397,6 +7474,9 @@
           }
         },
         "security": [
+          {
+            "Session Token": []
+          },
           {
             "Session Token": []
           }
@@ -7449,6 +7529,9 @@
         "security": [
           {
             "Session Token": []
+          },
+          {
+            "Session Token": []
           }
         ]
       },
@@ -7485,6 +7568,9 @@
           }
         },
         "security": [
+          {
+            "Session Token": []
+          },
           {
             "Session Token": []
           }
@@ -7533,6 +7619,9 @@
           }
         },
         "security": [
+          {
+            "Session Token": []
+          },
           {
             "Session Token": []
           }
@@ -10157,6 +10246,36 @@
               },
               "current_version": {
                 "type": "string"
+              }
+            }
+          },
+          {
+            "description": "Admin actions need an authenticator app (TOTP) on the admin's account",
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "TotpRequired"
+                ]
+              }
+            }
+          },
+          {
+            "description": "Admin actions need `POST /admin/elevate` with an MFA ticket on this session first",
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "AdminElevationRequired"
+                ]
               }
             }
           }
@@ -17135,6 +17254,32 @@
           "admin": {
             "description": "Whether the current user may use the `/admin` routes of this instance",
             "type": "boolean"
+          },
+          "elevated_until": {
+            "description": "Until when admin actions are allowed from this session (after `POST /admin/elevate`)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "AdminElevation": {
+        "title": "Admin Elevation",
+        "type": "object",
+        "required": [
+          "expires_at"
+        ],
+        "properties": {
+          "expires_at": {
+            "description": "When admin actions from this session need a new elevation",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ]
           }
         }
       },
@@ -17262,6 +17407,12 @@
         "in": "header"
       },
       "Unvalidated MFA Ticket": {
+        "description": "Used to authorise a request.",
+        "type": "apiKey",
+        "name": "x-mfa-ticket",
+        "in": "header"
+      },
+      "MFA Ticket": {
         "description": "Used to authorise a request.",
         "type": "apiKey",
         "name": "x-mfa-ticket",

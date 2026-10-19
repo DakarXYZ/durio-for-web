@@ -539,8 +539,14 @@ export interface paths {
     put: operations["secrets_store"];
   };
   "/admin/@me": {
-    /** Whether the current user is an admin of this instance (dur.io fork). Clients show the admin tools only when this is true. */
+    /** Whether the current user is an admin of this instance (dur.io fork) and, if admin actions are allowed from this session, until when. Clients show the admin tools only when `admin` is true and ask for 2FA (`POST /admin/elevate`) without `elevated_until`. */
     get: operations["status_status"];
+  };
+  "/admin/elevate": {
+    /** Allow admin actions from the current session for `[api.admins] elevation_minutes` (dur.io fork, instance admins only). Needs a validated MFA ticket (`PUT /auth/mfa/ticket`) in `x-mfa-ticket` and an authenticator app (TOTP) on the account; the ticket is used up. */
+    post: operations["elevate_elevate"];
+    /** Stop allowing admin actions from the current session before the elevation runs out (dur.io fork). */
+    delete: operations["elevate_end_elevation"];
   };
   "/admin/users": {
     /** Find a user by id or `username#discriminator` (dur.io fork, instance admins only). */
@@ -1258,6 +1264,14 @@ export interface components {
           /** @enum {string} */
           type: "BackupVersionMismatch";
           current_version: string;
+        }
+      | {
+          /** @enum {string} */
+          type: "TotpRequired";
+        }
+      | {
+          /** @enum {string} */
+          type: "AdminElevationRequired";
         }
     ) & {
       /** @description Where this error occurred */
@@ -3699,6 +3713,13 @@ export interface components {
     AdminStatus: {
       /** @description Whether the current user may use the `/admin` routes of this instance */
       admin: boolean;
+      /** @description Until when admin actions are allowed from this session (after `POST /admin/elevate`) */
+      elevated_until?: components["schemas"]["ISO8601 Timestamp"] | null;
+    };
+    /** Admin Elevation */
+    AdminElevation: {
+      /** @description When admin actions from this session need a new elevation */
+      expires_at: components["schemas"]["ISO8601 Timestamp"];
     };
     /** User Found by an Admin */
     AdminUser: {
@@ -6991,7 +7012,7 @@ export interface operations {
       };
     };
   };
-  /** Whether the current user is an admin of this instance (dur.io fork). Clients show the admin tools only when this is true. */
+  /** Whether the current user is an admin of this instance (dur.io fork) and, if admin actions are allowed from this session, until when. Clients show the admin tools only when `admin` is true and ask for 2FA (`POST /admin/elevate`) without `elevated_until`. */
   status_status: {
     responses: {
       200: {
@@ -6999,6 +7020,35 @@ export interface operations {
           "application/json": components["schemas"]["AdminStatus"];
         };
       };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Allow admin actions from the current session for `[api.admins] elevation_minutes` (dur.io fork, instance admins only). Needs a validated MFA ticket (`PUT /auth/mfa/ticket`) in `x-mfa-ticket` and an authenticator app (TOTP) on the account; the ticket is used up. */
+  elevate_elevate: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["AdminElevation"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Stop allowing admin actions from the current session before the elevation runs out (dur.io fork). */
+  elevate_end_elevation: {
+    responses: {
+      /** Success */
+      204: never;
       /** An error occurred. */
       default: {
         content: {

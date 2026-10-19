@@ -241,6 +241,8 @@ export type APIRoutes =
 | { method: 'put', path: `/e2ee/secrets/${string}`, parts: 3, params: paths['/e2ee/secrets/{secret_type}']['put']['requestBody']['content']['application/json'], response: undefined }
 | { method: 'put', path: '-/e2ee/secrets/{secret_type}', parts: 3, params: paths['/e2ee/secrets/{secret_type}']['put']['requestBody']['content']['application/json'], response: undefined }
 | { method: 'get', path: `/admin/@me`, parts: 2, params: undefined, response: paths['/admin/@me']['get']['responses']['200']['content']['application/json'] }
+| { method: 'post', path: `/admin/elevate`, parts: 2, params: undefined, response: paths['/admin/elevate']['post']['responses']['200']['content']['application/json'] }
+| { method: 'delete', path: `/admin/elevate`, parts: 2, params: undefined, response: undefined }
 | { method: 'get', path: `/admin/users`, parts: 2, params: paths['/admin/users']['get']['parameters']['query'], response: paths['/admin/users']['get']['responses']['200']['content']['application/json'] }
 | { method: 'get', path: `/admin/users/${string}/sessions`, parts: 4, params: undefined, response: paths['/admin/users/{target}/sessions']['get']['responses']['200']['content']['application/json'] }
 | { method: 'get', path: '-/admin/users/{target}/sessions', parts: 4, params: undefined, response: paths['/admin/users/{target}/sessions']['get']['responses']['200']['content']['application/json'] }
