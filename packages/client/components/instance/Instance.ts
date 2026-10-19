@@ -23,6 +23,7 @@ export default class Instance {
   readonly apiUrl: string;
   readonly mediaUrl: string;
   readonly proxyUrl: string;
+  /** Empty when the build has no GIF picker */
   readonly gifboxUrl: string;
 
   #cli;
@@ -49,7 +50,8 @@ export default class Instance {
     this.mediaUrl = apiCfg.features.autumn.url;
     this.proxyUrl = apiCfg.features.january.url;
     //TODO Gifbox URL from backend
-    this.gifboxUrl = CONFIGURATION.DEV_GIFBOX_URL || "https://api.gifbox.me";
+    // dur.io: no default gifbox (api.gifbox.me); empty = no GIF picker
+    this.gifboxUrl = CONFIGURATION.GIFBOX_URL;
 
     //Features
     this.config = apiCfg;

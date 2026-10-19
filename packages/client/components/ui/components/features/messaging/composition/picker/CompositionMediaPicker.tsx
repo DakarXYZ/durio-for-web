@@ -19,7 +19,7 @@ import type { Channel } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
-import { useDevice } from "@revolt/common";
+import { CONFIGURATION, useDevice } from "@revolt/common";
 import { Button } from "@revolt/ui/components/design";
 import { Row } from "@revolt/ui/components/layout";
 
@@ -120,6 +120,10 @@ function Picker(
   },
 ) {
   const device = useDevice();
+  // dur.io: GIFs only with a gifbox configured (none by default)
+  const gifs = () =>
+    !!CONFIGURATION.GIFBOX_URL &&
+    (!props.channel || props.channel.havePermission("SendEmbeds"));
 
   const [floating, setFloating] = createSignal<HTMLDivElement>();
   const [fixed, setFixed] = createSignal(device.layout() === "phone");
@@ -173,9 +177,7 @@ function Picker(
     >
       <Container>
         <Row gap="xs" justify class="CompositionButton">
-          <Show
-            when={!props.channel || props.channel.havePermission("SendEmbeds")}
-          >
+          <Show when={gifs()}>
             <Button
               groupActive={props.show() === "gif"}
               onPress={() => props.setShow("gif")}
@@ -188,18 +190,14 @@ function Picker(
           <Button
             groupActive={props.show() === "emoji"}
             onPress={() => props.setShow("emoji")}
-            group={
-              !props.channel || props.channel.havePermission("SendEmbeds")
-                ? "connected-end"
-                : undefined
-            }
+            group={gifs() ? "connected-end" : undefined}
           >
             Emoji
           </Button>
         </Row>
 
         <Switch fallback={<span>Not available yet.</span>}>
-          <Match when={props.show() === "gif"}>
+          <Match when={props.show() === "gif" && gifs()}>
             <GifPicker />
           </Match>
           <Match when={props.show() === "emoji"}>

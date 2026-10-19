@@ -12,7 +12,7 @@ import { useLingui } from "@lingui/solid/macro";
 import { Channel } from "stoat.js";
 
 import { useClient } from "@revolt/client";
-import { debounce } from "@revolt/common";
+import { CONFIGURATION, debounce } from "@revolt/common";
 import { createIsTimedOut } from "@revolt/common/lib/createIsTimedOut";
 import { useInstance } from "@revolt/instance";
 import { createKeybind, Keybind, KeybindAction } from "@revolt/keybinds";
@@ -409,7 +409,10 @@ export function MessageComposition(props: Props) {
                   <>
                     <Show
                       when={
-                        !canSend() && props.channel.havePermission("SendEmbeds")
+                        // dur.io: no GIF picker without a gifbox (none by default)
+                        !!CONFIGURATION.GIFBOX_URL &&
+                        !canSend() &&
+                        props.channel.havePermission("SendEmbeds")
                       }
                     >
                       <MessageBox.InlineIcon>

@@ -66,6 +66,11 @@ export default {
   /** Gifbox server override for development */
   DEV_GIFBOX_URL: getEnv("VITE_DEV_GIFBOX_URL"),
   /**
+   * Gifbox server of the GIF picker. dur.io: unset by default — no GIF picker, so no
+   * search terms or IP go to api.gifbox.me; a build may name a gifbox it trusts.
+   */
+  GIFBOX_URL: getEnv("VITE_DEV_GIFBOX_URL") || getEnv("VITE_GIFBOX_URL") || "",
+  /**
    * RNNoise worklet CDN host location. Defaults to blank, which uses the url provided by the livekit-rnnoise-processor package.
    */
   // dur.io: the desktop build packages the worklet (WEB-11, no remote code)
