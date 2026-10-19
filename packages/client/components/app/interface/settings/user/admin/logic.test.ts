@@ -16,6 +16,9 @@ describe("administration page", () => {
     expect(adminFailure({ status: 403, type: "TotpRequired" })).toBe(
       "totpRequired",
     );
+    expect(
+      adminFailure({ status: 401, type: "InvalidToken", location: "x" }),
+    ).toBe("invalidCode");
     expect(adminFailure({ status: 500 })).toBe("other");
     expect(adminFailure(new Error("x"))).toBe("other");
     expect(adminFailure(undefined)).toBe("other");

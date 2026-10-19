@@ -52,6 +52,9 @@ function FailureText(props: { failure: AdminFailure; ending?: boolean }) {
       <Match when={props.failure === "elevation"}>
         <Trans>Admin mode is off. Enter your 2FA code to turn it on.</Trans>
       </Match>
+      <Match when={props.failure === "invalidCode"}>
+        <Trans>The code is invalid or has expired. Try again.</Trans>
+      </Match>
       <Match when={props.failure === "totpRequired"}>
         <TotpRequiredText />
       </Match>
@@ -417,37 +420,39 @@ export default function Administration() {
         </Match>
       </Switch>
 
-      <Dialog
-        show={!!confirm()}
-        onClose={() => !ending() && setConfirm(undefined)}
-        title={
-          confirm()?.session ? (
-            <Trans>End this session?</Trans>
-          ) : (
-            <Trans>End all sessions of this user?</Trans>
-          )
-        }
-        actions={[
-          { text: <Trans>Cancel</Trans> },
-          {
-            text: confirm()?.session ? (
-              <Trans>End session</Trans>
-            ) : (
-              <Trans>End all sessions</Trans>
-            ),
-            onClick: () => {
-              const target = confirm();
-              if (target) void end(target);
-              return false;
-            },
-          },
-        ]}
-        isDisabled={ending()}
-      >
-        <Show when={confirm()} keyed>
-          {(target) => <ConfirmText {...target} />}
-        </Show>
-      </Dialog>
+      {/* mounted only while asking: a hidden Dialog's scrim still takes the clicks */}
+      <Show when={confirm()} keyed>
+        {(target) => (
+          <Dialog
+            show
+            onClose={() => !ending() && setConfirm(undefined)}
+            title={
+              target.session ? (
+                <Trans>End this session?</Trans>
+              ) : (
+                <Trans>End all sessions of this user?</Trans>
+              )
+            }
+            actions={[
+              { text: <Trans>Cancel</Trans> },
+              {
+                text: target.session ? (
+                  <Trans>End session</Trans>
+                ) : (
+                  <Trans>End all sessions</Trans>
+                ),
+                onClick: () => {
+                  void end(target);
+                  return false;
+                },
+              },
+            ]}
+            isDisabled={ending()}
+          >
+            <ConfirmText {...target} />
+          </Dialog>
+        )}
+      </Show>
     </Column>
   );
 }

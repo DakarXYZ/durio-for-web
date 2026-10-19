@@ -11,6 +11,8 @@ export type AdminFailure =
   | "elevation"
   /** 403 `TotpRequired`: admin mode needs an authenticator app on the account */
   | "totpRequired"
+  /** 401 `InvalidToken` on elevation: the 2FA code (ticket) was wrong, expired or used */
+  | "invalidCode"
   /** 400 `IsBot`: bots have no sessions */
   | "bot"
   /** No answer */
@@ -29,6 +31,8 @@ export function adminFailure(error: unknown): AdminFailure {
   if (status === 0) return "network";
   if (type === "AdminElevationRequired") return "elevation";
   if (type === "TotpRequired") return "totpRequired";
+  // only the elevation sends a ticket: not an ended session, no logout
+  if (type === "InvalidToken") return "invalidCode";
   if (status === 404) return "notFound";
   if (status === 403 || type === "NotPrivileged") return "forbidden";
   if (type === "IsBot") return "bot";
