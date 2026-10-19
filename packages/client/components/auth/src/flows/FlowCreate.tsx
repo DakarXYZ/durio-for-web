@@ -115,10 +115,13 @@ export default function FlowCreate() {
   // dur.io: a pasted invite link of another server (not switched automatically)
   const thisHost = serverHost(apiUrl);
   const [otherHost, setOtherHost] = createSignal<string>();
+  const [serverInvite, setServerInvite] = createSignal(false);
   function onInviteInput(event: InputEvent) {
     const field = event.target as { name?: string; value?: string };
     if (field.name !== "invite") return;
-    const host = parseInvite(field.value ?? "")?.host;
+    const parsed = parseInvite(field.value ?? "");
+    setServerInvite(!!parsed?.serverInvite);
+    const host = parsed?.serverInvite ? undefined : parsed?.host;
     setOtherHost(host && !sameHost(host, thisHost) ? host : undefined);
   }
 
@@ -132,7 +135,9 @@ export default function FlowCreate() {
     const captcha = data.get("captcha") as string;
     // dur.io: the field takes the invite link too
     const rawInvite = (data.get("invite") as string | null) ?? "";
-    const invite = parseInvite(rawInvite)?.code ?? rawInvite.trim();
+    const parsed = parseInvite(rawInvite);
+    const invite =
+      parsed && !parsed.serverInvite ? parsed.code : rawInvite.trim();
 
     await api.post("/auth/account/create", {
       email,
@@ -171,6 +176,15 @@ export default function FlowCreate() {
               fields={[{ field: "invite", value: code, hint: <InviteHint /> }]}
             />
           </div>
+          <Show when={serverInvite()}>
+            <InviteHostWarning role="alert">
+              <Trans>
+                This is an invite to a server (a community), not to sign up.
+                Sign up with the invite link from an admin first, then open the
+                server invite.
+              </Trans>
+            </InviteHostWarning>
+          </Show>
           <Show when={otherHost()} keyed>
             {(host) => <OtherServer link={host} here={thisHost} />}
           </Show>

@@ -34,7 +34,7 @@ type Ttl = (typeof ADMIN_INVITE_TTL_HOURS)[number];
 
 /**
  * Invite links for new accounts (dur.io): an admin makes one for 1–24 hours, for one
- * account or many, copies it and revokes it. Links are `https://<server>/invite/<code>`.
+ * account or many, copies it and revokes it. Links are `https://<server>/join/<code>`.
  */
 export function Invites(props: {
   /** Admin mode is on: load the list */
