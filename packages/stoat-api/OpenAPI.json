@@ -2722,6 +2722,112 @@
         ]
       }
     },
+    "/channels/{target}/messages/{msg}/poll": {
+      "put": {
+        "tags": [
+          "Interactions"
+        ],
+        "summary": "Vote in a Poll",
+        "description": "Pick answers in the poll of a message; the picks replace the user's earlier ones, an empty list takes the vote back. Needs the `React` permission.",
+        "operationId": "message_poll_vote_poll",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "msg",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataPollVote"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/channels/{target}/messages/{msg}/poll/close": {
+      "post": {
+        "tags": [
+          "Interactions"
+        ],
+        "summary": "Close a Poll",
+        "description": "Stop the poll of a message from taking votes. Its author, or anyone with `ManageMessages`, may close it.",
+        "operationId": "message_poll_close_poll",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "msg",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/channels/{channel_id}/webhooks": {
       "get": {
         "tags": [
@@ -12096,6 +12202,15 @@
             ],
             "nullable": true
           },
+          "poll": {
+            "description": "Poll of this message (dur.io fork)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Poll"
+              }
+            ],
+            "nullable": true
+          },
           "system": {
             "description": "System message",
             "allOf": [
@@ -12339,6 +12454,62 @@
           }
         },
         "additionalProperties": false
+      },
+      "Poll": {
+        "description": "Poll attached to a message (dur.io fork)",
+        "type": "object",
+        "required": [
+          "answers",
+          "question"
+        ],
+        "properties": {
+          "question": {
+            "description": "The question",
+            "type": "string"
+          },
+          "answers": {
+            "description": "The answers, in the order shown",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PollAnswer"
+            }
+          },
+          "multiple": {
+            "description": "Whether a user may pick more than one answer",
+            "type": "boolean"
+          },
+          "closed": {
+            "description": "Whether the poll takes no more votes",
+            "type": "boolean"
+          }
+        }
+      },
+      "PollAnswer": {
+        "description": "One answer of a poll (dur.io fork)",
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "description": "Id of the answer within its poll",
+            "type": "string"
+          },
+          "text": {
+            "description": "Text of the answer",
+            "type": "string"
+          },
+          "votes": {
+            "description": "Ids of the users who picked it",
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
       },
       "SystemMessage": {
         "description": "System Event",
@@ -13400,6 +13571,15 @@
               }
             ],
             "nullable": true
+          },
+          "poll": {
+            "description": "Poll to attach (dur.io fork); not in end-to-end encrypted channels",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataPoll"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -13464,6 +13644,36 @@
             "minLength": 1,
             "pattern": "(?i)^(?:[a-z ]+|var\\(--[a-z\\d-]+\\)|rgba?\\([\\d, ]+\\)|#[a-f0-9]+|(repeating-)?(linear|conic|radial)-gradient\\(([a-z ]+|var\\(--[a-z\\d-]+\\)|rgba?\\([\\d, ]+\\)|#[a-f0-9]+|\\d+deg)([ ]+in[ ]+[a-z-]+([ ]+(shorter|longer|increasing|decreasing)[ ]+hue)?)?([ ]+(\\d{1,3}%|0))?(,[ ]*([a-z ]+|var\\(--[a-z\\d-]+\\)|rgba?\\([\\d, ]+\\)|#[a-f0-9]+)([ ]+(\\d{1,3}%|0))?)+\\))$",
             "nullable": true
+          }
+        }
+      },
+      "DataPoll": {
+        "description": "Poll to attach to a new message (dur.io fork)",
+        "type": "object",
+        "required": [
+          "answers",
+          "question"
+        ],
+        "properties": {
+          "question": {
+            "description": "The question",
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "answers": {
+            "description": "The answers (2 to 10, each 1 to 100 characters)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "minItems": 2
+          },
+          "multiple": {
+            "description": "Whether a user may pick more than one answer",
+            "default": false,
+            "type": "boolean"
           }
         }
       },
@@ -13798,6 +14008,22 @@
             }
           }
         ]
+      },
+      "DataPollVote": {
+        "description": "The answers a user picks in a poll; empty takes the vote back (dur.io fork)",
+        "type": "object",
+        "required": [
+          "answers"
+        ],
+        "properties": {
+          "answers": {
+            "description": "Ids of the picked answers",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "Webhook": {
         "description": "Webhook",

@@ -41,6 +41,7 @@ import {
   Username,
 } from "@revolt/ui";
 import { MediaPickerProps } from "@revolt/ui/components/features/messaging/composition/picker/CompositionMediaPicker";
+import { PollCard } from "@revolt/ui/components/features/messaging/elements/PollCard";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { addSwipeReplyListener } from "@revolt/ui/directives";
 
@@ -422,6 +423,10 @@ export function Message(props: Props) {
             </BreakText>
           </Match>
         </Switch>
+        {/* dur.io: a poll */}
+        <Show when={props.message.poll}>
+          <PollCard message={props.message} />
+        </Show>
         <E2eeMessageShield e2ee={props.message.e2ee} />
         <For each={props.message.attachments}>
           {(attachment) => (

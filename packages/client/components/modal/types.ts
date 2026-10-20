@@ -145,6 +145,16 @@ export type Modals =
       message: Message;
     }
   | {
+      /** dur.io: a photo from the computer's camera */
+      type: "camera_capture";
+      onCapture: (file: File) => void;
+    }
+  | {
+      /** dur.io: write and send a poll */
+      type: "create_poll";
+      channel: Channel;
+    }
+  | {
       type: "delete_server";
       server: Server;
     }

@@ -47,6 +47,16 @@ export interface DurioNativeBridge {
   servers: {
     default(): string | undefined | Promise<string | undefined>;
   };
+
+  /**
+   * The newest pictures of "Pictures" and "Pictures/Screenshots" for the attach panel
+   * (IPC `recentImages:list` / `recentImages:read`): PNG thumbnails with ids, and the
+   * file of an id from the latest listing (main reads no other path)
+   */
+  recentImages: {
+    list(): Promise<{ id: string; name: string; thumbnail: string }[]>;
+    read(id: string): Promise<{ name: string; type: string; data: Uint8Array }>;
+  };
 }
 
 /** The dur.io part of the desktop bridge, if the page runs inside the desktop app */

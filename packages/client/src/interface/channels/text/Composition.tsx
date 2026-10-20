@@ -13,8 +13,9 @@ import { Channel } from "stoat.js";
 
 import { useClient } from "@revolt/client";
 import { attachmentLimit } from "@revolt/client/e2ee/limits";
-import { CONFIGURATION, debounce } from "@revolt/common";
+import { CONFIGURATION, debounce, useDevice } from "@revolt/common";
 import { createIsTimedOut } from "@revolt/common/lib/createIsTimedOut";
+import { rememberAttachedImages } from "@revolt/common/lib/recentImages";
 import { useInstance } from "@revolt/instance";
 import { createKeybind, Keybind, KeybindAction } from "@revolt/keybinds";
 import { useModals } from "@revolt/modal";
@@ -29,6 +30,7 @@ import {
   MessageBox,
   MessageReplyPreview,
 } from "@revolt/ui";
+import { AttachPanel } from "@revolt/ui/components/features/messaging/composition/AttachPanel";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { useSearchSpace } from "@revolt/ui/components/utils/autoComplete";
 
@@ -52,7 +54,12 @@ export function MessageComposition(props: Props) {
   const { t } = useLingui();
   const client = useClient();
   const { limits } = useInstance();
-  const { showError } = useModals();
+  const { showError, openModal } = useModals();
+  const { isMobile } = useDevice();
+
+  // dur.io: the "+" opens the attach panel (latest pictures, gallery, files, poll, camera)
+  const [attachAnchor, setAttachAnchor] = createSignal<HTMLElement>();
+  const [attachOpen, setAttachOpen] = createSignal(false);
 
   const isTimedOut = createIsTimedOut(
     () => props.channel.server?.member?.timeout,
@@ -269,18 +276,24 @@ export function MessageComposition(props: Props) {
     for (const file of validFiles) {
       state.draft.addFile(props.channel.id, file);
     }
+
+    // dur.io: the latest pictures of the attach panel (browser)
+    void rememberAttachedImages(validFiles);
   }
 
   /**
    * Add a file to the message
+   * @param accept File types the dialog offers
+   * @param capture Take a photo instead (phones)
    */
-  function addFile() {
+  function addFile(accept = "*", capture = false) {
     if (!canUploadFiles()) return;
 
     const input = document.createElement("input");
-    input.accept = "*";
+    input.accept = accept;
     input.type = "file";
-    input.multiple = true;
+    input.multiple = !capture;
+    if (capture) input.setAttribute("capture", "environment");
     input.style.display = "none";
 
     input.addEventListener("change", async (e) => {
@@ -338,7 +351,7 @@ export function MessageComposition(props: Props) {
       <FileCarousel
         files={draft().files ?? []}
         getFile={state.draft.getFile}
-        addFile={addFile}
+        addFile={() => addFile()}
         removeFile={removeFile}
         isSpoiler={isSpoiler}
         toggleSpoiler={toggleSpoiler}
@@ -386,10 +399,38 @@ export function MessageComposition(props: Props) {
             fallback={<MessageBox.InlineIcon size="short" />}
           >
             <MessageBox.InlineIcon>
-              <IconButton onPress={addFile}>
-                <Symbol>add</Symbol>
-              </IconButton>
+              <div ref={setAttachAnchor}>
+                <IconButton onPress={() => setAttachOpen((open) => !open)}>
+                  <Symbol>add</Symbol>
+                </IconButton>
+              </div>
             </MessageBox.InlineIcon>
+            <Show when={attachOpen()}>
+              <AttachPanel
+                anchor={attachAnchor()}
+                onClose={() => setAttachOpen(false)}
+                onFiles={onFiles}
+                pickFiles={(accept) => addFile(accept)}
+                onCamera={() =>
+                  isMobile
+                    ? addFile("image/*", true)
+                    : openModal({
+                        type: "camera_capture",
+                        onCapture: (file) => onFiles([file]),
+                      })
+                }
+                onPoll={
+                  client().e2ee.isEncrypted(props.channel) ||
+                  !props.channel.havePermission("SendMessage")
+                    ? undefined
+                    : () =>
+                        openModal({
+                          type: "create_poll",
+                          channel: props.channel,
+                        })
+                }
+              />
+            </Show>
           </Show>
         }
         actionsEnd={

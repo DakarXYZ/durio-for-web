@@ -59,6 +59,11 @@ msgstr "{0, plural, one {# missatge bloquejat} other {# missatges bloquejats}}"
 msgid "{0, plural, one {# new mention} other {# new mentions}}"
 msgstr "{0, plural, one {# menció nova} other {# mencions noves}}"
 
+#. placeholder {0}: voters()
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "{0, plural, one {# vote} other {# votes}}"
+msgstr ""
+
 #. placeholder {0}: items().length
 #: components/ui/components/utils/files/FileDropAnywhereCollector.tsx
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
@@ -527,6 +532,10 @@ msgstr "Autoritza als altres a invitar al teu bot"
 msgid "Allow others to join your server from Discover"
 msgstr "Autoritza als altres a unir-se al teu servidor desde Discover"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow several answers"
+msgstr ""
+
 #: components/i18n/errors.tsx
 msgid "Already friends with this user."
 msgstr "Ya ets amic d'aquest usuari."
@@ -559,6 +568,11 @@ msgstr "S’ha produït un error intern. ({0})"
 
 #: components/client/e2ee/ui/views/Verify.tsx
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
+msgstr ""
+
+#. placeholder {0}: index() + 1
+#: components/modal/modals/CreatePoll.tsx
+msgid "Answer {0}"
 msgstr ""
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -787,6 +801,11 @@ msgstr "Ignora el mode lent als canals"
 msgid "Calls in this chat are not end-to-end encrypted."
 msgstr ""
 
+#: components/modal/modals/CameraCapture.tsx
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Camera"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Can't find the perfect GIF? Head to Gifbox and upload your own for everyone to use."
 msgstr "No trobes el GIF ideal? Ves a Gifbox i puja'n un perquè tothom l'utilitzi."
@@ -806,6 +825,8 @@ msgstr "No es pot obtenir la sol·licitut del status \"descobreix\" ara mateix"
 #: components/modal/modals/AddBot.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
+#: components/modal/modals/CameraCapture.tsx
+#: components/modal/modals/CreatePoll.tsx
 #: components/modal/modals/CropProcess.tsx
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/DeleteCategory.tsx
@@ -1068,6 +1089,10 @@ msgstr "Tanca el xat"
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
 msgstr "Vols tancar la conversa amb {0}?"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Close poll"
+msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -2076,6 +2101,10 @@ msgstr "Commentaris"
 msgid "File must be smaller than {0}"
 msgstr "El fitxer ha de ser més petit que {0}"
 
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Files"
+msgstr ""
+
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "Find"
 msgstr ""
@@ -2147,6 +2176,10 @@ msgstr "de· "
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Fruit Salad"
 msgstr "Tot de fruita"
+
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Gallery"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
@@ -2955,6 +2988,10 @@ msgstr "Nou nom"
 msgid "New Password"
 msgstr "Contrasenya nova"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "New poll"
+msgstr ""
+
 #: components/client/e2ee/ui/views/Devices.tsx
 msgid "New recovery key"
 msgstr ""
@@ -3272,6 +3309,14 @@ msgstr "Seleccioneu un mètode per a autenticar la vostra petició."
 msgid "Please select a reason"
 msgstr "Si us plau selecciona el motiu"
 
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Poll"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "poll closed"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr "Funciona amb RNNoise"
@@ -3320,6 +3365,10 @@ msgstr ""
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
 msgstr "El correu electrònic o la contrasenya que has proporcionat son incorrectes."
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Question"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 #, fuzzy
@@ -3442,6 +3491,10 @@ msgstr "Trure"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Remove all reactions"
 msgstr "Treure totes les reaccions"
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Remove answer"
+msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Remove Authenticator"
@@ -3785,6 +3838,10 @@ msgstr "Selecciona l'entrada del vídeo"
 msgid "Select your language"
 msgstr "Seleccioneu la vostra llengua"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Send"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Send attachments to chat"
 msgstr "Enviar fitxers adjunts al chat"
@@ -3926,6 +3983,10 @@ msgstr "Configura l'autenticador de contrasenyes d'un sol ús"
 #: components/app/interface/settings/user/Account.tsx
 msgid "Setup recovery codes"
 msgstr "Configura els codis de recuperació"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "several answers"
+msgstr ""
 
 #: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Several people are typing…"
@@ -4187,6 +4248,10 @@ msgstr "Sistema"
 msgid "System message channels"
 msgstr "Canals de missatges del sistema"
 
+#: components/modal/modals/CameraCapture.tsx
+msgid "Take photo"
+msgstr ""
+
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
 msgstr "Emporta't les teves communitats <0>amb tu.</0>"
@@ -4245,6 +4310,10 @@ msgstr "El bot a estat eliminat del Descobreix pels moderadors, l'usuari ha de c
 #: components/i18n/errors.tsx
 msgid "The bot is already on discover, the user must contact support to have it removed"
 msgstr "El bot ja és al Descobreix, l'usuari ha de contactar amb el suport per eliminar-lo"
+
+#: components/modal/modals/CameraCapture.tsx
+msgid "The camera is not available: no camera, or access to it was denied."
+msgstr ""
 
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "The code is invalid or has expired. Try again."

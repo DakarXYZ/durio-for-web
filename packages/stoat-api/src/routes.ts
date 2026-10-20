@@ -97,6 +97,10 @@ export type APIRoutes =
 | { method: 'delete', path: '-/channels/{target}/messages/{msg}/reactions/{emoji}', parts: 6, params: paths['/channels/{target}/messages/{msg}/reactions/{emoji}']['delete']['parameters']['query'], response: undefined }
 | { method: 'delete', path: `/channels/${string}/messages/${string}/reactions`, parts: 5, params: undefined, response: undefined }
 | { method: 'delete', path: '-/channels/{target}/messages/{msg}/reactions', parts: 5, params: undefined, response: undefined }
+| { method: 'put', path: `/channels/${string}/messages/${string}/poll`, parts: 5, params: paths['/channels/{target}/messages/{msg}/poll']['put']['requestBody']['content']['application/json'], response: undefined }
+| { method: 'put', path: '-/channels/{target}/messages/{msg}/poll', parts: 5, params: paths['/channels/{target}/messages/{msg}/poll']['put']['requestBody']['content']['application/json'], response: undefined }
+| { method: 'post', path: `/channels/${string}/messages/${string}/poll/close`, parts: 6, params: undefined, response: undefined }
+| { method: 'post', path: '-/channels/{target}/messages/{msg}/poll/close', parts: 6, params: undefined, response: undefined }
 | { method: 'get', path: `/channels/${string}/webhooks`, parts: 3, params: undefined, response: paths['/channels/{channel_id}/webhooks']['get']['responses']['200']['content']['application/json'] }
 | { method: 'get', path: '-/channels/{channel_id}/webhooks', parts: 3, params: undefined, response: paths['/channels/{channel_id}/webhooks']['get']['responses']['200']['content']['application/json'] }
 | { method: 'post', path: `/channels/${string}/webhooks`, parts: 3, params: paths['/channels/{channel_id}/webhooks']['post']['requestBody']['content']['application/json'], response: paths['/channels/{channel_id}/webhooks']['post']['responses']['200']['content']['application/json'] }

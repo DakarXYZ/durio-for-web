@@ -8,6 +8,7 @@ import { AddFriendModal } from "./modals/AddFriend";
 import { AddMembersToGroupModal } from "./modals/AddMembersToGroup";
 import { BanMemberModal } from "./modals/BanMember";
 import { BanNonMemberModal } from "./modals/BanNonMember";
+import { CameraCaptureModal } from "./modals/CameraCapture";
 import { ChangelogModal } from "./modals/Changelog";
 import { ChannelInfoModal } from "./modals/ChannelInfo";
 import { ChannelToggleMatureModal } from "./modals/ChannelToggleMature";
@@ -18,6 +19,7 @@ import { CreateGroupModal } from "./modals/CreateGroup";
 import { CreateGroupOrServer } from "./modals/CreateGroupOrServer";
 import { CreateInviteModal } from "./modals/CreateInvite";
 import { CreateOrJoinServerModal } from "./modals/CreateOrJoinServer";
+import { CreatePollModal } from "./modals/CreatePoll";
 import { CreateRoleModal } from "./modals/CreateRole";
 import { CreateServerModal } from "./modals/CreateServer";
 import { CreateWebhookModal } from "./modals/CreateWebhook";
@@ -217,6 +219,10 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <RemoveMemberModal {...modalProps} />;
     case "pin_message":
       return <PinMessageModal {...modalProps} />;
+    case "camera_capture":
+      return <CameraCaptureModal {...modalProps} />;
+    case "create_poll":
+      return <CreatePollModal {...modalProps} />;
     case "edit_bot_username":
       return <EditBotUsernameModal {...modalProps} />;
     case "screen_share_settings":

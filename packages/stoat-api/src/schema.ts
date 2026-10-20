@@ -222,6 +222,14 @@ export interface paths {
      */
     delete: operations["message_clear_reactions_clear_reactions"];
   };
+  "/channels/{target}/messages/{msg}/poll": {
+    /** Pick answers in the poll of a message; the picks replace the user's earlier ones, an empty list takes the vote back. Needs the `React` permission. */
+    put: operations["message_poll_vote_poll"];
+  };
+  "/channels/{target}/messages/{msg}/poll/close": {
+    /** Stop the poll of a message from taking votes. Its author, or anyone with `ManageMessages`, may close it. */
+    post: operations["message_poll_close_poll"];
+  };
   "/channels/{channel_id}/webhooks": {
     /** Gets all webhooks inside the channel */
     get: operations["webhook_fetch_all_fetch_webhooks"];
@@ -1933,6 +1941,8 @@ export interface components {
       content?: string | null;
       /** @description Encrypted content (end-to-end encrypted channels) */
       encrypted?: components["schemas"]["EncryptedEnvelope"] | null;
+      /** @description Poll of this message (dur.io fork) */
+      poll?: components["schemas"]["Poll"] | null;
       /** @description System message */
       system?: components["schemas"]["SystemMessage"] | null;
       /** @description Array of attachments */
@@ -2015,6 +2025,29 @@ export interface components {
       device_id: string;
       /** @description Megolm ciphertext (upper bound is `max_envelope_bytes`) */
       ciphertext: string;
+    };
+    /** @description Poll attached to a message (dur.io fork) */
+    Poll: {
+      /** @description The question */
+      question: string;
+      /** @description The answers, in the order shown */
+      answers: components["schemas"]["PollAnswer"][];
+      /** @description Whether a user may pick more than one answer */
+      multiple?: boolean;
+      /** @description Whether the poll takes no more votes */
+      closed?: boolean;
+    };
+    /** @description One answer of a poll (dur.io fork) */
+    PollAnswer: {
+      /** @description Id of the answer within its poll */
+      id: string;
+      /** @description Text of the answer */
+      text: string;
+      /**
+       * @description Ids of the users who picked it
+       * @default []
+       */
+      votes?: string[];
     };
     /** @description System Event */
     SystemMessage:
@@ -2368,6 +2401,8 @@ export interface components {
       flags?: number | null;
       /** @description Encrypted content, required in end-to-end encrypted channels (instead of `content`) */
       encrypted?: components["schemas"]["EncryptedEnvelope"] | null;
+      /** @description Poll to attach (dur.io fork); not in end-to-end encrypted channels */
+      poll?: components["schemas"]["DataPoll"] | null;
     };
     /** @description What this message should reply to and how */
     ReplyIntent: {
@@ -2386,6 +2421,18 @@ export interface components {
       description?: string | null;
       media?: string | null;
       colour?: string | null;
+    };
+    /** @description Poll to attach to a new message (dur.io fork) */
+    DataPoll: {
+      /** @description The question */
+      question: string;
+      /** @description The answers (2 to 10, each 1 to 100 characters) */
+      answers: string[];
+      /**
+       * @description Whether a user may pick more than one answer
+       * @default false
+       */
+      multiple?: boolean;
     };
     /** @description Bulk Message Response */
     BulkMessageResponse:
@@ -2520,6 +2567,11 @@ export interface components {
           /** @description Allow / deny values to set for members in this server channel */
           permissions: components["schemas"]["Override"];
         };
+    /** @description The answers a user picks in a poll; empty takes the vote back (dur.io fork) */
+    DataPollVote: {
+      /** @description Ids of the picked answers */
+      answers: string[];
+    };
     /** @description Webhook */
     Webhook: {
       /** @description Webhook Id */
@@ -5023,6 +5075,49 @@ export interface operations {
    * Requires `ManageMessages` permission.
    */
   message_clear_reactions_clear_reactions: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        msg: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Pick answers in the poll of a message; the picks replace the user's earlier ones, an empty list takes the vote back. Needs the `React` permission. */
+  message_poll_vote_poll: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        msg: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataPollVote"];
+      };
+    };
+  };
+  /** Stop the poll of a message from taking votes. Its author, or anyone with `ManageMessages`, may close it. */
+  message_poll_close_poll: {
     parameters: {
       path: {
         target: components["schemas"]["Id"];

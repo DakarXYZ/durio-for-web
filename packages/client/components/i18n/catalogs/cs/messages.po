@@ -56,6 +56,11 @@ msgstr "{0, plural, one {# blokovaná zpráva} few {# blokované zprávy} other 
 msgid "{0, plural, one {# new mention} other {# new mentions}}"
 msgstr ""
 
+#. placeholder {0}: voters()
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "{0, plural, one {# vote} other {# votes}}"
+msgstr ""
+
 #. placeholder {0}: items().length
 #: components/ui/components/utils/files/FileDropAnywhereCollector.tsx
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
@@ -474,6 +479,10 @@ msgstr ""
 msgid "Allow others to join your server from Discover"
 msgstr ""
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow several answers"
+msgstr ""
+
 #: components/i18n/errors.tsx
 msgid "Already friends with this user."
 msgstr "S tímto uživatelem již jste přátelé."
@@ -506,6 +515,11 @@ msgstr "Nastala interní chyba. ({0})"
 
 #: components/client/e2ee/ui/views/Verify.tsx
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
+msgstr ""
+
+#. placeholder {0}: index() + 1
+#: components/modal/modals/CreatePoll.tsx
+msgid "Answer {0}"
 msgstr ""
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -728,6 +742,11 @@ msgstr "Obejdete pomalý režim v kanálech"
 msgid "Calls in this chat are not end-to-end encrypted."
 msgstr ""
 
+#: components/modal/modals/CameraCapture.tsx
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Camera"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Can't find the perfect GIF? Head to Gifbox and upload your own for everyone to use."
 msgstr "Nemůžete najít dokonalý GIF? Miřte na Gifboxu a nahrávejte své vlastní pro všechny k využití."
@@ -747,6 +766,8 @@ msgstr ""
 #: components/modal/modals/AddBot.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
+#: components/modal/modals/CameraCapture.tsx
+#: components/modal/modals/CreatePoll.tsx
 #: components/modal/modals/CropProcess.tsx
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/DeleteCategory.tsx
@@ -1007,6 +1028,10 @@ msgstr "Zavřít konverzaci"
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
 msgstr "Zavřít konverzaci s {0}?"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Close poll"
+msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -2011,6 +2036,10 @@ msgstr "Zpětná vazba"
 msgid "File must be smaller than {0}"
 msgstr ""
 
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Files"
+msgstr ""
+
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "Find"
 msgstr ""
@@ -2083,6 +2112,10 @@ msgstr "od "
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Fruit Salad"
 msgstr "Ovocný salát"
+
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Gallery"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
@@ -2888,6 +2921,10 @@ msgstr "Nové jméno"
 msgid "New Password"
 msgstr "Nové heslo"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "New poll"
+msgstr ""
+
 #: components/client/e2ee/ui/views/Devices.tsx
 msgid "New recovery key"
 msgstr ""
@@ -3205,6 +3242,14 @@ msgstr "Vyberte metodu pro ověření vašeho požadavku."
 msgid "Please select a reason"
 msgstr "Prosím vyberte důvod"
 
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Poll"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "poll closed"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr ""
@@ -3253,6 +3298,10 @@ msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
+msgstr ""
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Question"
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
@@ -3373,6 +3422,10 @@ msgstr "Odebrat"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Remove all reactions"
 msgstr "Odstranit všechny reakce"
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Remove answer"
+msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Remove Authenticator"
@@ -3708,6 +3761,10 @@ msgstr ""
 msgid "Select your language"
 msgstr "Vybrat jazyk"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Send"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Send attachments to chat"
 msgstr ""
@@ -3848,6 +3905,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Setup recovery codes"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "several answers"
 msgstr ""
 
 #: components/app/interface/channels/text/CompositionInfo.tsx
@@ -4107,6 +4168,10 @@ msgstr ""
 msgid "System message channels"
 msgstr ""
 
+#: components/modal/modals/CameraCapture.tsx
+msgid "Take photo"
+msgstr ""
+
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
 msgstr ""
@@ -4165,6 +4230,10 @@ msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "The bot is already on discover, the user must contact support to have it removed"
+msgstr ""
+
+#: components/modal/modals/CameraCapture.tsx
+msgid "The camera is not available: no camera, or access to it was denied."
 msgstr ""
 
 #: components/app/interface/settings/user/admin/Administration.tsx

@@ -18,6 +18,30 @@ const MAX = 96;
 /** Elements whose own horizontal scrolling or gestures win */
 const IGNORE = "pre, code, input, textarea, video, audio, [data-no-swipe]";
 
+/** How long after a swipe a click is swallowed (the tap of the finger lifting) */
+const CLICK_SUPPRESS_WINDOW = 400;
+
+/**
+ * Swallow the click that follows a swipe: the finger lifted on an image or a
+ * link would open it, while the swipe meant to reply
+ */
+function suppressNextClick() {
+  function suppress(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    cleanup();
+  }
+
+  function cleanup() {
+    clearTimeout(timeout);
+    document.removeEventListener("click", suppress, true);
+  }
+
+  document.addEventListener("click", suppress, true);
+  const timeout = setTimeout(cleanup, CLICK_SUPPRESS_WINDOW);
+}
+
 const ICON =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>';
 
@@ -118,8 +142,10 @@ export function addSwipeReplyListener(
     if (id === undefined) return;
     if (![...e.changedTouches].some((touch) => touch.identifier === id)) return;
 
+    const swiped = engaged;
     const reply = engaged && armed && e.type === "touchend";
     reset();
+    if (swiped) suppressNextClick();
     if (reply) onReply();
   }
 

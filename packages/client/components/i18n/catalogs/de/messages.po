@@ -56,6 +56,11 @@ msgstr "{0, plural, one {# blockierte Nachricht} other {# blockierte Nachrichten
 msgid "{0, plural, one {# new mention} other {# new mentions}}"
 msgstr ""
 
+#. placeholder {0}: voters()
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "{0, plural, one {# vote} other {# votes}}"
+msgstr ""
+
 #. placeholder {0}: items().length
 #: components/ui/components/utils/files/FileDropAnywhereCollector.tsx
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
@@ -524,6 +529,10 @@ msgstr "Erlaube es anderen deinen Bot einzuladen"
 msgid "Allow others to join your server from Discover"
 msgstr ""
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow several answers"
+msgstr ""
+
 #: components/i18n/errors.tsx
 msgid "Already friends with this user."
 msgstr "Du bist bereits mit dieser:diesem Nutzer:in befreundet."
@@ -556,6 +565,11 @@ msgstr "Ein interner Fehler ist aufgetreten. ({0})"
 
 #: components/client/e2ee/ui/views/Verify.tsx
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
+msgstr ""
+
+#. placeholder {0}: index() + 1
+#: components/modal/modals/CreatePoll.tsx
+msgid "Answer {0}"
 msgstr ""
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -778,6 +792,11 @@ msgstr "Umgeht den langsamen Modus in Kanälen"
 msgid "Calls in this chat are not end-to-end encrypted."
 msgstr ""
 
+#: components/modal/modals/CameraCapture.tsx
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Camera"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Can't find the perfect GIF? Head to Gifbox and upload your own for everyone to use."
 msgstr "Kein passendes Gif gefunden? Besuche Gifbox und lade dein eigenes hoch für jeden zum Nutzen."
@@ -797,6 +816,8 @@ msgstr ""
 #: components/modal/modals/AddBot.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
+#: components/modal/modals/CameraCapture.tsx
+#: components/modal/modals/CreatePoll.tsx
 #: components/modal/modals/CropProcess.tsx
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/DeleteCategory.tsx
@@ -1056,6 +1077,10 @@ msgstr "Chat schließen"
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
 msgstr "Konversation mit {0} beenden?"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Close poll"
+msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -2058,6 +2083,10 @@ msgstr "Rückmeldung"
 msgid "File must be smaller than {0}"
 msgstr "Datei muss kleiner als {0} sein"
 
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Files"
+msgstr ""
+
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "Find"
 msgstr ""
@@ -2129,6 +2158,10 @@ msgstr "von "
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Fruit Salad"
 msgstr "Fruchtsalat"
+
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Gallery"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
@@ -2931,6 +2964,10 @@ msgstr ""
 msgid "New Password"
 msgstr "Neues Passwort"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "New poll"
+msgstr ""
+
 #: components/client/e2ee/ui/views/Devices.tsx
 msgid "New recovery key"
 msgstr ""
@@ -3248,6 +3285,14 @@ msgstr "Bitte wähle eine Methode zur Authentifizierung deiner Anfrage."
 msgid "Please select a reason"
 msgstr "Wähle bitte einen Grund aus"
 
+#: components/ui/components/features/messaging/composition/AttachPanel.tsx
+msgid "Poll"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "poll closed"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr "Unterstützt von RNNoise"
@@ -3296,6 +3341,10 @@ msgstr ""
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
 msgstr "Die eingegebene E-Mail oder das Passwort sind falsch."
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Question"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -3414,6 +3463,10 @@ msgstr "Entfernen"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Remove all reactions"
 msgstr "Alle Reaktionen entfernen"
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Remove answer"
+msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Remove Authenticator"
@@ -3749,6 +3802,10 @@ msgstr "Wähle Videoeingabe"
 msgid "Select your language"
 msgstr "Wähle Deine Sprache"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Send"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Send attachments to chat"
 msgstr "Dateien oder Medien an Textnachricht anhängen"
@@ -3890,6 +3947,10 @@ msgstr "Einmalpasswort einrichten"
 #: components/app/interface/settings/user/Account.tsx
 msgid "Setup recovery codes"
 msgstr "Wiederherstellungscodes einrichten"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "several answers"
+msgstr ""
 
 #: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Several people are typing…"
@@ -4145,6 +4206,10 @@ msgstr "System"
 msgid "System message channels"
 msgstr "Kanäle für Systemnachrichten"
 
+#: components/modal/modals/CameraCapture.tsx
+msgid "Take photo"
+msgstr ""
+
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
 msgstr ""
@@ -4202,6 +4267,10 @@ msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "The bot is already on discover, the user must contact support to have it removed"
+msgstr ""
+
+#: components/modal/modals/CameraCapture.tsx
+msgid "The camera is not available: no camera, or access to it was denied."
 msgstr ""
 
 #: components/app/interface/settings/user/admin/Administration.tsx
