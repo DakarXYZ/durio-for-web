@@ -25,7 +25,6 @@ import {
   Time,
 } from "@revolt/ui";
 
-import { Invites } from "./Invites";
 import {
   type AdminFailure,
   adminFailure,
@@ -420,12 +419,6 @@ export default function Administration() {
           )}
         </Match>
       </Switch>
-
-      <Invites
-        active={() => !!until()}
-        admin={admin}
-        failureText={(failure) => <FailureText failure={failure} />}
-      />
 
       <Dialog
         show={!!confirm()}

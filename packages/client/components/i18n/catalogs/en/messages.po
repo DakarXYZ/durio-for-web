@@ -219,8 +219,8 @@ msgstr "{0}'s timeout will be removed and they will be able to interact with the
 #~ msgstr "{h} hours"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "{hours} h"
-msgstr "{hours} h"
+#~ msgid "{hours} h"
+#~ msgstr "{hours} h"
 
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "{m} minutes"
@@ -425,8 +425,8 @@ msgid "Accept friend request"
 msgstr "Accept friend request"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "accounts made: {uses}"
-msgstr "accounts made: {uses}"
+#~ msgid "accounts made: {uses}"
+#~ msgstr "accounts made: {uses}"
 
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
@@ -631,8 +631,8 @@ msgid "Are you sure you want to unpin this message?"
 msgstr "Are you sure you want to unpin this message?"
 
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "Ask an admin of this server for an invite link and paste it here."
-msgstr "Ask an admin of this server for an invite link and paste it here."
+#~ msgid "Ask an admin of this server for an invite link and paste it here."
+#~ msgstr "Ask an admin of this server for an invite link and paste it here."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Assign lower-ranked roles to lower-ranking members"
@@ -823,7 +823,6 @@ msgid "Can't get discover request status right now"
 msgstr "Can't get discover request status right now"
 
 #: components/app/interface/settings/user/admin/Administration.tsx
-#: components/app/interface/settings/user/admin/Invites.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/client/e2ee/ui/views/BackupOff.tsx
 #: components/client/e2ee/ui/views/KeyFiles.tsx
@@ -1193,7 +1192,6 @@ msgstr "Copied!"
 msgid "Copied. The clipboard is cleared in a minute."
 msgstr "Copied. The clipboard is cleared in a minute."
 
-#: components/app/interface/settings/user/admin/Invites.tsx
 #: components/client/e2ee/ui/views/Recovery.tsx
 msgid "Copy"
 msgstr "Copy"
@@ -1348,8 +1346,8 @@ msgstr "Create account"
 #~ msgstr "Create an account"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Create and copy link"
-msgstr "Create and copy link"
+#~ msgid "Create and copy link"
+#~ msgstr "Create and copy link"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Create and edit server roles"
@@ -2060,8 +2058,8 @@ msgid "Everyone"
 msgstr "Everyone"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "expires <0/>"
-msgstr "expires <0/>"
+#~ msgid "expires <0/>"
+#~ msgstr "expires <0/>"
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "Export and save"
@@ -2432,8 +2430,8 @@ msgid "Invite Code"
 msgstr "Invite Code"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Invite link copied."
-msgstr "Invite link copied."
+#~ msgid "Invite link copied."
+#~ msgstr "Invite link copied."
 
 #: components/auth/src/flows/Form.tsx
 msgid "Invite link or code"
@@ -2452,7 +2450,6 @@ msgid "Inviter"
 msgstr "Inviter"
 
 #: components/app/interface/settings/ServerSettings.tsx
-#: components/app/interface/settings/user/admin/Invites.tsx
 msgid "Invites"
 msgstr "Invites"
 
@@ -2905,8 +2902,8 @@ msgid "Multi-factor authentication is already enabled for this account."
 msgstr "Multi-factor authentication is already enabled for this account."
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "multi-use"
-msgstr "multi-use"
+#~ msgid "multi-use"
+#~ msgstr "multi-use"
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 #: components/app/menus/UserContextMenu.tsx
@@ -3033,8 +3030,8 @@ msgid "Nickname"
 msgstr "Nickname"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "No active invites."
-msgstr "No active invites."
+#~ msgid "No active invites."
+#~ msgstr "No active invites."
 
 #: components/client/e2ee/ui/views/ChannelEncryption.tsx
 msgid "No device of this person can read encrypted messages yet: they need the dur.io app and to sign in again."
@@ -3069,8 +3066,8 @@ msgid "No user with this id or name."
 msgstr "No user with this id or name."
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Nobody can sign up with the link any more. Accounts already made with it stay."
-msgstr "Nobody can sign up with the link any more. Accounts already made with it stay."
+#~ msgid "Nobody can sign up with the link any more. Accounts already made with it stay."
+#~ msgstr "Nobody can sign up with the link any more. Accounts already made with it stay."
 
 #: src/interface/Friends.tsx
 msgid "Nobody here right now!"
@@ -3247,6 +3244,10 @@ msgstr "Password changed successfully."
 #: components/auth/src/flows/Form.tsx
 msgid "Paste the invite link or code."
 msgstr "Paste the invite link or code."
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Paste the invite link you got (…/invite/…) or just its code."
+msgstr "Paste the invite link you got (…/invite/…) or just its code."
 
 #: src/interface/Friends.tsx
 msgid "Pending"
@@ -3687,12 +3688,12 @@ msgid "Review policy changes"
 msgstr "Review policy changes"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Revoke"
-msgstr "Revoke"
+#~ msgid "Revoke"
+#~ msgstr "Revoke"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Revoke this invite?"
-msgstr "Revoke this invite?"
+#~ msgid "Revoke this invite?"
+#~ msgstr "Revoke this invite?"
 
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "Roadmap"
@@ -3979,8 +3980,8 @@ msgid "Several people are typing…"
 msgstr "Several people are typing…"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Several people can sign up with it until it expires"
-msgstr "Several people can sign up with it until it expires"
+#~ msgid "Several people can sign up with it until it expires"
+#~ msgstr "Several people can sign up with it until it expires"
 
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -4020,8 +4021,8 @@ msgid "Sign-up is by invitation"
 msgstr "Sign-up is by invitation"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "Sign-up on this server is by invitation. Make a link and send it to the person."
-msgstr "Sign-up on this server is by invitation. Make a link and send it to the person."
+#~ msgid "Sign-up on this server is by invitation. Make a link and send it to the person."
+#~ msgstr "Sign-up on this server is by invitation. Make a link and send it to the person."
 
 #: components/app/interface/settings/user/admin/Administration.tsx
 #: components/client/e2ee/ui/views/Devices.tsx
@@ -4033,8 +4034,8 @@ msgid "Silent"
 msgstr "Silent"
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "single use"
-msgstr "single use"
+#~ msgid "single use"
+#~ msgstr "single use"
 
 #: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Slowmode Immune"
@@ -4373,8 +4374,8 @@ msgid "The key backup was turned off on another device. The keys of this device 
 msgstr "The key backup was turned off on another device. The keys of this device are no longer backed up: set up a new recovery key to turn the backup on again."
 
 #: components/app/interface/settings/user/admin/Invites.tsx
-msgid "The link works for"
-msgstr "The link works for"
+#~ msgid "The link works for"
+#~ msgstr "The link works for"
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "The passphrases do not match."
@@ -4539,8 +4540,8 @@ msgid "This invite link is for {link}, but you are signing up on {here}. Go back
 msgstr "This invite link is for {link}, but you are signing up on {here}. Go back and choose that server to use it."
 
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "This is an invite to a server (a community), not to sign up. Sign up with the invite link from an admin first, then open the server invite."
-msgstr "This is an invite to a server (a community), not to sign up. Sign up with the invite link from an admin first, then open the server invite."
+#~ msgid "This is an invite to a server (a community), not to sign up. Sign up with the invite link from an admin first, then open the server invite."
+#~ msgstr "This is an invite to a server (a community), not to sign up. Sign up with the invite link from an admin first, then open the server invite."
 
 #: components/client/e2ee/ui/views/KeyFiles.tsx
 msgid "This is not a key file, or it is damaged."

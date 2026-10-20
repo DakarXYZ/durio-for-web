@@ -5,6 +5,7 @@ import { styled } from "styled-system/jsx";
 import { useApi, useClientLifecycle } from "@revolt/client";
 import {
   parseInvite,
+  rememberSignUpInvite,
   sameHost,
   serverHost,
 } from "@revolt/common/lib/inviteLink";
@@ -93,7 +94,7 @@ function InviteHint() {
         </strong>
         <p>
           <Trans>
-            Ask an admin of this server for an invite link and paste it here.
+            Paste the invite link you got (…/invite/…) or just its code.
           </Trans>
         </p>
       </div>
@@ -115,13 +116,10 @@ export default function FlowCreate() {
   // dur.io: a pasted invite link of another server (not switched automatically)
   const thisHost = serverHost(apiUrl);
   const [otherHost, setOtherHost] = createSignal<string>();
-  const [serverInvite, setServerInvite] = createSignal(false);
   function onInviteInput(event: InputEvent) {
     const field = event.target as { name?: string; value?: string };
     if (field.name !== "invite") return;
-    const parsed = parseInvite(field.value ?? "");
-    setServerInvite(!!parsed?.serverInvite);
-    const host = parsed?.serverInvite ? undefined : parsed?.host;
+    const host = parseInvite(field.value ?? "")?.host;
     setOtherHost(host && !sameHost(host, thisHost) ? host : undefined);
   }
 
@@ -133,11 +131,9 @@ export default function FlowCreate() {
     const email = data.get("email") as string;
     const password = data.get("new-password") as string;
     const captcha = data.get("captcha") as string;
-    // dur.io: the field takes the invite link too
+    // dur.io: the field takes the invite link too (a standard server invite)
     const rawInvite = (data.get("invite") as string | null) ?? "";
-    const parsed = parseInvite(rawInvite);
-    const invite =
-      parsed && !parsed.serverInvite ? parsed.code : rawInvite.trim();
+    const invite = parseInvite(rawInvite)?.code ?? rawInvite.trim();
 
     await api.post("/auth/account/create", {
       email,
@@ -145,6 +141,9 @@ export default function FlowCreate() {
       captcha,
       ...(invite ? { invite } : {}),
     });
+
+    // once in the app, the invite opens (the server one was invited to)
+    if (invite) rememberSignUpInvite(invite);
 
     if (!config.features.email) {
       await login({ email, password }, modals);
@@ -176,15 +175,6 @@ export default function FlowCreate() {
               fields={[{ field: "invite", value: code, hint: <InviteHint /> }]}
             />
           </div>
-          <Show when={serverInvite()}>
-            <InviteHostWarning role="alert">
-              <Trans>
-                This is an invite to a server (a community), not to sign up.
-                Sign up with the invite link from an admin first, then open the
-                server invite.
-              </Trans>
-            </InviteHostWarning>
-          </Show>
           <Show when={otherHost()} keyed>
             {(host) => <OtherServer link={host} here={thisHost} />}
           </Show>

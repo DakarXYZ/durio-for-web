@@ -68,11 +68,3 @@ export async function withElevation<T>(
 export function userTag(user: { username: string; discriminator: string }) {
   return `${user.username}#${user.discriminator}`;
 }
-
-/**
- * An invite code short enough for a list row (the whole code is in the copied link)
- * @param code Invite code
- */
-export function shortCode(code: string) {
-  return code.length > 12 ? `${code.slice(0, 6)}…${code.slice(-4)}` : code;
-}

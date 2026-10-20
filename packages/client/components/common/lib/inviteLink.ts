@@ -1,23 +1,15 @@
-// Account invite links of our servers (dur.io): `https://<host>/join/<code>`, a static
-// page of the server (self-hosted). Admins make them in "Administration"; on sign-up the
-// link or the bare code can be pasted. `/invite/<code>` is a server (guild) invite of
-// the app, not a sign-up invite.
+// Invite links of our servers (dur.io): the standard server invites, `https://<host>/invite/<code>`.
+// A dur.io server (invite-only sign-up) also takes such an invite for creating an account:
+// on sign-up the link or the bare code can be pasted, and once in, the app opens the invite.
 
-/** A pasted sign-up invite: its code, and the server host when it was a link */
+/** A pasted invite: its code, and the server host when it was a link */
 export interface ParsedInvite {
   code: string;
   host?: string;
-  serverInvite?: false;
-}
-
-/** A pasted server (guild) invite link: no use for signing up */
-export interface ParsedServerInvite {
-  serverInvite: true;
-  host: string;
 }
 
 const LINK =
-  /^(?:https?:\/\/)?([^/\s?#]+)\/(join|invite)\/([^/\s?#]+)\/?(?:[?#].*)?$/i;
+  /^(?:https?:\/\/)?([^/\s?#]+)\/invite\/([^/\s?#]+)\/?(?:[?#].*)?$/i;
 
 /**
  * Host of a server from its API address (`https://host/api` → `host`)
@@ -28,38 +20,24 @@ export function serverHost(apiUrl: string): string {
 }
 
 /**
- * Sign-up link of an invite on a server
- * @param apiUrl API address of the server
- * @param code Invite code
- */
-export function inviteLink(apiUrl: string, code: string): string {
-  return `https://${serverHost(apiUrl)}/join/${encodeURIComponent(code)}`;
-}
-
-/**
- * The invite in what was pasted: a link `https://<host>/join/<code>` (also without the
- * scheme) or a bare code; a server invite link `…/invite/<code>` is told apart
+ * The invite in what was pasted: a link `https://<host>/invite/<code>` (also without the
+ * scheme) or a bare code
  * @param input Field value
  * @returns The invite, `undefined` when nothing usable was entered
  */
-export function parseInvite(
-  input: string,
-): ParsedInvite | ParsedServerInvite | undefined {
+export function parseInvite(input: string): ParsedInvite | undefined {
   const text = input.trim();
   if (!text) return;
 
   const link = LINK.exec(text);
   if (link) {
-    const host = link[1].toLowerCase();
-    if (link[2].toLowerCase() === "invite") return { serverInvite: true, host };
-
-    let code = link[3];
+    let code = link[2];
     try {
       code = decodeURIComponent(code);
     } catch {
       // not encoded
     }
-    return { code, host };
+    return { code, host: link[1].toLowerCase() };
   }
 
   if (/[\s/]/.test(text)) return;
@@ -74,4 +52,32 @@ export function parseInvite(
 export function sameHost(a: string, b: string): boolean {
   const norm = (host: string) => host.toLowerCase().replace(/:443$/, "");
   return norm(a) === norm(b);
+}
+
+const PENDING = "durio:signUpInvite";
+
+/**
+ * Remember the invite an account was just created with, to open it once in the app
+ * @param code Invite code
+ */
+export function rememberSignUpInvite(code: string) {
+  try {
+    sessionStorage.setItem(PENDING, code);
+  } catch {
+    // no storage: the invite is not opened, it still works from "Join a server"
+  }
+}
+
+/**
+ * The invite remembered at sign-up, once
+ * @returns Invite code
+ */
+export function takeSignUpInvite(): string | undefined {
+  try {
+    const code = sessionStorage.getItem(PENDING) ?? undefined;
+    sessionStorage.removeItem(PENDING);
+    return code;
+  } catch {
+    return undefined;
+  }
 }

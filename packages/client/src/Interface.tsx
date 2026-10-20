@@ -7,7 +7,7 @@ import {
   Switch,
 } from "solid-js";
 
-import { Server } from "stoat.js";
+import { PublicChannelInvite, Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
 import { ChannelContextMenu, ServerContextMenu } from "@revolt/app";
@@ -18,6 +18,7 @@ import { State } from "@revolt/client/Controller";
 import { DesktopBadge } from "@revolt/client/DesktopBadge";
 import { NotificationsWorker } from "@revolt/client/NotificationsWorker";
 import { E2eeWatcher } from "@revolt/client/e2ee/ui/E2eeWatcher";
+import { takeSignUpInvite } from "@revolt/common/lib/inviteLink";
 import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
@@ -52,6 +53,19 @@ const Interface = (props: { children: JSX.Element }) => {
     if (!isLoggedIn() && !isSwapping()) {
       state.auth.setNextPath(pathname);
     }
+  });
+
+  // dur.io: the invite an account was just created with opens once, one click to join;
+  // the manual sign-up codes of a new server are no server invites, nothing opens then
+  createEffect(() => {
+    if (!isLoggedIn() || !lifecycle.loadedOnce()) return;
+    const code = takeSignUpInvite();
+    if (!code) return;
+    client()
+      .api.get(`/invites/${encodeURIComponent(code) as ""}`)
+      .then((invite) => PublicChannelInvite.from(client(), invite))
+      .then((invite) => openModal({ type: "invite", invite }))
+      .catch(() => {});
   });
 
   function isDisconnected() {
