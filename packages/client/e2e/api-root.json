@@ -1,0 +1,96 @@
+{
+  "stoat": "0.16.0+fork.1",
+  "revolt": "0.16.0+fork.1",
+  "features": {
+    "captcha": {
+      "enabled": false,
+      "key": ""
+    },
+    "email": false,
+    "invite_only": false,
+    "autumn": {
+      "enabled": true,
+      "url": "https://durio.test/autumn"
+    },
+    "january": {
+      "enabled": true,
+      "url": "https://durio.test/january"
+    },
+    "livekit": {
+      "enabled": false,
+      "nodes": []
+    },
+    "limits": {
+      "global": {
+        "group_size": 100,
+        "message_embeds": 5,
+        "message_replies": 5,
+        "message_reactions": 20,
+        "server_emoji": 100,
+        "server_roles": 200,
+        "server_channels": 200,
+        "body_limit_size": 105000000,
+        "restrict_server_creation": [],
+        "new_user_hours": 72,
+        "max_invite_duration_days": 30
+      },
+      "new_user": {
+        "outgoing_friend_requests": 5,
+        "bots": 2,
+        "message_length": 2000,
+        "message_attachments": 5,
+        "servers": 50,
+        "voice_quality": 16000,
+        "video": true,
+        "video_resolution": [1920, 1080],
+        "video_aspect_ratio": [0.30000001192092896, 10.0],
+        "file_upload_size_limits": {
+          "attachments": 100000000,
+          "banners": 6000000,
+          "icons": 2500000,
+          "backgrounds": 6000000,
+          "avatars": 4000000,
+          "emojis": 500000
+        }
+      },
+      "default": {
+        "outgoing_friend_requests": 10,
+        "bots": 5,
+        "message_length": 2000,
+        "message_attachments": 5,
+        "servers": 100,
+        "voice_quality": 16000,
+        "video": true,
+        "video_resolution": [1920, 1080],
+        "video_aspect_ratio": [0.30000001192092896, 10.0],
+        "file_upload_size_limits": {
+          "banners": 6000000,
+          "backgrounds": 6000000,
+          "emojis": 500000,
+          "attachments": 100000000,
+          "avatars": 4000000,
+          "icons": 2500000
+        }
+      }
+    },
+    "legal_links": {
+      "terms_of_service": "",
+      "privacy_policy": "",
+      "guidelines": ""
+    },
+    "assets": "",
+    "e2ee": {
+      "enabled": false,
+      "envelope_versions": [1],
+      "max_envelope_bytes": 16384,
+      "default_for_new_dms": false,
+      "max_to_device_batch": 1000,
+      "max_to_device_bytes": 65536,
+      "max_attachments": 10,
+      "max_request_bytes": 4194304
+    }
+  },
+  "ws": "wss://durio.test/ws",
+  "app": "https://durio.test",
+  "vapid": ""
+}
