@@ -1155,6 +1155,7 @@ msgstr "Kaozeadennoù"
 msgid "Copied file to clipboard"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr "Eilet !"
@@ -1230,6 +1231,7 @@ msgstr "Eilañ an ID ar servijer"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Copy text"
 msgstr "Eilañ ar skrid"
 
@@ -3324,6 +3326,7 @@ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "React"
 msgstr ""
 
@@ -3512,6 +3515,7 @@ msgid "Replace the backup (keeps the recovery key)"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Reply"
 msgstr "Respont"
 

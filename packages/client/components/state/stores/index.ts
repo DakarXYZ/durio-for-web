@@ -12,6 +12,7 @@ import { TypeLinkSafety } from "./LinkSafety";
 import { TypeLocale } from "./Locale";
 import { TypeNotificationOptions } from "./NotificationOptions";
 import { TypeOrdering } from "./Ordering";
+import { TypeRecentEmoji } from "./RecentEmoji";
 import { TypeReleaseNotes } from "./ReleaseNotes";
 import { TypeServerFolders } from "./ServerFolders";
 import { TypeSettings } from "./Settings";
@@ -30,6 +31,7 @@ export type UnsyncedStore = {
   layout: TypeLayout;
   linkSafety: TypeLinkSafety;
   locale: TypeLocale;
+  recentEmoji: TypeRecentEmoji;
   settings: TypeSettings;
   sounds: TypeSounds;
   sync: TypeSynchronisation;

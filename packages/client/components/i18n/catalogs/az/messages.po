@@ -1182,6 +1182,7 @@ msgstr "Söhbətlər"
 msgid "Copied file to clipboard"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr ""
@@ -1258,6 +1259,7 @@ msgstr "Server kimliyini kopyalayın"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Copy text"
 msgstr "Mətni kopyalayın"
 
@@ -3365,6 +3367,7 @@ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "React"
 msgstr ""
 
@@ -3555,6 +3558,7 @@ msgid "Replace the backup (keeps the recovery key)"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Reply"
 msgstr "Cavab ver"
 

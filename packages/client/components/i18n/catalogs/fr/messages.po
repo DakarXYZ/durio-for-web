@@ -1143,6 +1143,7 @@ msgstr "Discussions"
 msgid "Copied file to clipboard"
 msgstr "Fichier copié dans le presse-papiers"
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr "Copié !"
@@ -1218,6 +1219,7 @@ msgstr "Copier l'ID du serveur"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Copy text"
 msgstr "Copier le texte"
 
@@ -3300,6 +3302,7 @@ msgstr "Attaque par déni de service ou spam"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "React"
 msgstr "Réagir"
 
@@ -3485,6 +3488,7 @@ msgid "Replace the backup (keeps the recovery key)"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Reply"
 msgstr "Répondre"
 

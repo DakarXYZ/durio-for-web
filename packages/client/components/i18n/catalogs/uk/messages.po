@@ -1155,6 +1155,7 @@ msgstr "Розмови"
 msgid "Copied file to clipboard"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr "Скопійовано!"
@@ -1231,6 +1232,7 @@ msgstr "Скопіювати ID сервера"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Copy text"
 msgstr "Скопіювати текст"
 
@@ -3325,6 +3327,7 @@ msgstr "Рейд/спам-атака"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "React"
 msgstr "Поставити реакцію"
 
@@ -3513,6 +3516,7 @@ msgid "Replace the backup (keeps the recovery key)"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Reply"
 msgstr "Відповісти"
 

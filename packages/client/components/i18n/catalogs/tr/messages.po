@@ -1155,6 +1155,7 @@ msgstr "Sohbetler"
 msgid "Copied file to clipboard"
 msgstr "Dosya panoya kopyalandı"
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr "Kopyalandı!"
@@ -1230,6 +1231,7 @@ msgstr "Sunucu ID'sini kopyala"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Copy text"
 msgstr "Metni kopyala"
 
@@ -3324,6 +3326,7 @@ msgstr "Baskın veya spam saldırısı"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "React"
 msgstr "Tepki verebilme"
 
@@ -3512,6 +3515,7 @@ msgid "Replace the backup (keeps the recovery key)"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Reply"
 msgstr "Yanıtla"
 

@@ -3,3 +3,4 @@ export * from "./floating";
 export * from "./invisibleScrollable";
 export * from "./motion";
 export * from "./scrollable";
+export * from "./swipeReply";

@@ -1155,6 +1155,7 @@ msgstr "المحادثات"
 msgid "Copied file to clipboard"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Copied!"
 msgstr "تم النسخ!"
@@ -1231,6 +1232,7 @@ msgstr "انسخ معرّف السيرفر"
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Copy text"
 msgstr "انسخ النص"
 
@@ -3325,6 +3327,7 @@ msgstr "هجوم أو رسائل مزعجة (سبام)"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "React"
 msgstr "تفاعل"
 
@@ -3513,6 +3516,7 @@ msgid "Replace the backup (keeps the recovery key)"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 msgid "Reply"
 msgstr "ردّ"
 

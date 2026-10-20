@@ -1,4 +1,4 @@
-import { JSX, Match, Show, Switch } from "solid-js";
+import { JSX, Match, Show, Switch, createMemo } from "solid-js";
 
 import { useLingui } from "@lingui/solid/macro";
 import { cva } from "styled-system/css";
@@ -16,6 +16,7 @@ import {
 } from "@revolt/ui/components/utils";
 
 import { MessageToolbar } from "./MessageToolbar";
+import { onMessageClick, selectedMessage } from "./quickActions";
 
 interface CommonProps {
   /**
@@ -34,6 +35,13 @@ interface CommonProps {
    * Whether this message should be treated as a link
    */
   isLink?: boolean | "hide";
+
+  /**
+   * dur.io: whether this message starts a group (spacing above it); by
+   * default the opposite of tail. Compact mode renders every message as a
+   * tail and still spaces the groups.
+   */
+  groupStart?: boolean;
 }
 
 type Props = CommonProps & {
@@ -141,7 +149,14 @@ const base = cva({
       textDecoration: "underline",
     },
 
-    "&:hover .Toolbar": {
+    // touch screens keep :hover after a tap, there a tap selects instead
+    "@media (hover: hover)": {
+      "&:hover .Toolbar": {
+        display: "flex",
+      },
+    },
+
+    "&[data-quick-selected] .Toolbar": {
       display: "flex",
     },
   },
@@ -150,6 +165,14 @@ const base = cva({
       true: {
         marginTop: 0,
       },
+    },
+    /**
+     * dur.io: space only above the first message of a group, so the messages
+     * of one author read as one block (upstream spaced every message alike)
+     */
+    groupStart: {
+      true: {},
+      false: {},
     },
     mentioned: {
       true: {
@@ -183,8 +206,6 @@ const base = cva({
         },
       },
       false: {
-        marginTop: "var(--message-group-spacing) !important",
-
         "&:hover": {
           background: "var(--md-sys-color-surface-container)",
         },
@@ -199,6 +220,15 @@ const base = cva({
       },
     },
   },
+  compoundVariants: [
+    {
+      isLink: false,
+      groupStart: true,
+      css: {
+        marginTop: "var(--message-group-spacing) !important",
+      },
+    },
+  ],
   defaultVariants: {
     isLink: false,
     sendStatus: "sent",
@@ -332,7 +362,13 @@ const CompactInfo = styled(Row, {
 export function MessageContainer(props: Props) {
   const { t } = useLingui();
   const { message } = useMessage();
-  const { isMobile, isIOSTouch } = useDevice();
+  const { isIOSTouch } = useDevice();
+
+  const quick = () =>
+    !!message && props.isLink !== true && props.isLink !== "hide";
+  const selected = createMemo(
+    () => !!message && selectedMessage() === message.id,
+  );
 
   return (
     <div
@@ -340,10 +376,16 @@ export function MessageContainer(props: Props) {
       ref={props.ref}
       onMouseEnter={() => props.onHover && props.onHover(true)}
       onMouseLeave={() => props.onHover && props.onHover(false)}
+      onClick={(e) =>
+        quick() && !props.editing && onMessageClick(e, message!.id)
+      }
+      data-quick-message={message?.id}
+      data-quick-selected={selected() || undefined}
       class={
         "group " +
         base({
           tail: props.tail,
+          groupStart: props.groupStart ?? !props.tail,
           mentioned: props.mentioned,
           highlight: props.highlight,
           sendStatus: props.sendStatus,
@@ -353,14 +395,7 @@ export function MessageContainer(props: Props) {
       }
       use:floating={{ contextMenu: props.contextMenu }}
     >
-      <Show
-        when={
-          !isMobile &&
-          message &&
-          props.isLink !== true &&
-          props.isLink !== "hide"
-        }
-      >
+      <Show when={quick() && !props.editing}>
         <MessageToolbar />
       </Show>
 

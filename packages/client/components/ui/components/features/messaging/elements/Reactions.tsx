@@ -216,32 +216,45 @@ const ReactionBase = styled("div", {
     display: "flex",
     overflow: "hidden",
     flexDirection: "row",
-    gap: "var(--gap-md)",
+    alignItems: "center",
+    gap: "6px",
     cursor: "pointer",
     userSelect: "none",
     verticalAlign: "middle",
-    padding: "var(--gap-md)",
+    // dur.io: smaller and quieter than upstream's, the message stays in front
+    padding: "2px 8px",
+    minHeight: "26px",
+    fontSize: "0.875em",
     borderRadius: "var(--borderRadius-md)",
+    border: "1px solid transparent",
 
     transition: "var(--transitions-fast) all",
-    fontWeight: 600,
+    fontWeight: 500,
     fontFeatureSettings: "'tnum' 1",
 
     "& img": {
-      width: "1.2em",
-      height: "1.2em",
+      width: "1.15em",
+      height: "1.15em",
       objectFit: "contain",
     },
   },
   variants: {
     active: {
       true: {
-        color: "var(--md-sys-color-on-secondary-container)",
-        background: "var(--md-sys-color-secondary-container)",
+        color: "var(--md-sys-color-primary)",
+        background:
+          "color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)",
+        borderColor:
+          "color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent)",
       },
       false: {
-        color: "var(--md-sys-color-on-surface)",
-        background: "var(--md-sys-color-surface-container-low)",
+        color: "var(--md-sys-color-on-surface-variant)",
+        background:
+          "color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent)",
+
+        "&:hover": {
+          borderColor: "var(--md-sys-color-outline-variant)",
+        },
       },
     },
   },
@@ -261,8 +274,9 @@ const AddReaction = styled(ReactionBase, {
     opacity: 0,
     justifyContent: "center",
     fontSize: "var(--emoji-size)",
-    background: "var(--md-sys-color-surface-bright)",
-    height: "33px",
+    background:
+      "color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent)",
+    height: "26px",
     aspectRatio: "1/1",
     padding: "var(--gap-sm)",
   },

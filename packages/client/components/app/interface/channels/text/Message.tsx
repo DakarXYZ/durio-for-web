@@ -6,6 +6,7 @@ import {
   For,
   JSX,
   Match,
+  onCleanup,
   onMount,
   Show,
   Switch,
@@ -19,6 +20,7 @@ import { styled } from "styled-system/jsx";
 import { decodeTime } from "ulid";
 
 import { useClient } from "@revolt/client";
+import { useDevice } from "@revolt/common";
 import { isGif } from "@revolt/common/lib/gifs";
 import { useTime } from "@revolt/i18n";
 import { Markdown } from "@revolt/markdown";
@@ -40,6 +42,7 @@ import {
 } from "@revolt/ui";
 import { MediaPickerProps } from "@revolt/ui/components/features/messaging/composition/picker/CompositionMediaPicker";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
+import { addSwipeReplyListener } from "@revolt/ui/directives";
 
 import { MessageContextMenu } from "../../../menus/MessageContextMenu";
 import {
@@ -87,6 +90,7 @@ interface Props {
 interface MessageContextShape {
   message: MessageInterface;
   reactPicker: Accessor<MediaPickerProps | undefined>;
+  react: (emoji: string) => void;
 }
 
 const messageContext = createContext<Partial<MessageContextShape>>({});
@@ -98,6 +102,7 @@ function MessageContext(
   const contextShape = {
     message: props.message,
     reactPicker: props.reactPicker,
+    react: props.react,
   };
 
   return (
@@ -118,10 +123,25 @@ export function Message(props: Props) {
   const { t } = useLingui();
   const client = useClient();
   const { showError } = useModals();
+  const { hasTouch } = useDevice();
 
   const [isHovering, setIsHovering] = createSignal(false);
   const [reactPicker, setReactPicker] = createSignal<MediaPickerProps>();
   let msgRef!: HTMLDivElement;
+
+  // dur.io: swipe left to reply, on touch screens
+  onMount(() => {
+    if (!hasTouch || props.isLink) return;
+    onCleanup(
+      addSwipeReplyListener(msgRef, () => {
+        if (
+          !props.editing &&
+          props.message.channel?.havePermission("SendMessage")
+        )
+          state.draft.addReply(props.message, client().user!.id);
+      }),
+    );
+  });
 
   /**
    * Determine whether this message only contains a GIF
@@ -137,7 +157,10 @@ export function Message(props: Props) {
    * React with an emoji
    * @param emoji Emoji
    */
-  const react = (emoji: string) => props.message.react(emoji).catch(showError);
+  const react = (emoji: string) => {
+    state.recentEmoji.use(emoji);
+    props.message.react(emoji).catch(showError);
+  };
 
   /**
    * Remove emoji reaction
@@ -160,7 +183,11 @@ export function Message(props: Props) {
   );
 
   return (
-    <MessageContext message={props.message} reactPicker={reactPicker}>
+    <MessageContext
+      message={props.message}
+      reactPicker={reactPicker}
+      react={react}
+    >
       <MessageContainer
         ref={msgRef}
         onHover={setIsHovering}
@@ -211,6 +238,7 @@ export function Message(props: Props) {
         editing={props.editing}
         isLink={props.isLink}
         tail={props.tail || state.settings.getValue("appearance:compact_mode")}
+        groupStart={!props.tail}
         header={
           <For each={props.message.replyIds}>
             {(reply_id) => {
