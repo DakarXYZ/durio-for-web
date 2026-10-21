@@ -1,0 +1,27 @@
+# durio-web: the browser client of a dur.io server (`mise build:server`), at /web/app/.
+# Plain http on :8080 inside the compose network; the server's Caddy (durio-self-hosted)
+# terminates TLS and sets the Content-Security-Policy. No admin API, no saved config, no
+# certificates: the container runs read-only.
+{
+	admin off
+	persist_config off
+	auto_https off
+}
+
+:8080 {
+	handle /web/app/* {
+		root * /srv
+		# hashed file names: cached for good; everything else is checked every time
+		@hashed path /web/app/assets/*
+		header @hashed Cache-Control "public, max-age=31536000, immutable"
+		@other not path /web/app/assets/*
+		header @other Cache-Control "no-cache"
+		# routes of the app (/web/app/server/…) get index.html
+		try_files {path} /web/app/index.html
+		file_server
+	}
+
+	handle {
+		respond 404
+	}
+}

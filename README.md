@@ -1,14 +1,15 @@
-# durio-for-web — интерфейс dur.io для Windows
+# durio-for-web — интерфейс dur.io для Windows и браузера
 
-**English summary.** The user interface of the **dur.io** Windows client (Solid.js). It is not a browser client:
-it is built in desktop mode and packaged inside [durio-for-desktop](https://github.com/DakarXYZ/durio-for-desktop),
-which serves it locally. The fork adds end-to-end encryption (beta) of DMs and groups, accounts on several servers,
+**English summary.** The user interface of **dur.io** (Solid.js). It is built in desktop mode and packaged inside
+[durio-for-desktop](https://github.com/DakarXYZ/durio-for-desktop), which serves it locally, and in server mode as
+the browser client a dur.io server hosts itself at `https://<server>/web/app/` (image `durio-web`). The fork adds end-to-end encryption (beta) of DMs and groups, accounts on several servers,
 an administration page with a 2FA admin mode and invite links, 100 MB uploads, 1080p60 screen sharing, packaged
 emoji, and removes the original project's trackers and remote services. Licensed under AGPL-3.0.
 
-Интерфейс мессенджера **dur.io** (Solid.js, Vite, TypeScript). Браузерного веб-клиента для пользователей **нет**:
-эта сборка работает только внутри Windows-клиента [durio-for-desktop](https://github.com/DakarXYZ/durio-for-desktop),
-который отдаёт её локально с `app://durio/`. Автор и владелец форка — DakarX
+Интерфейс мессенджера **dur.io** (Solid.js, Vite, TypeScript). Две сборки: для Windows-клиента
+[durio-for-desktop](https://github.com/DakarXYZ/durio-for-desktop), который отдаёт её локально с `app://durio/`, и
+браузерная — её отдаёт сам сервер dur.io по адресу `https://<сервер>/web/app/` (образ `durio-web`,
+[durio-self-hosted](https://github.com/DakarXYZ/durio-self-hosted)). Автор и владелец форка — DakarX
 ([GitHub DakarXYZ](https://github.com/DakarXYZ)).
 
 Основано на [stoatchat/for-web](https://github.com/stoatchat/for-web). dur.io — независимый форк и не связан с
@@ -22,15 +23,14 @@ emoji, and removes the original project's trackers and remote services. Licensed
   восстановления (и его выключение), файлы ключей, отчёт диагностики; мастер «ключи потеряны»; настройка «скрывать
   текст зашифрованных сообщений в уведомлениях». Крипто-ядро — [durio-crypt](https://github.com/DakarXYZ/durio-crypt)
   (wasm в Web Worker, одно на аккаунт).
-- **Несколько серверов и аккаунтов**: сервера по умолчанию нет — первый экран спрашивает адрес и находит API через
+- **Несколько серверов и аккаунтов**: у десктопа сервера по умолчанию нет — первый экран спрашивает адрес и находит API через
   `https://<адрес>/.well-known/stoat`; аккаунты на разных серверах (маршруты `/i/<host>/…`), токены, хранилища и
   ключи шифрования — отдельно для каждой пары «сервер + пользователь».
 - **Администрирование** (Настройки → «Администрирование», только для админов сервера): режим администратора
   включается кодом приложения-аутентификатора (нужна 2FA в аккаунте) и действует около часа; найти пользователя
-  (id или `имя#1234`) и завершить один или все его сеансы; ссылки-приглашения на 1, 4, 12 или 24 часа,
-  одноразовые или многоразовые, список и отзыв.
-- **Регистрация по приглашению**: поле принимает код или ссылку `https://<сервер>/join/<код>` и предупреждает,
-  если ссылка для другого сервера или это приглашение в сообщество, а не на регистрацию.
+  (id или `имя#1234`) и завершить один или все его сеансы.
+- **Регистрация по приглашению**: на сервере только по приглашениям поле принимает обычное приглашение на сервер —
+  код или ссылку `https://<сервер>/invite/<код>`; после входа приглашение открывается, чтобы вступить.
 - **Лимиты**: вложения — по лимиту сервера (на наших — 100 МБ), зашифрованные — не больше 100 МБ; демонстрация
   экрана в 1080p 60 fps (Настройки → «Голос» → «Качество демонстрации»).
 - **Без внешних сервисов оригинала**: эмодзи упакованы в сборку (не грузятся со статики оригинала), нет Sentry,
@@ -133,7 +133,7 @@ outbox); в клиенте — `packages/client/components/client/e2ee/`.
 
 ## Сборка для десктопа
 
-Единственная сборка, которую мы выпускаем. Перед ней нужны `build:deps` (в том числе `lingui compile` — без
+Перед ней нужны `build:deps` (в том числе `lingui compile` — без
 скомпилированных каталогов сборка не проходит):
 
 ```bash
@@ -147,8 +147,8 @@ node packages/client/desktop/check-build.mjs packages/client/dist-desktop
 ```
 
 Результат — `packages/client/dist-desktop/`; durio-for-desktop копирует его к себе (`scripts/sync-web.mjs`) и
-закрепляет коммит for-web в `for-web.lock.json`. Сборки `mise build` / `build:prod` и `Dockerfile` остались от
-оригинала (веб-сервер), мы их не используем.
+закрепляет коммит for-web в `for-web.lock.json`. Сборки `mise build` / `build:prod` и корневой `Dockerfile`
+остались от оригинала, мы их не выпускаем.
 
 Режим десктопа (`packages/client/desktop/plugin.ts`):
 
@@ -167,6 +167,37 @@ node packages/client/desktop/check-build.mjs packages/client/dist-desktop
   может; `http:`/`ws:` — только с `desktopCsp({ dev: true })` для локального бэкенда), `img-src`/`media-src` с
   `https:` и `blob:` (расшифрованные вложения), `style-src 'unsafe-inline'` (Solid, KaTeX, Shiki), без inline-скриптов
   (сборка на них падает).
+
+## Сборка для сервера (браузерный клиент)
+
+Браузерный клиент dur.io живёт на самом сервере: `https://<сервер>/web/app/` (страница с инструкцией —
+`/web/info`). Собирается так же, после `build:deps`:
+
+```bash
+mise build:server
+# без mise: как для десктопа, но
+NODE_OPTIONS=--max-old-space-size=4096 pnpm --filter client exec vite build --mode server
+node packages/client/selfhosted/check-build.mjs packages/client/dist-server
+```
+
+Режим сервера (`packages/client/selfhosted/plugin.ts`):
+
+- base `/web/app/`, результат в `packages/client/dist-server/`; маршруты роутера — относительно base
+  (`APP_BASE`, `appPath()`, `routerPath()` в `components/common/lib/env.ts`); ссылки на сервер dur.io, которые
+  клиент копирует, ведут в `/web/app/…`, приглашения — на страницу сервера `/invite/<код>`;
+- сервер по умолчанию — тот, что отдал страницу (`location.host`, API — `/api`), экрана адреса нет; другой сервер
+  можно выбрать со страницы входа;
+- PWA и Web Push остаются (scope `/web/app/`); RNNoise упакован, как в десктопе; inline-скриптов и Sentry нет
+  (CSP сервера без `'unsafe-inline'` задаёт Caddy в durio-self-hosted);
+- **шифрование в браузере**: ключ хранилища ключей (32 байта) держит сам браузер — зашифрованным неизвлекаемым
+  ключом AES-GCM WebCrypto в IndexedDB (`components/client/e2ee/storeKey.ts`). Это слабее, чем в приложениях: ключ
+  лежит в том же профиле браузера, а код приложения отдаёт сервер. Первый диалог шифрования об этом
+  предупреждает; устройство называется «dur.io Web (…)».
+
+Образ `ghcr.io/dakarxyz/durio-web` (`docker/durio-web/`): готовая `dist-server` и Caddy на `:8080` без TLS,
+SPA-фоллбэк на `index.html`, `Cache-Control` (хешированные файлы — навсегда, остальное — `no-cache`); работает
+read-only, без root и capabilities. Workflow `durio web image`: каждый push в `main` — теги `main` и
+`sha-<коммит>`, тег `web-v<версия>` — образ `<версия>` (её ставят в `WEB_TAG` durio-self-hosted).
 
 **Bridge contract for the Electron side** (`window.native`, preload with `contextBridge`; every IPC handler checks
 `event.senderFrame.url` starts with `app://durio/`). Existing upstream members stay as they are: `versions.{node,

@@ -8,8 +8,8 @@
 // - One owner per accountKey (Q28): the worker holds the Web Lock; another holder →
 //   `locked` ("encryption is active in another window": no writing to encrypted
 //   channels) until that lock is released.
-// - The store key comes from the desktop bridge (stage 7); `vite dev` has an insecure
-//   fallback, other builds without the bridge report `unavailable`.
+// - The store key comes from the desktop bridge (stage 7); in a browser the browser keeps
+//   it (`storeKey.ts`); `vite dev` has an insecure fallback.
 // - Account switch (`onClientDispose`): close → terminate. Sign-out
 //   (`forgetE2eeAccount`, WEB-12): the SDK closes and destroys the store — or, if that
 //   did not happen, a worker of our own does, a blocked deletion retried — then the

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Build web for a dur.io server, served at /web/app/ (packages/client/dist-server)"
+#MISE depends=["install:assets", "lingui:compile"]
+#MISE wait_for=["build:deps"]
+set -e
+
+# dur.io: the client durio-self-hosted serves (image durio-web): base /web/app/, the
+# server that serves it as the default one, RNNoise packaged, no inline scripts or Sentry
+node packages/client/desktop/fetch-rnnoise.mjs
+NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--max-old-space-size=4096" pnpm --filter client exec vite build --mode server
+node packages/client/selfhosted/check-build.mjs packages/client/dist-server

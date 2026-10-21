@@ -239,7 +239,7 @@ export function NotificationsWorker() {
       body,
       timestamp: message.createdAt,
       tag,
-      badge: "/assets/web/android-chrome-512x512.png",
+      badge: `${import.meta.env.BASE_URL}assets/web/android-chrome-512x512.png`,
       silent: true,
     });
 

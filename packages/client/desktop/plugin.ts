@@ -13,7 +13,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { type Plugin, type PluginOption, loadEnv } from "vite";
+import { type Plugin, type PluginOption, type Rollup, loadEnv } from "vite";
 
 import { DESKTOP_CSP } from "./csp.mjs";
 import { RNNOISE_CACHE, RNNOISE_FILES } from "./rnnoise.mjs";
@@ -114,23 +114,29 @@ export function durioDesktop(): Plugin {
     },
 
     generateBundle() {
-      if (!desktop) return;
-
-      for (const [name, hash] of Object.entries(RNNOISE_FILES)) {
-        let source: Buffer;
-        try {
-          source = readFileSync(join(RNNOISE_CACHE, name));
-        } catch {
-          this.error(
-            "RNNoise worklet missing: run `node desktop/fetch-rnnoise.mjs` (mise build:desktop does)",
-          );
-        }
-
-        if (createHash("sha256").update(source).digest("hex") !== hash)
-          this.error(`RNNoise ${name}: unexpected sha256`);
-
-        this.emitFile({ type: "asset", fileName: `rnnoise/${name}`, source });
-      }
+      if (desktop) emitRnnoise(this);
     },
   };
+}
+
+/**
+ * Package the RNNoise worklet from the local cache (`fetch-rnnoise.mjs`), checked by hash
+ * @param ctx Plugin context of `generateBundle`
+ */
+export function emitRnnoise(ctx: Rollup.PluginContext) {
+  for (const [name, hash] of Object.entries(RNNOISE_FILES)) {
+    let source: Buffer;
+    try {
+      source = readFileSync(join(RNNOISE_CACHE, name));
+    } catch {
+      ctx.error(
+        "RNNoise worklet missing: run `node desktop/fetch-rnnoise.mjs` (mise build:desktop does)",
+      );
+    }
+
+    if (createHash("sha256").update(source).digest("hex") !== hash)
+      ctx.error(`RNNoise ${name}: unexpected sha256`);
+
+    ctx.emitFile({ type: "asset", fileName: `rnnoise/${name}`, source });
+  }
 }

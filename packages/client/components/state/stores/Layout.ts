@@ -1,3 +1,4 @@
+import { routerPath } from "@revolt/common/lib/env";
 import Instance from "@revolt/instance/Instance";
 import { paramsFromPathname } from "@revolt/routing";
 
@@ -125,6 +126,8 @@ export class Layout extends AbstractStore<"layout", TypeLayout> {
    * Set the last active path in the app
    */
   setLastActivePath(pathname: string) {
+    // dur.io: kept as router paths, without the server build's /web/app
+    pathname = routerPath(pathname);
     if (
       pathname.startsWith("/settings") ||
       pathname.startsWith("/invite") ||

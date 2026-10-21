@@ -3,6 +3,8 @@
 // the page's side of the contract with the Electron side (stage 7); the full contract
 // is documented in the for-web README ("dur.io fork: desktop build").
 
+import { appPath, routerPath } from "./env";
+
 /** Built for the desktop app (`vite build --mode desktop`, `mise build:desktop`) */
 export const IS_DESKTOP = import.meta.env.MODE === "desktop";
 
@@ -72,6 +74,7 @@ export function durioNative(): Partial<DurioNativeBridge> | undefined {
  */
 export function appHref(path: string): string {
   const origin = location.origin;
+  path = appPath(routerPath(path));
   return origin && origin !== "null" ? new URL(path, origin).href : path;
 }
 

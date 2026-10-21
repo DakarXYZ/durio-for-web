@@ -2406,6 +2406,10 @@ msgstr ""
 msgid "Imported {0} of {1} keys."
 msgstr ""
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "In the browser, the keys of this device are kept by this browser, and the app itself is loaded from the server. Do not use encryption on a computer that is not yours; for encrypted chats the dur.io apps are the safer choice."
+msgstr ""
+
 #: src/AndroidNag.tsx
 msgid "In the meantime, install Stoat from Google Play for a faster, smoother experience designed for Android."
 msgstr ""

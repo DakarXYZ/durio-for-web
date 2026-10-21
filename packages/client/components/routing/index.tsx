@@ -2,6 +2,8 @@ import { type Accessor } from "solid-js";
 
 import { useLocation } from "@solidjs/router";
 
+import { routerPath } from "@revolt/common/lib/env";
+
 /**
  * We re-export everything to prevent us importing @solidjs/router
  * more than once in the project, this can cause some weird behaviour
@@ -94,6 +96,8 @@ type GlobalParams = {
  * @returns Params
  */
 export function paramsFromPathname(pathname: string): GlobalParams {
+  // dur.io: paths of the server build and links to /web/app of a dur.io server
+  pathname = routerPath(pathname);
   const params: GlobalParams = {
     exactServer: !!pathname.match(RE_SERVER_EXACT),
     exactChannel: !!pathname.match(RE_CHANNEL_EXACT),

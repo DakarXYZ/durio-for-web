@@ -9,6 +9,7 @@ import {
   ServerSidebarContextMenu,
 } from "@revolt/app";
 import { useClient, useUser } from "@revolt/client";
+import { routerPath } from "@revolt/common/lib/env";
 import { useModals } from "@revolt/modal";
 import { useLocation, useParams, useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
@@ -72,7 +73,7 @@ export const Sidebar = (props: {
       <Show
         when={
           state.layout.getSectionState(LAYOUT_SECTIONS.PRIMARY_SIDEBAR, true) &&
-          !location.pathname.startsWith("/discover")
+          !routerPath(location.pathname).startsWith("/discover")
         }
       >
         <Switch fallback={<Home />}>

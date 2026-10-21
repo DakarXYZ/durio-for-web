@@ -2378,6 +2378,10 @@ msgstr "Импорт ключей"
 msgid "Imported {0} of {1} keys."
 msgstr "Импортировано ключей: {0} из {1}."
 
+#: components/client/e2ee/ui/views/Prompts.tsx
+msgid "In the browser, the keys of this device are kept by this browser, and the app itself is loaded from the server. Do not use encryption on a computer that is not yours; for encrypted chats the dur.io apps are the safer choice."
+msgstr "В браузере ключи этого устройства хранит сам браузер, а приложение загружается с сервера. Не включайте шифрование на чужом компьютере; для зашифрованных чатов надёжнее приложения dur.io."
+
 #: src/AndroidNag.tsx
 msgid "In the meantime, install Stoat from Google Play for a faster, smoother experience designed for Android."
 msgstr "Тем временем можно установить Stoat из Google Play для более быстрой и удобной работы на Android."
@@ -5362,3 +5366,19 @@ msgstr "Сеанс завершён — возможно, вы вышли из �
 #: components/i18n/errors.tsx
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Ваш пользователь уже создан? Попробуйте войти снова или перезапустите приложение."
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow changing the vote"
+msgstr "Можно изменить свой голос"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Change vote"
+msgstr "Изменить голос"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Take back vote"
+msgstr "Отозвать голос"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Vote"
+msgstr "Голосовать"

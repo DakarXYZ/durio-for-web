@@ -2,6 +2,7 @@ node_modules
 coverage
 dist
 dist-desktop
+dist-server
 dev-dist
 
 *.log

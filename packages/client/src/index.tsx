@@ -23,6 +23,7 @@ import FlowReset from "@revolt/auth/src/flows/FlowReset";
 import FlowVerify from "@revolt/auth/src/flows/FlowVerify";
 import { ClientContext, SoundContext, useClient } from "@revolt/client";
 import { DeviceContext } from "@revolt/common";
+import { APP_BASE } from "@revolt/common/lib/env";
 import { I18nProvider } from "@revolt/i18n";
 import { CONNECT_PATH, InstanceContext } from "@revolt/instance";
 import ServerSelect from "@revolt/instance/ServerSelect";
@@ -199,7 +200,7 @@ if (!escapeSelfEmbed())
       <DeviceContext>
         <I18nProvider>
           <SnackbarProvider controller={snackbarCtrl}>
-            <Router>
+            <Router base={APP_BASE}>
               <Route path={CONNECT_PATH} component={ServerSelect} />
               <Route path="/i/:host" component={InstanceContext}>
                 {routes()}

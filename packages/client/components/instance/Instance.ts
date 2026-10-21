@@ -3,7 +3,12 @@ import { Accessor, createMemo, createSignal } from "solid-js";
 
 import { CONFIGURATION } from "@revolt/common";
 import { accountKey } from "@revolt/common/lib/accountKey";
-import { AppConfig, STOAT_HOST } from "@revolt/common/lib/env";
+import {
+  AppConfig,
+  routerPath,
+  SERVER_APP_PATH,
+  STOAT_HOST,
+} from "@revolt/common/lib/env";
 import { Client, UserLimits } from "stoat.js";
 
 import { DefaultHost } from ".";
@@ -86,10 +91,19 @@ export default class Instance {
    */
   href(path: string, absPath?: boolean, base = this.host) {
     return (
-      (absPath ? "" : this.origin) +
+      (absPath ? "" : this.origin + this.#webPath(path)) +
       (absPath && base ? `/i/${base}` : "") +
       path
     );
+  }
+
+  /**
+   * dur.io: links into a dur.io server open its web client at /web/app; invites stay at
+   * /invite/<code>, the server's own page that also offers the apps
+   * @param path Path
+   */
+  #webPath(path: string) {
+    return this.isStoat || path.startsWith("/invite/") ? "" : SERVER_APP_PATH;
   }
 
   /** Convert path to relative form, stripping instance prefix (if any)
@@ -97,7 +111,7 @@ export default class Instance {
    * try `useLocation().pathname` if you need reactivity)
    */
   static relPath = (path = location.pathname) =>
-    path.replace(R_RelPath, "") || "/";
+    routerPath(path).replace(R_RelPath, "") || "/";
 
   /** Switch to a new instance and redirect the client
    * @param path Path on the new instance, defaults to the current one

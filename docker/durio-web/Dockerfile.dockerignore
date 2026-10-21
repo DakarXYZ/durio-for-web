@@ -1,0 +1,4 @@
+# only the built app and the Caddyfile go into the build context
+*
+!docker/durio-web/Caddyfile
+!packages/client/dist-server

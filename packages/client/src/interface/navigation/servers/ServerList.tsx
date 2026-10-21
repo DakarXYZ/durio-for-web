@@ -18,6 +18,7 @@ import { styled } from "styled-system/jsx";
 import { ServerFolderContextMenu } from "@revolt/app/menus";
 import { useClient } from "@revolt/client";
 import { useDevice } from "@revolt/common";
+import { appPath } from "@revolt/common/lib/env";
 import { useInstance } from "@revolt/instance";
 import { KeybindAction, createKeybind } from "@revolt/keybinds";
 import { useModals } from "@revolt/modal";
@@ -271,7 +272,7 @@ export const ServerList = (props: Props) => {
           class={entryContainer({
             indicator: !props.selectedServer() ? "selected" : undefined,
           })}
-          href="/app"
+          href={appPath("/app")}
           use:floating={{
             tooltip: {
               content:
@@ -325,7 +326,7 @@ export const ServerList = (props: Props) => {
               <a
                 class={entryContainer()}
                 use:floating={props.menuGenerator(conversation)}
-                href={`/channel/${conversation.id}`}
+                href={appPath(`/channel/${conversation.id}`)}
               >
                 <Avatar
                   size={42}
@@ -352,7 +353,7 @@ export const ServerList = (props: Props) => {
           )}
         </For>
         <Show when={props.unreadConversations.length > 9}>
-          <a class={entryContainer()} href={`/`}>
+          <a class={entryContainer()} href={appPath("/")}>
             <Avatar
               size={42}
               fallback={<>+{props.unreadConversations.length - 9}</>}
@@ -446,7 +447,7 @@ export const ServerList = (props: Props) => {
         <Show when={instance.isStoat}>
           <Tooltip placement="right" content={"Find new servers to join"}>
             <a
-              href={state.layout.getLastActiveDiscoverPath()}
+              href={appPath(state.layout.getLastActiveDiscoverPath())}
               class={entryContainer()}
             >
               <Avatar size={42} fallback={<Symbol fill>explore</Symbol>} />
@@ -552,7 +553,7 @@ function ServerEntry(props: {
         <a
           draggable="false"
           tabindex="0"
-          href={state.layout.getLastActiveServerPath(props.server.id)}
+          href={appPath(state.layout.getLastActiveServerPath(props.server.id))}
         >
           <Avatar
             size={42}

@@ -18,6 +18,7 @@ import { State } from "@revolt/client/Controller";
 import { DesktopBadge } from "@revolt/client/DesktopBadge";
 import { NotificationsWorker } from "@revolt/client/NotificationsWorker";
 import { E2eeWatcher } from "@revolt/client/e2ee/ui/E2eeWatcher";
+import { routerPath } from "@revolt/common/lib/env";
 import { takeSignUpInvite } from "@revolt/common/lib/inviteLink";
 import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
@@ -40,7 +41,7 @@ const Interface = (props: { children: JSX.Element }) => {
 
   useBeforeLeave((e) => {
     if (!e.defaultPrevented) {
-      if (e.to === "/settings") {
+      if (typeof e.to === "string" && routerPath(e.to) === "/settings") {
         e.preventDefault();
         openModal({ type: "settings", config: "user" });
       } else if (typeof e.to === "string") {

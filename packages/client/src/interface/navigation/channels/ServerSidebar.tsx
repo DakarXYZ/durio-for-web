@@ -14,6 +14,7 @@ import type { Channel, Server, ServerFlags } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
 import { getChannelIcon, useDevice } from "@revolt/common";
+import { appPath } from "@revolt/common/lib/env";
 import { KeybindAction, createKeybind } from "@revolt/keybinds";
 import { TextWithEmoji } from "@revolt/markdown";
 import { useModals } from "@revolt/modal";
@@ -557,7 +558,9 @@ function Entry(
   return (
     <Column gap="sm">
       <MenuButton
-        href={`/server/${props.channel.serverId}/channel/${props.channel.id}`}
+        href={appPath(
+          `/server/${props.channel.serverId}/channel/${props.channel.id}`,
+        )}
         use:floating={props.menuGenerator(props.channel)}
         size="normal"
         data-unread={props.channel.unread ? "" : undefined}

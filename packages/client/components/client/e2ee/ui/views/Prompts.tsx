@@ -6,6 +6,7 @@ import { useClientLifecycle } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { Dialog, DialogProps } from "@revolt/ui";
 
+import { KEYS_IN_BROWSER } from "../../storeKey";
 import type { OnboardingPrompt } from "../logic/recovery";
 import { Beta, Notice, Stack } from "../parts";
 
@@ -81,6 +82,16 @@ export function OnboardingDialog(
           another of your devices, or restore your history with the recovery
           key.
         </Trans>
+      </Show>
+      <Show when={KEYS_IN_BROWSER}>
+        <Notice kind="warning" icon="public">
+          <Trans>
+            In the browser, the keys of this device are kept by this browser,
+            and the app itself is loaded from the server. Do not use encryption
+            on a computer that is not yours; for encrypted chats the dur.io apps
+            are the safer choice.
+          </Trans>
+        </Notice>
       </Show>
     </Dialog>
   );

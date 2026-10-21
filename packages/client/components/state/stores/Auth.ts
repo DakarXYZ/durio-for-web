@@ -1,4 +1,5 @@
 import { CONFIGURATION } from "@revolt/common";
+import { routerPath } from "@revolt/common/lib/env";
 import { User } from "stoat.js";
 
 import { AbstractStore } from ".";
@@ -224,6 +225,8 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
    * Set login redirect path
    */
   setNextPath(path: string) {
+    // dur.io: a router path, without the server build's /web/app
+    path = routerPath(path);
     this.set("nextPath", path === "/" || path === "/app" ? undefined : path);
   }
 

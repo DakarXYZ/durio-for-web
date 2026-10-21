@@ -14,140 +14,146 @@ import codegenPlugin from "./codegen.plugin";
 import { durioDesktop, withoutDesktop } from "./desktop/plugin";
 import { packageEmoji } from "./emoji.plugin";
 import { addFontPreload } from "./fontpreload.plugin";
+import { SERVER_BASE, SERVER_MODE, durioServer } from "./selfhosted/plugin";
 
-const base = process.env.BASE_PATH ?? "/";
-const pwaScope = process.env.PWA_SCOPE || base;
+export default defineConfig(({ mode }) => {
+  // dur.io: the self-hosted build lives at /web/app/ (selfhosted/plugin.ts)
+  const base =
+    mode === SERVER_MODE ? SERVER_BASE : (process.env.BASE_PATH ?? "/");
+  const pwaScope = process.env.PWA_SCOPE || base;
 
-export default defineConfig({
-  base,
-  plugins: [
-    // dur.io: `--mode desktop` (WEB-09, WEB-11)
-    durioDesktop(),
-    Inspect(),
-    devtools(),
-    codegenPlugin(),
-    babelMacrosPlugin(),
-    solidPlugin({
-      babel: {
-        plugins: ["@lingui/babel-plugin-lingui-macro"],
-      },
-    }),
-    linguiSolidPlugin(),
-    solidSvg({
-      defaultAsComponent: false,
-    }),
-    addFontPreload(),
-    // dur.io: emoji images packaged, not from static.stoat.chat (Q63)
-    packageEmoji(),
-    legacy({
-      // Chrome, Edge and Firefox are set by Uint8Array.prototype.toBase64.
-      // Safari stays at 17 on purpose: iPad 6 and similar devices can't update past iPadOS 17
-      modernTargets: [
-        "chrome >= 140",
-        "edge >= 140",
-        "firefox >= 133",
-        "safari >= 17",
-        "ios_saf >= 17",
-      ],
-      modernPolyfills: true,
-      renderLegacyChunks: false,
-    }),
-    withoutDesktop(
-      VitePWA({
-        srcDir: "src",
-        registerType: "autoUpdate",
-        filename: "serviceWorker.ts",
-        strategies: "injectManifest",
-        injectManifest: {
-          maximumFileSizeToCacheInBytes: 8000000,
-          globPatterns: ["**/*.{js,css,html}", "**/material-symbols-*.woff2"],
-        },
-        devOptions: {
-          enabled: true,
-          type: "module",
-        },
-        manifest: {
-          name: "dur.io",
-          short_name: "dur.io",
-          description: "dur.io messenger.",
-          categories: ["communication", "chat", "messaging"],
-          start_url: base,
-          scope: pwaScope,
-          display_override: ["window-controls-overlay"],
-          display: "standalone",
-          background_color: "#101823",
-          theme_color: "#101823",
-          icons: [
-            {
-              src: `${base}assets/web/android-chrome-192x192.png`,
-              type: "image/png",
-              sizes: "192x192",
-            },
-            {
-              src: `${base}assets/web/android-chrome-512x512.png`,
-              type: "image/png",
-              sizes: "512x512",
-            },
-            {
-              src: `${base}assets/web/monochrome.svg`,
-              type: "image/svg+xml",
-              sizes: "48x48 72x72 96x96 128x128 256x256",
-              purpose: "monochrome",
-            },
-            {
-              src: `${base}assets/web/masking-512x512.png`,
-              type: "image/png",
-              sizes: "512x512",
-              purpose: "maskable",
-            },
-          ],
-          // TODO: take advantage of shortcuts
+  return {
+    base,
+    plugins: [
+      // dur.io: `--mode desktop` (WEB-09, WEB-11)
+      durioDesktop(),
+      durioServer(),
+      Inspect(),
+      devtools(),
+      codegenPlugin(),
+      babelMacrosPlugin(),
+      solidPlugin({
+        babel: {
+          plugins: ["@lingui/babel-plugin-lingui-macro"],
         },
       }),
-    ),
-  ],
-  build: {
-    target: "esnext",
-    cssTarget: "esnext",
-    rollupOptions: {
-      external: ["hast"],
-      output: {
-        manualChunks: {
-          markdown: [
-            "lowlight",
-            "rehype-highlight",
-            "rehype-katex",
-            "remark-breaks",
-            "remark-gfm",
-            "remark-math",
-            "remark-parse",
-            "remark-rehype",
-            "vfile",
-          ],
+      linguiSolidPlugin(),
+      solidSvg({
+        defaultAsComponent: false,
+      }),
+      addFontPreload(),
+      // dur.io: emoji images packaged, not from static.stoat.chat (Q63)
+      packageEmoji(),
+      legacy({
+        // Chrome, Edge and Firefox are set by Uint8Array.prototype.toBase64.
+        // Safari stays at 17 on purpose: iPad 6 and similar devices can't update past iPadOS 17
+        modernTargets: [
+          "chrome >= 140",
+          "edge >= 140",
+          "firefox >= 133",
+          "safari >= 17",
+          "ios_saf >= 17",
+        ],
+        modernPolyfills: true,
+        renderLegacyChunks: false,
+      }),
+      withoutDesktop(
+        VitePWA({
+          srcDir: "src",
+          registerType: "autoUpdate",
+          filename: "serviceWorker.ts",
+          strategies: "injectManifest",
+          injectManifest: {
+            maximumFileSizeToCacheInBytes: 8000000,
+            globPatterns: ["**/*.{js,css,html}", "**/material-symbols-*.woff2"],
+          },
+          devOptions: {
+            enabled: true,
+            type: "module",
+          },
+          manifest: {
+            name: "dur.io",
+            short_name: "dur.io",
+            description: "dur.io messenger.",
+            categories: ["communication", "chat", "messaging"],
+            start_url: base,
+            scope: pwaScope,
+            display_override: ["window-controls-overlay"],
+            display: "standalone",
+            background_color: "#101823",
+            theme_color: "#101823",
+            icons: [
+              {
+                src: `${base}assets/web/android-chrome-192x192.png`,
+                type: "image/png",
+                sizes: "192x192",
+              },
+              {
+                src: `${base}assets/web/android-chrome-512x512.png`,
+                type: "image/png",
+                sizes: "512x512",
+              },
+              {
+                src: `${base}assets/web/monochrome.svg`,
+                type: "image/svg+xml",
+                sizes: "48x48 72x72 96x96 128x128 256x256",
+                purpose: "monochrome",
+              },
+              {
+                src: `${base}assets/web/masking-512x512.png`,
+                type: "image/png",
+                sizes: "512x512",
+                purpose: "maskable",
+              },
+            ],
+            // TODO: take advantage of shortcuts
+          },
+        }),
+      ),
+    ],
+    build: {
+      target: "esnext",
+      cssTarget: "esnext",
+      rollupOptions: {
+        external: ["hast"],
+        output: {
+          manualChunks: {
+            markdown: [
+              "lowlight",
+              "rehype-highlight",
+              "rehype-katex",
+              "remark-breaks",
+              "remark-gfm",
+              "remark-math",
+              "remark-parse",
+              "remark-rehype",
+              "vfile",
+            ],
+          },
         },
       },
+      sourcemap: true,
     },
-    sourcemap: true,
-  },
-  // dur.io (WEB-03): the crypto worker is a module (the wasm glue is ESM) and the
-  // package is not pre-bundled, so `new URL("…_bg.wasm", import.meta.url)` survives and
-  // the .wasm lands in assets/ with a hash
-  worker: {
-    format: "es",
-  },
-  optimizeDeps: {
-    exclude: ["hast", "@durio/stoat-crypto"],
-  },
-  resolve: {
-    alias: {
-      "styled-system": resolve(__dirname, "styled-system"),
-      ...readdirSync(resolve(__dirname, "components")).reduce(
-        (p, f) => ({
-          ...p,
-          [`@revolt/${f}`]: resolve(__dirname, "components", f),
-        }),
-        {},
-      ),
+    // dur.io (WEB-03): the crypto worker is a module (the wasm glue is ESM) and the
+    // package is not pre-bundled, so `new URL("…_bg.wasm", import.meta.url)` survives and
+    // the .wasm lands in assets/ with a hash
+    worker: {
+      format: "es",
     },
-  },
+    optimizeDeps: {
+      exclude: ["hast", "@durio/stoat-crypto"],
+    },
+    resolve: {
+      alias: {
+        "styled-system": resolve(__dirname, "styled-system"),
+        ...readdirSync(resolve(__dirname, "components")).reduce(
+          (p, f) => ({
+            ...p,
+            [`@revolt/${f}`]: resolve(__dirname, "components", f),
+          }),
+          {},
+        ),
+      },
+    },
+  };
 });

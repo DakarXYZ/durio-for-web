@@ -9,6 +9,7 @@ import { styled } from "styled-system/jsx";
 import { ChannelContextMenu, UserContextMenu } from "@revolt/app";
 import { useClient } from "@revolt/client";
 import { useDevice } from "@revolt/common";
+import { appPath } from "@revolt/common/lib/env";
 import Instance from "@revolt/instance/Instance";
 import { TextWithEmoji } from "@revolt/markdown";
 import { useModals } from "@revolt/modal";
@@ -74,7 +75,7 @@ export const HomeSidebar = (props: Props) => {
           </Header>
 
           <MenuButton
-            href="/app"
+            href={appPath("/app")}
             size="normal"
             icon={<Symbol>home</Symbol>}
             attention={
@@ -91,7 +92,7 @@ export const HomeSidebar = (props: Props) => {
           <div style={{ height: "5px" }} />
 
           <MenuButton
-            href="/friends"
+            href={appPath("/friends")}
             size="normal"
             icon={<Symbol>group</Symbol>}
             attention={
@@ -127,7 +128,7 @@ export const HomeSidebar = (props: Props) => {
           >
             <Match when={savedNotesChannelId()}>
               <MenuButton
-                href={`/channel/${savedNotesChannelId()}`}
+                href={appPath(`/channel/${savedNotesChannelId()}`)}
                 size="normal"
                 icon={<Symbol>note_stack</Symbol>}
                 attention={
@@ -296,7 +297,7 @@ function Entry(
   return (
     <MenuButton
       {...remote}
-      href={`/channel/${local.channel.id}`}
+      href={appPath(`/channel/${local.channel.id}`)}
       size="normal"
       alert={
         !local.active &&

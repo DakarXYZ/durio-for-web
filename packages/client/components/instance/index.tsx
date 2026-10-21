@@ -12,7 +12,12 @@ import {
 import { Dynamic } from "solid-js/web";
 
 import { CONFIGURATION } from "@revolt/common";
-import { AppConfig, normalizeHost, STOAT_HOST } from "@revolt/common/lib/env";
+import {
+  AppConfig,
+  normalizeHost,
+  routerPath,
+  STOAT_HOST,
+} from "@revolt/common/lib/env";
 import { LoadingScreen, useSnackbar } from "@revolt/ui";
 
 import Instance, { _newClient } from "./Instance";
@@ -120,20 +125,22 @@ function Redirect() {
 
   useBeforeLeave((e) => {
     if (typeof e.to !== "string") return;
+    // dur.io: resolved paths carry the server build's /web/app
+    const to = routerPath(e.to);
 
-    if (DefRoute && (e.to + "/").startsWith(DefRoute)) {
+    if (DefRoute && (to + "/").startsWith(DefRoute)) {
       //Redirect default instance
       e.preventDefault();
-      nav(Instance.relPath(e.to), { state: DEF_MARK });
+      nav(Instance.relPath(to), { state: DEF_MARK });
     } else if (
       inst.host &&
-      !e.to.startsWith("/i/") &&
-      !e.to.startsWith(CONNECT_PATH) &&
+      !to.startsWith("/i/") &&
+      !to.startsWith(CONNECT_PATH) &&
       e.options?.state !== DEF_MARK
     ) {
       //Redirect relative path to instance path
       e.preventDefault();
-      nav(inst.href(e.to, true));
+      nav(inst.href(to, true));
     }
   });
 
