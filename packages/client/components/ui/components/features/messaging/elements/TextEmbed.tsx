@@ -107,7 +107,15 @@ export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
             </Show>
             <OverflowingText>
               <Text class="label" size="small">
-                {(props.embed as WebsiteEmbed).siteName}
+                {/* dur.io: without a title the site name links to the page */}
+                <Show
+                  when={!props.embed.title && props.embed.url}
+                  fallback={(props.embed as WebsiteEmbed).siteName}
+                >
+                  <RenderAnchor href={props.embed.url}>
+                    {(props.embed as WebsiteEmbed).siteName}
+                  </RenderAnchor>
+                </Show>
               </Text>
             </OverflowingText>
           </InformationRow>

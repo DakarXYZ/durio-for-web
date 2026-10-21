@@ -76,5 +76,7 @@ describe("links with a preview (dur.io)", () => {
     expect(isShownPreview({ type: "Text", title: "x" })).toBe(false);
     expect(isShownPreview({ type: "None" })).toBe(false);
     expect(isShownPreview({ type: "Website" })).toBe(false);
+    // a post without a title (e.g. a tweet) is shown by its text
+    expect(isShownPreview({ type: "Website", description: "post" })).toBe(true);
   });
 });

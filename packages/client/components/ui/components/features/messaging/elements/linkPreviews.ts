@@ -2,8 +2,8 @@
  * dur.io: a link whose preview is shown is not repeated in the text, like Discord
  *
  * A link standing alone (the whole message, or alone on its line) disappears when the
- * message has a preview for it: a picture, a video, or a card with a title (the title links
- * to the page). A link inside a sentence stays. Previews of imported history often carry
+ * message has a preview for it: a picture, a video, or a card with a title or a text (the
+ * title, or else the site name, links to the page). A link inside a sentence stays. Previews of imported history often carry
  * another address than the posted link (the page's canonical address, a stored file), so a
  * message that is just one link with just one shown preview hides it as well.
  */
@@ -16,6 +16,7 @@ export interface PreviewLike {
   url?: string;
   originalUrl?: string;
   title?: string;
+  description?: string;
 }
 
 const LINK = /^<?(https?:\/\/[^\s<>]+)>?$/i;
@@ -27,7 +28,8 @@ export function isShownPreview(embed: PreviewLike) {
   return (
     embed.type === "Image" ||
     embed.type === "Video" ||
-    (embed.type === "Website" && !!embed.title?.trim())
+    (embed.type === "Website" &&
+      !!(embed.title?.trim() || embed.description?.trim()))
   );
 }
 
