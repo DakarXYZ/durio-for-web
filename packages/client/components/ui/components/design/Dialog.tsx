@@ -38,11 +38,26 @@ type Props = DialogProps & {
  * @specification https://m3.material.io/components/dialogs
  */
 export function Dialog(props: Props) {
+  let container: HTMLDivElement | undefined;
+  // a press that began in the dialog (e.g. selecting text) and ended on the scrim
+  // is not a click on the scrim
+  let pressedInside = false;
+
   return (
     <Portal mount={document.getElementById("floating")!}>
       <Dialog.Scrim
         show={props.show}
-        onClick={props.onClose}
+        onPointerDown={(e) => {
+          pressedInside = !!container?.contains(e.target as Node);
+        }}
+        onClick={() => {
+          if (pressedInside) {
+            pressedInside = false;
+            return;
+          }
+
+          props.onClose();
+        }}
         style={{
           "--background": props.scrimBackground
             ? `url('${props.scrimBackground}'), rgba(0, 0, 0, 0.6)`
@@ -59,6 +74,7 @@ export function Dialog(props: Props) {
               class="dialog"
             >
               <Container
+                ref={container}
                 style={{
                   "min-width": props.minWidth
                     ? `${props.minWidth}px`
