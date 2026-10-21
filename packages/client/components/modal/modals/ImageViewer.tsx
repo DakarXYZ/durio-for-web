@@ -6,6 +6,7 @@ import {
   createSignal,
   on,
   onCleanup,
+  untrack,
 } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Motion, Presence } from "solid-motionone";
@@ -28,8 +29,26 @@ export function ImageViewerModal(
 ) {
   const [ref, setRef] = createSignal<HTMLElement>();
   const client = useClient();
+
+  // dur.io: a grid's pictures, one at a time
+  const [index, setIndex] = createSignal(untrack(() => props.index ?? 0));
+  const count = () => props.gallery?.length ?? 0;
+  const file = () => (count() ? props.gallery![index()].file : props.file);
+  const embed = () => (count() ? props.gallery![index()].embed : props.embed);
+  const step = (by: number) => {
+    if (count() < 2) return;
+    setIndex((index() + by + count()) % count());
+    panzoom?.reset({ animate: false });
+  };
+  const onKey = (event: KeyboardEvent) => {
+    if (event.key === "ArrowLeft") step(-1);
+    if (event.key === "ArrowRight") step(1);
+  };
+  document.addEventListener("keydown", onKey);
+  onCleanup(() => document.removeEventListener("keydown", onKey));
+
   // dur.io: an encrypted image is decrypted into an object URL (WEB-06)
-  const original = createFileUrl(client, () => props.file, "original");
+  const original = createFileUrl(client, file, "original");
 
   let panzoom: PanzoomObject;
 
@@ -111,40 +130,49 @@ export function ImageViewerModal(
               <Relative>
                 <Bar>
                   <Switch fallback={<div />}>
-                    <Match when={props.file}>
+                    <Match when={file()}>
                       <Card onClick={(e) => e.stopPropagation()}>
                         <Column>
-                          <Text class="title">{props.file!.filename}</Text>
-                          <Text class="label">
-                            {props.file!.humanReadableSize}
-                          </Text>
+                          <Text class="title">{file()!.filename}</Text>
+                          <Text class="label">{file()!.humanReadableSize}</Text>
                         </Column>
                       </Card>
                     </Match>
                   </Switch>
                   <Card onClick={(e) => e.stopPropagation()}>
+                    <Show when={count() > 1}>
+                      <IconButton onPress={() => step(-1)}>
+                        <Symbol>chevron_left</Symbol>
+                      </IconButton>
+                      <Text class="label">
+                        {index() + 1} / {count()}
+                      </Text>
+                      <IconButton onPress={() => step(1)}>
+                        <Symbol>chevron_right</Symbol>
+                      </IconButton>
+                    </Show>
                     <IconButton onPress={() => panzoom?.zoomOut()}>
                       <Symbol>zoom_out</Symbol>
                     </IconButton>
                     <IconButton onPress={() => panzoom?.zoomIn()}>
                       <Symbol>zoom_in</Symbol>
                     </IconButton>
-                    <Show when={props.file}>
+                    <Show when={file()}>
                       <a
                         target="_blank"
                         href={original()}
-                        download={props.file?.filename}
+                        download={file()?.filename}
                       >
                         <IconButton>
                           <Symbol>download</Symbol>
                         </IconButton>
                       </a>
                     </Show>
-                    <Show when={props.embed || props.gif}>
+                    <Show when={embed() || props.gif}>
                       <a
                         target="_blank"
                         rel="noreferrer"
-                        href={props.embed?.url || props.gif?.url}
+                        href={embed()?.url || props.gif?.url}
                       >
                         <IconButton>
                           <Symbol>open_in_new</Symbol>
@@ -158,17 +186,15 @@ export function ImageViewerModal(
                 </Bar>
               </Relative>
               <Switch>
-                <Match when={props.file}>
+                <Match when={file()}>
                   <img
                     class={Image()}
                     use:floating={{
-                      contextMenu: () => (
-                        <MessageContextMenu file={props.file} />
-                      ),
+                      contextMenu: () => <MessageContextMenu file={file()} />,
                     }}
                     ref={setRef}
                     style={{
-                      "aspect-ratio": `${(props.file!.metadata as { width: number }).width}/${(props.file!.metadata as { height: number }).height}`,
+                      "aspect-ratio": `${(file()!.metadata as { width: number }).width}/${(file()!.metadata as { height: number }).height}`,
                     }}
                     src={original()}
                     onClick={(e) => {
@@ -176,19 +202,17 @@ export function ImageViewerModal(
                     }}
                   />
                 </Match>
-                <Match when={props.embed}>
+                <Match when={embed()}>
                   <img
                     class={Image()}
                     ref={setRef}
                     use:floating={{
-                      contextMenu: () => (
-                        <MessageContextMenu file={props.embed} />
-                      ),
+                      contextMenu: () => <MessageContextMenu file={embed()} />,
                     }}
                     style={{
-                      "aspect-ratio": `${props.embed!.width}/${props.embed!.height}`,
+                      "aspect-ratio": `${embed()!.width}/${embed()!.height}`,
                     }}
-                    src={props.embed!.proxiedURL}
+                    src={embed()!.proxiedURL}
                     onClick={(e) => e.stopPropagation()}
                   />
                 </Match>

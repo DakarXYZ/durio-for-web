@@ -36,6 +36,9 @@ import {
   ListView2Update,
 } from "@revolt/ui/components/utils/ListView2";
 
+import { groupCandidate } from "@revolt/ui/components/features/messaging/elements/PictureGrid";
+import { pictureRuns } from "@revolt/ui/components/features/messaging/elements/pictureGroups";
+
 import { CompositionInfo } from "./CompositionInfo";
 import { Message } from "./Message";
 import { useMessageCache } from "./MessageCache";
@@ -789,6 +792,21 @@ export function Messages(props: Props) {
     };
 
     const arr = messages();
+
+    // dur.io: picture-only messages joining the grid of the message before them
+    const chronological = [...arr].reverse();
+    const firstUnread = chronological.findIndex(
+      (message, index) =>
+        message.id.localeCompare(lastReadId) === 1 &&
+        index > 0 &&
+        chronological[index - 1].id.localeCompare(lastReadId) !== 1,
+    );
+    const pictureGroups = pictureRuns(
+      chronological.map(groupCandidate),
+      new Set(firstUnread > 0 ? [chronological[firstUnread].id] : []),
+    );
+    const byId = new Map(arr.map((message) => [message.id, message]));
+
     arr.forEach((message, index) => {
       const next = arr[index + 1];
       let tail = true;
@@ -854,12 +872,19 @@ export function Messages(props: Props) {
         // Push any blocked messages if they haven't been yet
         createBlockedMessageCount();
 
+        const gallery = pictureGroups.runs
+          .get(message.id)
+          ?.map((id) => byId.get(id)!);
+        const merged = pictureGroups.merged.has(message.id);
+
         // Add message to list, retrieve if it exists in the cache
         messagesWithTail.push(
-          objectCache.get(`${message.id}:${tail}`) ?? {
+          objectCache.get(entryKey(message.id, tail, gallery, merged)) ?? {
             t: 0,
             message,
             tail,
+            gallery,
+            merged,
           },
         );
       }
@@ -890,7 +915,15 @@ export function Messages(props: Props) {
     // Populate cache with current objects
     for (const object of messagesWithTail) {
       if (object.t === 0) {
-        objectCache.set(`${object.message.id}:${object.tail}`, object);
+        objectCache.set(
+          entryKey(
+            object.message.id,
+            object.tail,
+            object.gallery,
+            object.merged,
+          ),
+          object,
+        );
       } else if (object.t === 1) {
         objectCache.set(object.unread ?? object.date, object);
       }
@@ -1051,6 +1084,9 @@ type ListEntry =
       message: MessageInterface;
       tail: boolean;
       highlight: boolean;
+      // dur.io: messages whose pictures join this one's grid, or this one joined another's
+      gallery?: MessageInterface[];
+      merged?: boolean;
     }
   | {
       // Message Divider
@@ -1063,6 +1099,18 @@ type ListEntry =
       t: 2;
       count: number;
     };
+
+/**
+ * Cache key of a message entry
+ */
+function entryKey(
+  id: string,
+  tail: boolean,
+  gallery: MessageInterface[] | undefined,
+  merged: boolean | undefined,
+) {
+  return `${id}:${tail}:${merged ? "merged" : ""}:${gallery?.map((message) => message.id).join(",") ?? ""}`;
+}
 
 /**
  * Render individual list entry
@@ -1079,6 +1127,10 @@ function Entry(
 
   return (
     <Switch>
+      {/* dur.io: its pictures are in the grid of the message before it */}
+      <Match when={local.t === 0 && (other as ListEntry & { t: 0 }).merged}>
+        <div />
+      </Match>
       <Match when={local.t === 0}>
         <Message
           {...(other as ListEntry & { t: 0 })}

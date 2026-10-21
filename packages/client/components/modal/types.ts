@@ -188,6 +188,9 @@ export type Modals =
       embed?: ImageEmbed;
       gif?: VideoEmbed;
       file?: StoatFile;
+      // dur.io: the pictures of a grid, browsed with the arrows from `index`
+      gallery?: { file?: StoatFile; embed?: ImageEmbed }[];
+      index?: number;
     }
   | {
       type: "join_server";

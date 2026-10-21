@@ -41,6 +41,12 @@ import {
   Username,
 } from "@revolt/ui";
 import { MediaPickerProps } from "@revolt/ui/components/features/messaging/composition/picker/CompositionMediaPicker";
+import {
+  isGridPicture,
+  messagePictures,
+  PictureGrid,
+  visibleText,
+} from "@revolt/ui/components/features/messaging/elements/PictureGrid";
 import { PollCard } from "@revolt/ui/components/features/messaging/elements/PollCard";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { addSwipeReplyListener } from "@revolt/ui/directives";
@@ -86,6 +92,11 @@ interface Props {
    * Whether this message is a link
    */
   isLink?: boolean | "hide";
+
+  /**
+   * dur.io: picture-only messages right after this one whose pictures join its grid
+   */
+  gallery?: MessageInterface[];
 }
 
 interface MessageContextShape {
@@ -153,6 +164,18 @@ export function Message(props: Props) {
     isGif(props.message.embeds[0]) &&
     props.message.content &&
     !props.message.content.replace(RE_URL, "").length;
+
+  // dur.io: the text without the links its previews show
+  const text = createMemo(() => visibleText(props.message));
+
+  // dur.io: two or more pictures (its own and those of the messages joining it) as a grid
+  const gridPictures = createMemo(() => {
+    const pictures = [
+      ...messagePictures(props.message),
+      ...(props.gallery ?? []).flatMap(messagePictures),
+    ];
+    return pictures.length > 1 ? pictures : [];
+  });
 
   /**
    * React with an emoji
@@ -430,9 +453,9 @@ export function Message(props: Props) {
           <Match when={props.message.e2ee && props.message.e2ee.state !== "ok"}>
             <E2eeMessageStatus e2ee={props.message.e2ee!} />
           </Match>
-          <Match when={props.message.content && !isOnlyGIF()}>
+          <Match when={text() && !isOnlyGIF()}>
             <BreakText>
-              <Markdown content={props.message.content!} />
+              <Markdown content={text()} />
             </BreakText>
           </Match>
         </Switch>
@@ -441,12 +464,24 @@ export function Message(props: Props) {
           <PollCard message={props.message} />
         </Show>
         <E2eeMessageShield e2ee={props.message.e2ee} />
-        <For each={props.message.attachments}>
+        <Show when={gridPictures().length}>
+          <PictureGrid pictures={gridPictures()} />
+        </Show>
+        <For
+          each={props.message.attachments?.filter(
+            (file) => !gridPictures().length || !isGridPicture(file),
+          )}
+        >
           {(attachment) => (
             <Attachment message={props.message} file={attachment} />
           )}
         </For>
-        <For each={props.message.embeds}>
+        <For
+          each={props.message.embeds?.filter(
+            (embed) =>
+              !gridPictures().some((picture) => picture.embed === embed),
+          )}
+        >
           {(embed) => <Embed embed={embed} />}
         </For>
         <Reactions
