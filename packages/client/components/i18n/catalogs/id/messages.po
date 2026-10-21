@@ -1665,6 +1665,10 @@ msgstr ""
 msgid "Diagnostics"
 msgstr ""
 
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Direct Messages"
+msgstr ""
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
 msgstr "Nonaktifkan Akun"
@@ -2343,7 +2347,6 @@ msgstr "Angkat Peran"
 
 #: src/interface/Home.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
-#: src/interface/navigation/servers/ServerList.tsx
 msgid "Home"
 msgstr "Beranda"
 

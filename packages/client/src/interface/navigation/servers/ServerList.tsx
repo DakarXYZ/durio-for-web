@@ -268,35 +268,6 @@ export const ServerList = (props: Props) => {
   return (
     <ServerListBase>
       <div use:invisibleScrollable={{ direction: "y", class: listBase() }}>
-        <a
-          class={entryContainer({
-            indicator: !props.selectedServer() ? "selected" : undefined,
-          })}
-          href={appPath("/app")}
-          use:floating={{
-            tooltip: {
-              content:
-                homeNotifications() > 0
-                  ? t`You have ${homeNotifications()} pending friend requests.`
-                  : t`Home`,
-              placement: "right",
-            },
-          }}
-        >
-          <Avatar
-            size={42}
-            fallback={<Symbol fill>home</Symbol>}
-            holepunch={homeNotifications() ? "top-right" : undefined}
-            overlay={
-              <Show when={homeNotifications()}>
-                <Unreads.Graphic
-                  unread={homeNotifications() !== 0}
-                  count={homeNotifications()}
-                />
-              </Show>
-            }
-          />
-        </a>
         <Tooltip
           placement="right"
           content={() => (
@@ -320,6 +291,35 @@ export const ServerList = (props: Props) => {
           </a>
           <UserMenu anchor={menuButton} />
         </Tooltip>
+        <a
+          class={entryContainer({
+            indicator: !props.selectedServer() ? "selected" : undefined,
+          })}
+          href={appPath("/app")}
+          use:floating={{
+            tooltip: {
+              content:
+                homeNotifications() > 0
+                  ? t`You have ${homeNotifications()} pending friend requests.`
+                  : t`Direct Messages`,
+              placement: "right",
+            },
+          }}
+        >
+          <Avatar
+            size={42}
+            fallback={<Symbol fill>chat</Symbol>}
+            holepunch={homeNotifications() ? "top-right" : undefined}
+            overlay={
+              <Show when={homeNotifications()}>
+                <Unreads.Graphic
+                  unread={homeNotifications() !== 0}
+                  count={homeNotifications()}
+                />
+              </Show>
+            }
+          />
+        </a>
         <For each={props.unreadConversations.slice(0, 9)}>
           {(conversation) => (
             <Tooltip placement="right" content={conversation.displayName}>

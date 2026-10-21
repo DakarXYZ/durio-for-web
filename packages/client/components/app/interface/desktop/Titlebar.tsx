@@ -157,6 +157,8 @@ const Base = styled("div", {
   base: {
     flexShrink: 0,
     height: "29px",
+    // a drag region (-webkit-app-region) spilling out of the bar swallows clicks below it
+    overflow: "hidden",
     userSelect: "none",
 
     display: "flex",

@@ -1659,6 +1659,10 @@ msgstr "Диагностический отчёт"
 msgid "Diagnostics"
 msgstr "Диагностика"
 
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Direct Messages"
+msgstr "Личные сообщения"
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
 msgstr "Отключить учетную запись"
@@ -2334,7 +2338,6 @@ msgstr "Показывать участников с этой ролью отд�
 
 #: src/interface/Home.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
-#: src/interface/navigation/servers/ServerList.tsx
 msgid "Home"
 msgstr "Домашняя страница"
 
