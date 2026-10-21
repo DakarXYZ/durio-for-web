@@ -258,6 +258,8 @@ export type APIRoutes =
 | { method: 'post', path: `/admin/invites`, parts: 2, params: paths['/admin/invites']['post']['requestBody']['content']['application/json'], response: paths['/admin/invites']['post']['responses']['200']['content']['application/json'] }
 | { method: 'delete', path: `/admin/invites/${string}`, parts: 3, params: undefined, response: undefined }
 | { method: 'delete', path: '-/admin/invites/{code}', parts: 3, params: undefined, response: undefined }
+| { method: 'post', path: `/admin/import/channels/${string}/messages`, parts: 5, params: paths['/admin/import/channels/{target}/messages']['post']['requestBody']['content']['application/json'], response: paths['/admin/import/channels/{target}/messages']['post']['responses']['200']['content']['application/json'] }
+| { method: 'post', path: '-/admin/import/channels/{target}/messages', parts: 5, params: paths['/admin/import/channels/{target}/messages']['post']['requestBody']['content']['application/json'], response: paths['/admin/import/channels/{target}/messages']['post']['responses']['200']['content']['application/json'] }
 | { method: 'delete', path: `/webhooks/${string}/${string}/${string}`, parts: 4, params: undefined, response: undefined }
 | { method: 'delete', path: '-/webhooks/{webhook_id}/{token}/{message_id}', parts: 4, params: undefined, response: undefined }
 | { method: 'patch', path: `/webhooks/${string}/${string}/${string}`, parts: 4, params: paths['/webhooks/{webhook_id}/{token}/{message_id}']['patch']['requestBody']['content']['application/json'], response: paths['/webhooks/{webhook_id}/{token}/{message_id}']['patch']['responses']['200']['content']['application/json'] }

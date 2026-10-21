@@ -612,6 +612,14 @@ msgstr ""
 msgid "Appearance"
 msgstr "Външен вид"
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "Archived message"
+msgstr ""
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Archived message, imported from Discord"
+msgstr ""
+
 #: components/modal/modals/SignOutSessions.tsx
 msgid "Are you sure you want to clear your sessions?"
 msgstr ""

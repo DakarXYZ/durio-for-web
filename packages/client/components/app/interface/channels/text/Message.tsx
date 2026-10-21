@@ -301,6 +301,19 @@ export function Message(props: Props) {
                 </Symbol>
               </Tooltip>
             </Match>
+            <Match when={props.message.imported}>
+              {/* dur.io: history imported by an admin; the author is a phantom, no profile */}
+              <Tooltip
+                content={
+                  props.message.imported!.source === "discord"
+                    ? t`Archived message, imported from Discord`
+                    : t`Archived message`
+                }
+                placement="top"
+              >
+                <Symbol size={16}>history</Symbol>
+              </Tooltip>
+            </Match>
             <Match when={props.message.webhook}>
               <Tooltip content={t`Webhook`} placement="top">
                 <Symbol size={16} fill>

@@ -613,6 +613,14 @@ msgstr "Anyone with this file and its passphrase can read your encrypted chats. 
 msgid "Appearance"
 msgstr "Appearance"
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "Archived message"
+msgstr "Archived message"
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Archived message, imported from Discord"
+msgstr "Archived message, imported from Discord"
+
 #: components/modal/modals/SignOutSessions.tsx
 msgid "Are you sure you want to clear your sessions?"
 msgstr "Are you sure you want to clear your sessions?"

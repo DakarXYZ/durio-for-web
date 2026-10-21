@@ -13,7 +13,7 @@
       "name": "AGPLv3",
       "url": "https://github.com/stoatchat/stoatchat/blob/main/crates/delta/LICENSE"
     },
-    "version": "0.16.0+fork.1"
+    "version": "0.16.0+fork.3"
   },
   "servers": [
     {
@@ -7868,6 +7868,66 @@
         ]
       }
     },
+    "/admin/import/channels/{target}/messages": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Import Messages",
+        "description": "Import messages from another chat into a server text channel, oldest first, up to 100 at a time (dur.io fork, elevated instance admins only). Messages already imported are skipped. Files must be uploaded to autumn first (`attachments`, author avatars `avatars`).",
+        "operationId": "import_import_messages",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataImportMessages"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportMessagesResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/webhooks/{webhook_id}/{token}/{message_id}": {
       "delete": {
         "tags": [
@@ -12211,6 +12271,15 @@
             ],
             "nullable": true
           },
+          "imported": {
+            "description": "Where this message was imported from, if it was (dur.io fork)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MessageImport"
+              }
+            ],
+            "nullable": true
+          },
           "system": {
             "description": "System message",
             "allOf": [
@@ -12512,6 +12581,19 @@
               "type": "string"
             },
             "uniqueItems": true
+          }
+        }
+      },
+      "MessageImport": {
+        "description": "Where an imported message came from (dur.io fork): its author is a phantom webhook (`webhook` holds the original name and avatar), its id carries the original time",
+        "type": "object",
+        "required": [
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "description": "Source of the import, e.g. `discord`",
+            "type": "string"
           }
         }
       },
@@ -17749,6 +17831,171 @@
             "description": "Whether the invite works for any number of accounts until it expires, otherwise it works once",
             "default": false,
             "type": "boolean"
+          }
+        }
+      },
+      "ImportMessagesResult": {
+        "description": "Result of an import request (dur.io fork)",
+        "type": "object",
+        "required": [
+          "imported",
+          "skipped"
+        ],
+        "properties": {
+          "imported": {
+            "description": "Messages added now",
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          },
+          "skipped": {
+            "description": "Messages that were already imported",
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          }
+        }
+      },
+      "DataImportMessages": {
+        "description": "Messages to import into a channel, oldest first (dur.io fork, instance admins)",
+        "type": "object",
+        "required": [
+          "messages",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "description": "Source of the import, e.g. `discord` (lowercase letters, digits, `-`)",
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1
+          },
+          "messages": {
+            "description": "The messages, 1 to 100",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportMessage"
+            },
+            "maxItems": 100,
+            "minItems": 1
+          }
+        }
+      },
+      "ImportMessage": {
+        "description": "One message to import (dur.io fork)",
+        "type": "object",
+        "required": [
+          "author",
+          "original_id",
+          "timestamp"
+        ],
+        "properties": {
+          "original_id": {
+            "description": "Id of the message in the source, unique within it",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "When it was sent",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ]
+          },
+          "edited": {
+            "description": "When it was last edited",
+            "default": null,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ],
+            "nullable": true
+          },
+          "author": {
+            "description": "Who sent it",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImportAuthor"
+              }
+            ]
+          },
+          "content": {
+            "description": "Text (up to 10000 characters)",
+            "default": "",
+            "type": "string"
+          },
+          "attachments": {
+            "description": "Ids of files uploaded to autumn with the tag `attachments` (up to 10)",
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reply_to": {
+            "description": "The imported messages it replies to (up to 5)",
+            "default": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportReply"
+            }
+          },
+          "pinned": {
+            "description": "Whether it was pinned",
+            "default": false,
+            "type": "boolean"
+          }
+        }
+      },
+      "ImportAuthor": {
+        "description": "The original author of an imported message, shown as a phantom webhook (dur.io fork)",
+        "type": "object",
+        "required": [
+          "name",
+          "original_id"
+        ],
+        "properties": {
+          "original_id": {
+            "description": "Id of the author in the source",
+            "type": "string"
+          },
+          "name": {
+            "description": "Display name (1 to 32 characters)",
+            "type": "string"
+          },
+          "avatar": {
+            "description": "Id of a file uploaded to autumn with the tag `avatars`",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "bot": {
+            "description": "Whether the author was a bot",
+            "default": false,
+            "type": "boolean"
+          }
+        }
+      },
+      "ImportReply": {
+        "description": "An imported message replied to: its id is derived from both (dur.io fork)",
+        "type": "object",
+        "required": [
+          "original_id",
+          "timestamp"
+        ],
+        "properties": {
+          "original_id": {
+            "description": "Id of the message in the source",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "When it was sent, as given when it was imported",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ]
           }
         }
       },

@@ -580,6 +580,10 @@ export interface paths {
     /** Delete an invite so nobody can register with it (dur.io fork, instance admins only). Accounts already created with it stay. */
     delete: operations["invites_revoke_invite"];
   };
+  "/admin/import/channels/{target}/messages": {
+    /** Import messages from another chat into a server text channel, oldest first, up to 100 at a time (dur.io fork, elevated instance admins only). Messages already imported are skipped. Files must be uploaded to autumn first (`attachments`, author avatars `avatars`). */
+    post: operations["import_import_messages"];
+  };
   "/webhooks/{webhook_id}/{token}/{message_id}": {
     /** Deletes a message sent by a webhook */
     delete: operations["webhook_delete_message_webhook_delete_message"];
@@ -1943,6 +1947,8 @@ export interface components {
       encrypted?: components["schemas"]["EncryptedEnvelope"] | null;
       /** @description Poll of this message (dur.io fork) */
       poll?: components["schemas"]["Poll"] | null;
+      /** @description Where this message was imported from, if it was (dur.io fork) */
+      imported?: components["schemas"]["MessageImport"] | null;
       /** @description System message */
       system?: components["schemas"]["SystemMessage"] | null;
       /** @description Array of attachments */
@@ -2050,6 +2056,11 @@ export interface components {
        * @default []
        */
       votes?: string[];
+    };
+    /** @description Where an imported message came from (dur.io fork): its author is a phantom webhook (`webhook` holds the original name and avatar), its id carries the original time */
+    MessageImport: {
+      /** @description Source of the import, e.g. `discord` */
+      source: string;
     };
     /** @description System Event */
     SystemMessage:
@@ -3836,6 +3847,84 @@ export interface components {
        * @default false
        */
       multi_use?: boolean;
+    };
+    /** @description Result of an import request (dur.io fork) */
+    ImportMessagesResult: {
+      /**
+       * Format: uint
+       * @description Messages added now
+       */
+      imported: number;
+      /**
+       * Format: uint
+       * @description Messages that were already imported
+       */
+      skipped: number;
+    };
+    /** @description Messages to import into a channel, oldest first (dur.io fork, instance admins) */
+    DataImportMessages: {
+      /** @description Source of the import, e.g. `discord` (lowercase letters, digits, `-`) */
+      source: string;
+      /** @description The messages, 1 to 100 */
+      messages: components["schemas"]["ImportMessage"][];
+    };
+    /** @description One message to import (dur.io fork) */
+    ImportMessage: {
+      /** @description Id of the message in the source, unique within it */
+      original_id: string;
+      /** @description When it was sent */
+      timestamp: components["schemas"]["ISO8601 Timestamp"];
+      /**
+       * @description When it was last edited
+       * @default null
+       */
+      edited?: components["schemas"]["ISO8601 Timestamp"] | null;
+      /** @description Who sent it */
+      author: components["schemas"]["ImportAuthor"];
+      /**
+       * @description Text (up to 10000 characters)
+       * @default
+       */
+      content?: string;
+      /**
+       * @description Ids of files uploaded to autumn with the tag `attachments` (up to 10)
+       * @default []
+       */
+      attachments?: string[];
+      /**
+       * @description The imported messages it replies to (up to 5)
+       * @default []
+       */
+      reply_to?: components["schemas"]["ImportReply"][];
+      /**
+       * @description Whether it was pinned
+       * @default false
+       */
+      pinned?: boolean;
+    };
+    /** @description The original author of an imported message, shown as a phantom webhook (dur.io fork) */
+    ImportAuthor: {
+      /** @description Id of the author in the source */
+      original_id: string;
+      /** @description Display name (1 to 32 characters) */
+      name: string;
+      /**
+       * @description Id of a file uploaded to autumn with the tag `avatars`
+       * @default null
+       */
+      avatar?: string | null;
+      /**
+       * @description Whether the author was a bot
+       * @default false
+       */
+      bot?: boolean;
+    };
+    /** @description An imported message replied to: its id is derived from both (dur.io fork) */
+    ImportReply: {
+      /** @description Id of the message in the source */
+      original_id: string;
+      /** @description When it was sent, as given when it was imported */
+      timestamp: components["schemas"]["ISO8601 Timestamp"];
     };
     /** @description New webhook information */
     DataEditWebhook: {
@@ -7314,6 +7403,32 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["Error"];
         };
+      };
+    };
+  };
+  /** Import messages from another chat into a server text channel, oldest first, up to 100 at a time (dur.io fork, elevated instance admins only). Messages already imported are skipped. Files must be uploaded to autumn first (`attachments`, author avatars `avatars`). */
+  import_import_messages: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ImportMessagesResult"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataImportMessages"];
       };
     };
   };

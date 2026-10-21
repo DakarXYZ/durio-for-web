@@ -585,6 +585,14 @@ msgstr "Любой, у кого есть этот файл и его парол�
 msgid "Appearance"
 msgstr "Внешний вид"
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "Archived message"
+msgstr "Архивное сообщение"
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Archived message, imported from Discord"
+msgstr "Архивное сообщение, импортировано из Discord"
+
 #: components/modal/modals/SignOutSessions.tsx
 msgid "Are you sure you want to clear your sessions?"
 msgstr "Вы уверены что хотите завершить вашу сессию?"
