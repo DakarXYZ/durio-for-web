@@ -2036,6 +2036,8 @@ export interface components {
       multiple?: boolean;
       /** @description Whether the poll takes no more votes */
       closed?: boolean;
+      /** @description Whether a vote, once given, can be neither changed nor taken back */
+      final_votes?: boolean;
     };
     /** @description One answer of a poll (dur.io fork) */
     PollAnswer: {
@@ -2433,6 +2435,11 @@ export interface components {
        * @default false
        */
       multiple?: boolean;
+      /**
+       * @description Whether a vote, once given, can be neither changed nor taken back
+       * @default false
+       */
+      final_votes?: boolean;
     };
     /** @description Bulk Message Response */
     BulkMessageResponse:

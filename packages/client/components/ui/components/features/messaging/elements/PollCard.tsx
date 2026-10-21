@@ -10,31 +10,68 @@ import { useModals } from "@revolt/modal";
 import { Ripple } from "@revolt/ui/components/design";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
-import { nextPicks, voterCount } from "./pollLogic";
+import {
+  myPicks,
+  samePicks,
+  togglePick,
+  voteCount,
+  voterCount,
+} from "./pollLogic";
 
 /**
- * dur.io: a poll in a message — the answers with their share of the voters; a click
- * votes, the author can close it
+ * dur.io: a poll in a message — the answers with their share of the votes; the user
+ * picks answers and sends them with "Vote", changes them later when the poll allows it,
+ * the author can close it
  */
 export function PollCard(props: { message: Message }) {
   const { t } = useLingui();
   const client = useClient();
   const { showError } = useModals();
   const [busy, setBusy] = createSignal(false);
+  // picks not sent yet; changing: choosing again after a vote
+  const [picks, setPicks] = createSignal<string[]>([]);
+  const [changing, setChanging] = createSignal(false);
 
   const poll = () => props.message.poll!;
   const me = () => client().user!.id;
+  const mine = createMemo(() => myPicks(poll(), me()));
+  const voted = () => mine().length > 0;
   const voters = createMemo(() => voterCount(poll()));
+  const votes = createMemo(() => voteCount(poll()));
+  const choosing = () => !poll().closed && (!voted() || changing());
+  const canChange = () => !poll().closed && voted() && !poll().final_votes;
+  const canSend = () =>
+    !busy() &&
+    !samePicks(picks(), mine()) &&
+    // a first vote needs a pick; a changed one may take the vote back
+    (picks().length > 0 || voted());
   const canClose = () =>
     !poll().closed &&
     (props.message.authorId === me() ||
       !!props.message.channel?.havePermission("ManageMessages"));
 
-  async function vote(answerId: string) {
-    if (poll().closed || busy()) return;
+  function pick(answerId: string) {
+    if (!choosing() || busy()) return;
+    setPicks((list) => togglePick(poll(), list, answerId));
+  }
+
+  function change() {
+    setPicks(mine());
+    setChanging(true);
+  }
+
+  function cancel() {
+    setPicks([]);
+    setChanging(false);
+  }
+
+  async function vote() {
+    if (!canSend()) return;
     setBusy(true);
     try {
-      await props.message.votePoll(nextPicks(poll(), me(), answerId));
+      await props.message.votePoll(picks());
+      setPicks([]);
+      setChanging(false);
     } catch (error) {
       showError(error);
     } finally {
@@ -60,25 +97,28 @@ export function PollCard(props: { message: Message }) {
       <For each={poll().answers}>
         {(answer) => {
           const count = () => answer.votes?.length ?? 0;
-          const mine = () => !!answer.votes?.includes(me());
+          const marked = () =>
+            choosing()
+              ? picks().includes(answer.id)
+              : mine().includes(answer.id);
           const share = () =>
-            voters() ? Math.round((count() / voters()) * 100) : 0;
+            votes() ? Math.round((count() / votes()) * 100) : 0;
 
           return (
             <button
               type="button"
-              class={row({ mine: mine(), closed: !!poll().closed })}
-              disabled={!!poll().closed || busy()}
-              aria-pressed={mine()}
-              onClick={() => vote(answer.id)}
+              class={row({ mine: marked(), closed: !choosing() })}
+              disabled={!choosing() || busy()}
+              aria-pressed={marked()}
+              onClick={() => pick(answer.id)}
             >
-              <Show when={!poll().closed}>
+              <Show when={choosing()}>
                 <Ripple />
               </Show>
               <Bar style={{ width: `${share()}%` }} />
               <Mark>
                 <Symbol size={18}>
-                  {mine()
+                  {marked()
                     ? poll().multiple
                       ? "check_box"
                       : "radio_button_checked"
@@ -108,11 +148,33 @@ export function PollCard(props: { message: Message }) {
             <Trans>poll closed</Trans>
           </Show>
         </span>
-        <Show when={canClose()}>
-          <CloseButton type="button" onClick={close} title={t`Close poll`}>
-            <Trans>Close poll</Trans>
-          </CloseButton>
-        </Show>
+        <FooterActions>
+          <Show when={choosing()}>
+            <Show when={changing()}>
+              <TextButton type="button" onClick={cancel} disabled={busy()}>
+                <Trans>Cancel</Trans>
+              </TextButton>
+            </Show>
+            <VoteButton type="button" onClick={vote} disabled={!canSend()}>
+              <Show
+                when={picks().length === 0 && voted()}
+                fallback={<Trans>Vote</Trans>}
+              >
+                <Trans>Take back vote</Trans>
+              </Show>
+            </VoteButton>
+          </Show>
+          <Show when={canChange() && !changing()}>
+            <TextButton type="button" onClick={change}>
+              <Trans>Change vote</Trans>
+            </TextButton>
+          </Show>
+          <Show when={canClose()}>
+            <TextButton type="button" onClick={close} title={t`Close poll`}>
+              <Trans>Close poll</Trans>
+            </TextButton>
+          </Show>
+        </FooterActions>
       </Footer>
     </Card>
   );
@@ -225,7 +287,16 @@ const Footer = styled("div", {
   },
 });
 
-const CloseButton = styled("button", {
+const FooterActions = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    flexShrink: 0,
+  },
+});
+
+const TextButton = styled("button", {
   base: {
     border: "none",
     background: "transparent",
@@ -237,6 +308,30 @@ const CloseButton = styled("button", {
 
     "&:hover": {
       textDecoration: "underline",
+    },
+
+    "&:disabled": {
+      cursor: "default",
+      opacity: 0.5,
+      textDecoration: "none",
+    },
+  },
+});
+
+const VoteButton = styled("button", {
+  base: {
+    border: "none",
+    padding: "4px 12px",
+    font: "inherit",
+    fontWeight: 600,
+    color: "var(--md-sys-color-on-primary)",
+    background: "var(--md-sys-color-primary)",
+    cursor: "pointer",
+    borderRadius: "var(--borderRadius-full)",
+
+    "&:disabled": {
+      cursor: "default",
+      opacity: 0.38,
     },
   },
 });

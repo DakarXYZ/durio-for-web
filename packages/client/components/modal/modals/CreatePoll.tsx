@@ -1,4 +1,4 @@
-import { For, Show, createSignal } from "solid-js";
+import { Index, Show, createSignal } from "solid-js";
 
 import { Trans, useLingui } from "@lingui/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -36,6 +36,7 @@ export function CreatePollModal(
   const [question, setQuestion] = createSignal("");
   const [answers, setAnswers] = createSignal(["", ""]);
   const [multiple, setMultiple] = createSignal(false);
+  const [changeable, setChangeable] = createSignal(true);
   const [sending, setSending] = createSignal(false);
 
   const filled = () =>
@@ -75,6 +76,7 @@ export function CreatePollModal(
           question: question().trim(),
           answers: filled(),
           multiple: multiple(),
+          final_votes: !changeable(),
         },
         replies: draft.replies?.length ? draft.replies : undefined,
       });
@@ -112,34 +114,43 @@ export function CreatePollModal(
           maxlength={MAX_QUESTION}
           onInput={(e) => setQuestion(e.currentTarget.value)}
         />
-        <For each={answers()}>
+        {/* by position: answers are plain strings, and equal ones (two empty
+            fields) would swap their inputs in a <For> */}
+        <Index each={answers()}>
           {(answer, index) => (
             <AnswerRow>
               <TextField
-                name={`poll-answer-${index()}`}
-                label={t`Answer ${index() + 1}`}
-                value={answer}
+                name={`poll-answer-${index}`}
+                label={t`Answer ${index + 1}`}
+                value={answer()}
                 maxlength={MAX_ANSWER}
-                onInput={(e) => setAnswer(index(), e.currentTarget.value)}
+                onInput={(e) => setAnswer(index, e.currentTarget.value)}
               />
               <Show when={answers().length > 2}>
                 <IconButton
                   size="sm"
                   aria-label={t`Remove answer`}
-                  onPress={() => removeAnswer(index())}
+                  onPress={() => removeAnswer(index)}
                 >
                   <MdClose {...iconSize(18)} />
                 </IconButton>
               </Show>
             </AnswerRow>
           )}
-        </For>
+        </Index>
         <Checkbox
           name="poll-multiple"
           checked={multiple()}
           onChange={(e) => setMultiple(e.currentTarget.checked)}
         >
           <Trans>Allow several answers</Trans>
+        </Checkbox>
+        <Checkbox
+          name="poll-changeable"
+          checked={changeable()}
+          onChange={(e) => setChangeable(e.currentTarget.checked)}
+        >
+          <Trans>Allow changing the vote</Trans>
         </Checkbox>
       </Fields>
     </Dialog>

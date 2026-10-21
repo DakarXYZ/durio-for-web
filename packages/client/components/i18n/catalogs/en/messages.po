@@ -541,6 +541,10 @@ msgstr "All roles have overrides."
 msgid "All Systems Operational"
 msgstr "All Systems Operational"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow changing the vote"
+msgstr "Allow changing the vote"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr "Allow members to change name and avatar per-message"
@@ -595,7 +599,7 @@ msgstr "An internal error occurred. ({0})"
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
 msgstr "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
 
-#. placeholder {0}: index() + 1
+#. placeholder {0}: index + 1
 #: components/modal/modals/CreatePoll.tsx
 msgid "Answer {0}"
 msgstr "Answer {0}"
@@ -883,6 +887,7 @@ msgstr "Can't get discover request status right now"
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
+#: components/ui/components/features/messaging/elements/PollCard.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -970,6 +975,10 @@ msgstr "Change username"
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Change Username"
 msgstr "Change Username"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Change vote"
+msgstr "Change vote"
 
 #: components/app/interface/settings/user/profile/EditProfile.tsx
 msgid "Change your profile per-server"
@@ -4305,6 +4314,10 @@ msgstr "System"
 msgid "System message channels"
 msgstr "System message channels"
 
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Take back vote"
+msgstr "Take back vote"
+
 #: components/modal/modals/CameraCapture.tsx
 msgid "Take photo"
 msgstr "Take photo"
@@ -5087,6 +5100,10 @@ msgstr "Voice Processing"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
 msgstr "Volume"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Vote"
+msgstr "Vote"
 
 #: components/app/interface/channels/text/E2eeMessageStatus.tsx
 msgid "Waiting for the key to decrypt this message…"

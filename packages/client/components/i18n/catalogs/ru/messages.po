@@ -513,6 +513,10 @@ msgstr "У всех ролей есть индивидуальные настр�
 msgid "All Systems Operational"
 msgstr "Все системы в рабочем состоянии"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow changing the vote"
+msgstr "Можно изменить свой голос"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr "Позволить пользователям менять имя и сообщение для каждого сообщения"
@@ -567,7 +571,7 @@ msgstr "Произошла внутренняя ошибка. ({0})"
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
 msgstr "Другое ваше устройство хочет сверить это. Принимайте, только если начали сверку сами."
 
-#. placeholder {0}: index() + 1
+#. placeholder {0}: index + 1
 #: components/modal/modals/CreatePoll.tsx
 msgid "Answer {0}"
 msgstr "Ответ {0}"
@@ -850,6 +854,7 @@ msgstr "Сейчас не получается проверить статус �
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
+#: components/ui/components/features/messaging/elements/PollCard.tsx
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -937,6 +942,10 @@ msgstr "Изменить имя"
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Change Username"
 msgstr "Изменить имя пользователя"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Change vote"
+msgstr "Изменить голос"
 
 #: components/app/interface/settings/user/profile/EditProfile.tsx
 msgid "Change your profile per-server"
@@ -4228,6 +4237,10 @@ msgstr "Системная"
 msgid "System message channels"
 msgstr "Канал системных сообщений"
 
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Take back vote"
+msgstr "Отозвать голос"
+
 #: components/modal/modals/CameraCapture.tsx
 msgid "Take photo"
 msgstr "Сделать снимок"
@@ -5007,6 +5020,10 @@ msgstr "Обработка Голоса"
 msgid "Volume"
 msgstr "Громкость"
 
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Vote"
+msgstr "Голосовать"
+
 #: components/app/interface/channels/text/E2eeMessageStatus.tsx
 msgid "Waiting for the key to decrypt this message…"
 msgstr "Ждём ключ для расшифровки этого сообщения…"
@@ -5366,19 +5383,3 @@ msgstr "Сеанс завершён — возможно, вы вышли из �
 #: components/i18n/errors.tsx
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Ваш пользователь уже создан? Попробуйте войти снова или перезапустите приложение."
-
-#: components/modal/modals/CreatePoll.tsx
-msgid "Allow changing the vote"
-msgstr "Можно изменить свой голос"
-
-#: components/ui/components/features/messaging/elements/PollCard.tsx
-msgid "Change vote"
-msgstr "Изменить голос"
-
-#: components/ui/components/features/messaging/elements/PollCard.tsx
-msgid "Take back vote"
-msgstr "Отозвать голос"
-
-#: components/ui/components/features/messaging/elements/PollCard.tsx
-msgid "Vote"
-msgstr "Голосовать"

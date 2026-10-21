@@ -513,6 +513,10 @@ msgstr "Tous les rôles disposent de permissions spécifiques."
 msgid "All Systems Operational"
 msgstr "Tous les systèmes sont opérationnels"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow changing the vote"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr "Autoriser les membres à modifier leur nom et leur avatar pour chaque message"
@@ -567,7 +571,7 @@ msgstr "Une erreur interne s'est produite. ({0})"
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
 msgstr ""
 
-#. placeholder {0}: index() + 1
+#. placeholder {0}: index + 1
 #: components/modal/modals/CreatePoll.tsx
 msgid "Answer {0}"
 msgstr ""
@@ -847,6 +851,7 @@ msgstr "Impossible d’obtenir le statut de la demande de publication dans Déco
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
+#: components/ui/components/features/messaging/elements/PollCard.tsx
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -934,6 +939,10 @@ msgstr "Modifier votre nom d'utilisateur"
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Change Username"
 msgstr "Change le nom d'utilisateur"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Change vote"
+msgstr ""
 
 #: components/app/interface/settings/user/profile/EditProfile.tsx
 msgid "Change your profile per-server"
@@ -4210,6 +4219,10 @@ msgstr "Système"
 msgid "System message channels"
 msgstr "Salon de messages système"
 
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Take back vote"
+msgstr ""
+
 #: components/modal/modals/CameraCapture.tsx
 msgid "Take photo"
 msgstr ""
@@ -4982,6 +4995,10 @@ msgstr "Traitement de la voix"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
 msgstr "Volume"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Vote"
+msgstr ""
 
 #: components/app/interface/channels/text/E2eeMessageStatus.tsx
 msgid "Waiting for the key to decrypt this message…"

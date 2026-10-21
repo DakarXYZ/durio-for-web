@@ -522,6 +522,10 @@ msgstr "Tutti i ruoli presentano eccezioni."
 msgid "All Systems Operational"
 msgstr "Tutti i sistemi sono operativi"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow changing the vote"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr "Consenti ai membri di cambiare nome e avatar per ogni messaggio"
@@ -580,7 +584,7 @@ msgstr "Si è verificato un errore interno. ({0})"
 msgid "Another of your devices wants to verify this one. Accept only if you started the verification yourself."
 msgstr ""
 
-#. placeholder {0}: index() + 1
+#. placeholder {0}: index + 1
 #: components/modal/modals/CreatePoll.tsx
 msgid "Answer {0}"
 msgstr ""
@@ -864,6 +868,7 @@ msgstr "Al momento non è possibile ottenere lo stato della richiesta dalla sezi
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
+#: components/ui/components/features/messaging/elements/PollCard.tsx
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -953,6 +958,10 @@ msgstr "Cambia nome utente"
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Change Username"
 msgstr "Cambia nome utente"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Change vote"
+msgstr ""
 
 #: components/app/interface/settings/user/profile/EditProfile.tsx
 msgid "Change your profile per-server"
@@ -4307,6 +4316,10 @@ msgstr "Sistema"
 msgid "System message channels"
 msgstr "Canali dei messaggi di sistema"
 
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Take back vote"
+msgstr ""
+
 #: components/modal/modals/CameraCapture.tsx
 msgid "Take photo"
 msgstr ""
@@ -5095,6 +5108,10 @@ msgstr "Elaborazione vocale"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
 msgstr "Volume"
+
+#: components/ui/components/features/messaging/elements/PollCard.tsx
+msgid "Vote"
+msgstr ""
 
 #: components/app/interface/channels/text/E2eeMessageStatus.tsx
 msgid "Waiting for the key to decrypt this message…"

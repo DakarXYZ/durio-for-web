@@ -12481,6 +12481,10 @@
           "closed": {
             "description": "Whether the poll takes no more votes",
             "type": "boolean"
+          },
+          "final_votes": {
+            "description": "Whether a vote, once given, can be neither changed nor taken back",
+            "type": "boolean"
           }
         }
       },
@@ -13672,6 +13676,11 @@
           },
           "multiple": {
             "description": "Whether a user may pick more than one answer",
+            "default": false,
+            "type": "boolean"
+          },
+          "final_votes": {
+            "description": "Whether a vote, once given, can be neither changed nor taken back",
             "default": false,
             "type": "boolean"
           }
