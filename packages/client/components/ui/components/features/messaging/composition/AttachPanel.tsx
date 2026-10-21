@@ -10,12 +10,13 @@ import {
 } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { flip, offset, shift } from "@floating-ui/dom";
+import { autoUpdate, flip, offset, shift } from "@floating-ui/dom";
 import { Trans } from "@lingui/solid/macro";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useDevice } from "@revolt/common";
+import { IS_DESKTOP } from "@revolt/common/lib/desktop";
 import {
   RECENT_IMAGES,
   listRecentImages,
@@ -49,6 +50,8 @@ export function AttachPanel(props: Props) {
   const position = useFloating(() => props.anchor, floating, {
     placement: "top-start",
     middleware: [offset(8), flip(), shift({ padding: 8 })],
+    // the panel grows once the pictures arrive: place it again
+    whileElementsMounted: autoUpdate,
   });
 
   let release = () => {};
@@ -99,10 +102,12 @@ export function AttachPanel(props: Props) {
       };
     }
 
+    // hidden until placed, not at the top left of the window
     return {
       position: position.strategy,
       top: `${position.y ?? 0}px`,
       left: `${position.x ?? 0}px`,
+      visibility: position.x == null ? "hidden" : undefined,
     };
   };
 
@@ -164,15 +169,18 @@ export function AttachPanel(props: Props) {
               <Trans>Poll</Trans>
             </button>
           </Show>
-          <button
-            type="button"
-            class={side({ kind: "camera" })}
-            onClick={() => run(() => props.onCamera())}
-          >
-            <Ripple />
-            <Symbol size={22}>photo_camera</Symbol>
-            <Trans>Camera</Trans>
-          </button>
+          {/* a desktop has no use for the camera here */}
+          <Show when={!IS_DESKTOP}>
+            <button
+              type="button"
+              class={side({ kind: "camera" })}
+              onClick={() => run(() => props.onCamera())}
+            >
+              <Ripple />
+              <Symbol size={22}>photo_camera</Symbol>
+              <Trans>Camera</Trans>
+            </button>
+          </Show>
         </Column>
       </Base>
     </Portal>
