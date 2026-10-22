@@ -10,6 +10,7 @@ import {
   MessagePinnedSystemMessage,
   SystemMessage as SystemMessageClass,
   TextSystemMessage,
+  ThreadCreatedSystemMessage,
   User,
   UserModeratedSystemMessage,
   UserSystemMessage,
@@ -200,6 +201,12 @@ export function SystemMessage(props: Props) {
           <Trans>
             <UserMention userId={(sm as EncryptionEnabledSystemMessage).byId} />{" "}
             turned on end-to-end encryption (beta). It cannot be turned off.
+          </Trans>
+        </Match>
+        <Match when={sm.type === "thread_created"}>
+          <Trans>
+            <UserMention userId={(sm as ThreadCreatedSystemMessage).byId} />{" "}
+            started a thread: <b>{(sm as ThreadCreatedSystemMessage).name}</b>
           </Trans>
         </Match>
         <Match when={sm.type === "text"}>

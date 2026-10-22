@@ -48,6 +48,8 @@ import {
   visibleText,
 } from "@revolt/ui/components/features/messaging/elements/PictureGrid";
 import { PollCard } from "@revolt/ui/components/features/messaging/elements/PollCard";
+import { SpoilerCover } from "@revolt/ui/components/features/messaging/elements/SpoilerCover";
+import { ThreadSummary } from "@revolt/ui/components/features/messaging/elements/ThreadSummary";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { addSwipeReplyListener } from "@revolt/ui/directives";
 
@@ -446,44 +448,53 @@ export function Message(props: Props) {
             return <></>;
           }}
         </CompositionMediaPicker>
-        <Switch>
-          <Match when={props.editing}>
-            <EditMessage message={props.message} />
-          </Match>
-          <Match when={props.message.e2ee && props.message.e2ee.state !== "ok"}>
-            <E2eeMessageStatus e2ee={props.message.e2ee!} />
-          </Match>
-          <Match when={text() && !isOnlyGIF()}>
-            <BreakText>
-              <Markdown content={text()} />
-            </BreakText>
-          </Match>
-        </Switch>
-        {/* dur.io: a poll */}
-        <Show when={props.message.poll}>
-          <PollCard message={props.message} />
-        </Show>
-        <E2eeMessageShield e2ee={props.message.e2ee} />
-        <Show when={gridPictures().length}>
-          <PictureGrid pictures={gridPictures()} />
-        </Show>
-        <For
-          each={props.message.attachments?.filter(
-            (file) => !gridPictures().length || !isGridPicture(file),
-          )}
+        {/* dur.io: a message a moderator hid behind a spoiler */}
+        <SpoilerCover
+          kind={props.editing ? undefined : props.message.spoiler?.kind}
         >
-          {(attachment) => (
-            <Attachment message={props.message} file={attachment} />
-          )}
-        </For>
-        <For
-          each={props.message.embeds?.filter(
-            (embed) =>
-              !gridPictures().some((picture) => picture.embed === embed),
-          )}
-        >
-          {(embed) => <Embed embed={embed} />}
-        </For>
+          <Switch>
+            <Match when={props.editing}>
+              <EditMessage message={props.message} />
+            </Match>
+            <Match
+              when={props.message.e2ee && props.message.e2ee.state !== "ok"}
+            >
+              <E2eeMessageStatus e2ee={props.message.e2ee!} />
+            </Match>
+            <Match when={text() && !isOnlyGIF()}>
+              <BreakText>
+                <Markdown content={text()} />
+              </BreakText>
+            </Match>
+          </Switch>
+          {/* dur.io: a poll */}
+          <Show when={props.message.poll}>
+            <PollCard message={props.message} />
+          </Show>
+          <E2eeMessageShield e2ee={props.message.e2ee} />
+          <Show when={gridPictures().length}>
+            <PictureGrid pictures={gridPictures()} />
+          </Show>
+          <For
+            each={props.message.attachments?.filter(
+              (file) => !gridPictures().length || !isGridPicture(file),
+            )}
+          >
+            {(attachment) => (
+              <Attachment message={props.message} file={attachment} />
+            )}
+          </For>
+          <For
+            each={props.message.embeds?.filter(
+              (embed) =>
+                !gridPictures().some((picture) => picture.embed === embed),
+            )}
+          >
+            {(embed) => <Embed embed={embed} />}
+          </For>
+        </SpoilerCover>
+        {/* dur.io: the thread started from this message */}
+        <ThreadSummary message={props.message} />
         <Reactions
           reactions={
             props.message.reactions as never as Map<string, Set<string>>

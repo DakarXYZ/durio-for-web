@@ -8,6 +8,7 @@ import { CustomEmoji, UnicodeEmoji } from "@revolt/markdown/emoji";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 import { MediaPickerProps } from "@revolt/ui/components/features/messaging/composition/picker/CompositionMediaPicker";
+import { useOpenThread } from "@revolt/ui/components/features/messaging/elements/ThreadSummary";
 
 import MdBadge from "@material-design-icons/svg/outlined/badge.svg?component-solid";
 import MdContentCopy from "@material-design-icons/svg/outlined/content_copy.svg?component-solid";
@@ -28,6 +29,7 @@ import MdShield from "@material-design-icons/svg/outlined/shield.svg?component-s
 import { Trans, useLingui } from "@lingui/solid/macro";
 import MdSentimentContent from "@material-symbols/svg-400/outlined/sentiment_content.svg?component-solid";
 import { useSnackbar } from "@revolt/ui";
+import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import {
   ContextMenu,
   ContextMenuButton,
@@ -51,6 +53,24 @@ export function MessageContextMenu(props: {
   const snackbar = useSnackbar();
   const { t } = useLingui();
   const { openModal, showError } = useModals();
+  const openThread = useOpenThread();
+
+  /**
+   * dur.io: a thread can start from a message of a server text channel (not a thread)
+   */
+  const canStartThread = () =>
+    props.message!.channel?.type === "TextChannel" &&
+    !props.message!.channel.isThread &&
+    !props.message!.threadId &&
+    props.message!.channel.havePermission("SendMessage");
+
+  /**
+   * dur.io: moderators hide any message behind a spoiler
+   */
+  const canSpoiler = () =>
+    !!props.message!.server &&
+    !props.message!.systemMessage &&
+    !!props.message!.channel?.havePermission("ManageMessages");
 
   /**
    * Reply to this message
@@ -304,6 +324,32 @@ export function MessageContextMenu(props: {
 
         <ContextMenuDivider />
 
+        {/* dur.io: threads */}
+        <Show when={props.message!.thread}>
+          {(thread) => (
+            <ContextMenuButton
+              symbol={<Symbol size={16}>forum</Symbol>}
+              onClick={() => openThread(thread())}
+            >
+              <Trans>Open thread</Trans>
+            </ContextMenuButton>
+          )}
+        </Show>
+        <Show when={canStartThread()}>
+          <ContextMenuButton
+            symbol={<Symbol size={16}>forum</Symbol>}
+            onClick={() =>
+              openModal({
+                type: "create_thread",
+                channel: props.message!.channel!,
+                message: props.message!,
+              })
+            }
+          >
+            <Trans>Create thread</Trans>
+          </ContextMenuButton>
+        </Show>
+
         <Show
           when={
             props.reactPicker && props.message?.channel?.havePermission("React")
@@ -346,6 +392,40 @@ export function MessageContextMenu(props: {
               </Match>
             </Switch>
           </ContextMenuButton>
+        </Show>
+        {/* dur.io: hide behind a spoiler, or take it away */}
+        <Show when={canSpoiler()}>
+          <Show
+            when={props.message!.spoiler}
+            fallback={
+              <ContextMenuSubMenu
+                symbol={<Symbol size={16}>visibility_off</Symbol>}
+                buttonContent={<Trans>Hide behind a spoiler</Trans>}
+              >
+                <ContextMenuButton
+                  onClick={() =>
+                    props.message!.setSpoiler("spoiler").catch(showError)
+                  }
+                >
+                  <Trans>Spoiler Alert!</Trans>
+                </ContextMenuButton>
+                <ContextMenuButton
+                  onClick={() =>
+                    props.message!.setSpoiler("nsfw").catch(showError)
+                  }
+                >
+                  <Trans>NSFW</Trans>
+                </ContextMenuButton>
+              </ContextMenuSubMenu>
+            }
+          >
+            <ContextMenuButton
+              symbol={<Symbol size={16}>visibility</Symbol>}
+              onClick={() => props.message!.removeSpoiler().catch(showError)}
+            >
+              <Trans>Remove the spoiler</Trans>
+            </ContextMenuButton>
+          </Show>
         </Show>
         <Show
           when={

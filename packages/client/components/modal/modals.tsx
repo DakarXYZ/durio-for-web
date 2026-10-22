@@ -22,6 +22,7 @@ import { CreateOrJoinServerModal } from "./modals/CreateOrJoinServer";
 import { CreatePollModal } from "./modals/CreatePoll";
 import { CreateRoleModal } from "./modals/CreateRole";
 import { CreateServerModal } from "./modals/CreateServer";
+import { CreateThreadModal } from "./modals/CreateThread";
 import { CreateWebhookModal } from "./modals/CreateWebhook";
 import { CropModal } from "./modals/CropProcess";
 import { CustomStatusModal } from "./modals/CustomStatus";
@@ -223,6 +224,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <CameraCaptureModal {...modalProps} />;
     case "create_poll":
       return <CreatePollModal {...modalProps} />;
+    case "create_thread":
+      return <CreateThreadModal {...modalProps} />;
     case "edit_bot_username":
       return <EditBotUsernameModal {...modalProps} />;
     case "screen_share_settings":

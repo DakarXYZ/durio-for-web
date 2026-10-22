@@ -78,9 +78,9 @@ const [hoveredItem, setHoveredItem] = createSignal<Item | null>(null);
  */
 export function EmojiPicker(props: { channel?: Channel }) {
   const client = useClient();
-  const { ordering, settings } = useState();
-  const { isMobile } = useDevice();
+  const { ordering, settings, recentEmoji } = useState();
   const { t } = useLingui();
+  const { isMobile } = useDevice();
 
   const [filter, setFilter] = createSignal("");
   const [colCount, setColCount] = createSignal(0);
@@ -94,11 +94,42 @@ export function EmojiPicker(props: { channel?: Channel }) {
     ),
   );
 
-  // emoji from other servers need permission
-  const servers = createMemo(() =>
-    props.channel?.server && !props.channel.havePermission("UseExternalEmojis")
-      ? [props.channel.server]
-      : ordering.orderedServers(client()),
+  // emoji from other servers need permission; dur.io: this server's come first
+  const servers = createMemo(() => {
+    const here = props.channel?.server;
+    if (here && !props.channel!.havePermission("UseExternalEmojis")) {
+      return [here];
+    }
+
+    const all = ordering.orderedServers(client());
+    return here
+      ? [here, ...all.filter((server) => server.id !== here.id)]
+      : all;
+  });
+
+  // dur.io: the emoji the user picks most, that can be used here
+  const favourites = createMemo(() =>
+    recentEmoji
+      .frequent()
+      .map((emoji): Item | undefined => {
+        if (emoji.length === 26) {
+          const custom = client().emojis.get(emoji);
+          if (!custom) return undefined;
+          const parent = custom.parent;
+          const usable =
+            parent.type !== "Server" ||
+            servers().some((server) => server.id === parent.id);
+          return usable ? { t: 2, emoji: custom } : undefined;
+        }
+
+        const known = EMOJI_MAP_DEDUPE.find((entry) => entry.emoji === emoji);
+        return {
+          t: 4,
+          name: known?.shorthands[0] ?? emoji,
+          text: emoji,
+        };
+      })
+      .filter((item): item is Item => !!item),
   );
 
   const items = createMemo(() => {
@@ -127,6 +158,24 @@ export function EmojiPicker(props: { channel?: Channel }) {
     }
 
     const items: Item[] = [];
+
+    // dur.io: favourites on top
+    if (favourites().length) {
+      items.push({
+        t: 3,
+        title: t`Frequently used`,
+      });
+
+      while (items.length % cols) {
+        items.push({ t: 1 });
+      }
+
+      items.push(...favourites());
+
+      while (items.length % cols) {
+        items.push({ t: 1 });
+      }
+    }
 
     for (const server of servers()) {
       const emojis = server.emojis;
@@ -451,6 +500,10 @@ const EmojiItem = (props: { style: unknown; tabIndex: number; item: Item }) => {
       tabIndex={props.tabIndex}
       role="listitem"
       onClick={() => {
+        // dur.io: counts for the favourites (a reaction counts once)
+        if (props.item.t === 2) state.recentEmoji.use(props.item.emoji.id);
+        if (props.item.t === 4) state.recentEmoji.use(props.item.text);
+
         if (props.item.t === 2) {
           onTextReplacement(`:${props.item.emoji.id}:`);
         }

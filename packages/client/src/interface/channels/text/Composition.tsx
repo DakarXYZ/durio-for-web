@@ -44,6 +44,12 @@ interface Props {
    * Notify parent component when a message is sent
    */
   onMessageSend?: () => void;
+
+  /**
+   * dur.io: a second composer on the page (a thread's): typing elsewhere goes to the
+   * channel's, not to this one
+   */
+  secondary?: boolean;
 }
 
 /**
@@ -65,13 +71,16 @@ export function MessageComposition(props: Props) {
     () => props.channel.server?.member?.timeout,
   );
 
-  createKeybind(KeybindAction.CHAT_JUMP_END, () =>
-    setNodeReplacement(["_focus"]),
-  );
+  // eslint-disable-next-line solid/reactivity
+  if (!props.secondary) {
+    createKeybind(KeybindAction.CHAT_JUMP_END, () =>
+      setNodeReplacement(["_focus"]),
+    );
 
-  createKeybind(KeybindAction.CHAT_FOCUS_COMPOSITION, () =>
-    setNodeReplacement(["_focus"]),
-  );
+    createKeybind(KeybindAction.CHAT_FOCUS_COMPOSITION, () =>
+      setNodeReplacement(["_focus"]),
+    );
+  }
 
   /**
    * Get the draft for the current channel
@@ -125,8 +134,12 @@ export function MessageComposition(props: Props) {
     createSignal<readonly [string | "_focus"]>();
 
   // bind this composition instance to the global node replacement signal
-  state.draft._setNodeReplacement = setNodeReplacement;
-  onCleanup(() => (state.draft._setNodeReplacement = undefined));
+  // (dur.io: the channel's, not a thread panel's)
+  // eslint-disable-next-line solid/reactivity
+  if (!props.secondary) {
+    state.draft._setNodeReplacement = setNodeReplacement;
+    onCleanup(() => (state.draft._setNodeReplacement = undefined));
+  }
 
   createEffect(
     on(

@@ -31,7 +31,10 @@ import {
 } from "./plugins/mentions";
 import { remarkLinkify } from "./plugins/remarkLinkify";
 import {
+  RenderNsfw,
   RenderSpoiler,
+  nsfwHandler,
+  remarkNsfw,
   remarkSpoiler,
   spoilerHandler,
 } from "./plugins/spoiler";
@@ -81,6 +84,7 @@ const components = () => ({
   mention: RenderMention,
   timestamp: RenderTimestamp,
   spoiler: RenderSpoiler,
+  nsfw: RenderNsfw,
 
   a: RenderAnchor,
   p: elements.paragraph,
@@ -122,6 +126,7 @@ const changelogComponents = () => ({
   mention: RenderMention,
   timestamp: RenderTimestamp,
   spoiler: RenderSpoiler,
+  nsfw: RenderNsfw,
 
   a: RenderAnchor,
   p: elements.paragraph,
@@ -169,6 +174,11 @@ const replyComponents = () => ({
     // eslint-disable-next-line solid/reactivity
     props.disabled = true;
     return RenderSpoiler(props);
+  },
+  nsfw: (props: ComponentProps<typeof RenderNsfw>) => {
+    // eslint-disable-next-line solid/reactivity
+    props.disabled = true;
+    return RenderNsfw(props);
   },
   a: (props: ComponentProps<typeof RenderAnchor>) => {
     // eslint-disable-next-line solid/reactivity
@@ -230,6 +240,7 @@ export const UNIFIED_PLUGINS = [
   remarkUnicodeEmoji,
   remarkCustomEmoji,
   remarkSpoiler,
+  remarkNsfw,
   remarkHtmlToText,
 ];
 
@@ -240,6 +251,7 @@ const HTML_UNIFIED_PLUGINS = [
   remarkUnicodeEmoji,
   remarkCustomEmoji,
   remarkSpoiler,
+  remarkNsfw,
   remarkLinkify,
   remarkHtmlToText,
 ];
@@ -256,6 +268,7 @@ const htmlPipeline = HTML_UNIFIED_PLUGINS.reduce(
       mention: mentionHandler,
       timestamp: timestampHandler,
       spoiler: spoilerHandler,
+      nsfw: nsfwHandler,
     },
   })
   .use(remarkInsertBreaks)
@@ -279,6 +292,7 @@ const replyPipeline = unified()
   .use(remarkUnicodeEmoji)
   .use(remarkCustomEmoji)
   .use(remarkSpoiler)
+  .use(remarkNsfw)
   .use(remarkLinkify)
   // @ts-expect-error non-standard elements not recognized by typing
   .use(remarkRehype, {
@@ -287,6 +301,7 @@ const replyPipeline = unified()
       customEmoji: customEmojiHandler,
       mention: mentionHandler,
       spoiler: spoilerHandler,
+      nsfw: nsfwHandler,
     },
   })
   .use(remarkInsertBreaks);

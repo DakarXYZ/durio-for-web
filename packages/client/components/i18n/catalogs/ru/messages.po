@@ -5394,3 +5394,79 @@ msgstr "Сеанс завершён — возможно, вы вышли из �
 #: components/i18n/errors.tsx
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Ваш пользователь уже создан? Попробуйте войти снова или перезапустите приложение."
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "{0, plural, one {# message} other {# messages}}"
+msgstr "{0, plural, one {# сообщение} few {# сообщения} many {# сообщений} other {# сообщения}}"
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "archived"
+msgstr "в архиве"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Bring the thread back"
+msgstr "Вернуть тред из архива"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Archive the thread"
+msgstr "Убрать тред в архив"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Open as a page"
+msgstr "Открыть на всю страницу"
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Threads"
+msgstr "Треды"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "New thread"
+msgstr "Новый тред"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "No threads yet. Start one from a message, or with \"New thread\"."
+msgstr "Тредов пока нет. Начните тред из сообщения или кнопкой «Новый тред»."
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Archived"
+msgstr "Архив"
+
+#: components/modal/modals/CreateThread.tsx
+msgid "Thread name"
+msgstr "Название треда"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Open thread"
+msgstr "Открыть тред"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Create thread"
+msgstr "Создать тред"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Hide behind a spoiler"
+msgstr "Скрыть под спойлер"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Spoiler Alert!"
+msgstr "Spoiler Alert!"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "NSFW"
+msgstr "NSFW"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Remove the spoiler"
+msgstr "Убрать спойлер"
+
+#: components/ui/components/features/messaging/elements/SpoilerCover.tsx
+msgid "Click to show"
+msgstr "Нажмите, чтобы показать"
+
+#: components/ui/components/features/messaging/elements/SystemMessage.tsx
+msgid "<0/> started a thread: <1>{0}</1>"
+msgstr "<0/> начал тред: <1>{0}</1>"
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Frequently used"
+msgstr "Часто используемые"

@@ -82,7 +82,8 @@ export function MessageToolbar() {
   return (
     <Base class="Toolbar">
       <Show when={message?.channel?.havePermission("React")}>
-        <For each={state.recentEmoji.quick()}>
+        {/* dur.io: on a phone one quick emoji fewer, the picker button fits */}
+        <For each={state.recentEmoji.quick(wide() ? 5 : 4)}>
           {(emoji) => (
             <div
               class={tool({ emoji: true })}
@@ -93,17 +94,15 @@ export function MessageToolbar() {
             </div>
           )}
         </For>
-        <Show when={wide()}>
-          <div
-            ref={reactRef}
-            class={tool()}
-            aria-label={t`React`}
-            onClick={(e) => reactPicker!()?.onClickEmoji(e, reactRef)}
-          >
-            <Ripple />
-            <MdEmojiEmotions {...iconSize(20)} />
-          </div>
-        </Show>
+        <div
+          ref={reactRef}
+          class={tool()}
+          aria-label={t`React`}
+          onClick={(e) => reactPicker!()?.onClickEmoji(e, reactRef)}
+        >
+          <Ripple />
+          <MdEmojiEmotions {...iconSize(20)} />
+        </div>
         <Divider />
       </Show>
       <Show when={message?.content}>

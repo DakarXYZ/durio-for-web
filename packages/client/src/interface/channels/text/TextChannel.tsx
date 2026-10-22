@@ -25,6 +25,10 @@ import {
   Text,
   main,
 } from "@revolt/ui";
+import {
+  closeThreadPanel,
+  openThreadId,
+} from "@revolt/ui/components/features/messaging/elements/threadPanel";
 import { VoiceChannelCallCardMount } from "@revolt/ui/components/features/voice/callCard/VoiceCallCard";
 
 import { ChannelHeader } from "../ChannelHeader";
@@ -36,6 +40,7 @@ import { MessageComposition } from "./Composition";
 import { isLargeServer } from "./largeServer";
 import { MemberSidebar } from "./MemberSidebar";
 import { TextSearchSidebar } from "./TextSearchSidebar";
+import { ThreadList, ThreadPanel } from "./ThreadPanel";
 
 /**
  * State of the channel sidebar
@@ -47,6 +52,15 @@ export type SidebarState =
     }
   | {
       state: "pins";
+    }
+  | {
+      /** dur.io: the threads of the channel */
+      state: "threads";
+    }
+  | {
+      /** dur.io: a thread of the channel */
+      state: "thread";
+      id: string;
     }
   | {
       state: "default";
@@ -177,6 +191,33 @@ export function TextChannel(props: ChannelPageProps) {
     ),
   );
 
+  // dur.io: a thread of this channel opened from a message or the thread list
+  createEffect(
+    on(openThreadId, (id) => {
+      const thread = id ? client().channels.get(id) : undefined;
+      if (thread?.threadInfo?.parent === props.channel.id) {
+        setSidebarState({ state: "thread", id: thread.id });
+      }
+    }),
+  );
+
+  // dur.io: the panel closed (or showing something else) forgets the thread
+  createEffect(
+    on(sidebarState, (sidebar) => {
+      if (sidebar.state !== "thread" && openThreadId()) closeThreadPanel();
+    }),
+  );
+
+  /**
+   * dur.io: the thread shown in the side panel
+   */
+  const panelThread = () => {
+    const sidebar = sidebarState();
+    return sidebar.state === "thread"
+      ? client().channels.get(sidebar.id)
+      : undefined;
+  };
+
   // If this is a server text channel, sync the members
   // todo: useQuery
   createEffect(
@@ -241,14 +282,23 @@ export function TextChannel(props: ChannelPageProps) {
             onMessageSend={() => jumpToBottomRef?.()}
           />
         </main>
+        <Show when={panelThread()}>
+          {(thread) => (
+            <ThreadPanel
+              thread={thread()}
+              onClose={() => setSidebarState({ state: "default" })}
+            />
+          )}
+        </Show>
         <Show
           when={
-            (state.layout.getSectionState(
+            sidebarState().state !== "thread" &&
+            ((state.layout.getSectionState(
               LAYOUT_SECTIONS.MEMBER_SIDEBAR,
               true,
             ) &&
               canIHasSidebar(props.channel)) ||
-            sidebarState().state !== "default"
+              sidebarState().state !== "default")
           }
         >
           <div
@@ -285,6 +335,12 @@ export function TextChannel(props: ChannelPageProps) {
                     }}
                   />
                 </WideSidebarContainer>
+              </Match>
+              <Match when={sidebarState().state === "threads"}>
+                <ThreadList
+                  channel={props.channel}
+                  onClose={() => setSidebarState({ state: "default" })}
+                />
               </Match>
               <Match when={sidebarState().state === "pins"}>
                 <WideSidebarContainer>

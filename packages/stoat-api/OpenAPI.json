@@ -13,7 +13,7 @@
       "name": "AGPLv3",
       "url": "https://github.com/stoatchat/stoatchat/blob/main/crates/delta/LICENSE"
     },
-    "version": "0.16.0+fork.3"
+    "version": "0.16.0+fork.4"
   },
   "servers": [
     {
@@ -2828,6 +2828,110 @@
         ]
       }
     },
+    "/channels/{target}/messages/{msg}/spoiler": {
+      "put": {
+        "tags": [
+          "Messaging"
+        ],
+        "summary": "Hide a Message behind a Spoiler",
+        "description": "Hide any message behind a \"spoiler alert\" or an NSFW cover; everyone sees the cover until they open it. Needs `ManageMessages`.",
+        "operationId": "message_spoiler_spoiler_message",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "msg",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataMessageSpoiler"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Messaging"
+        ],
+        "summary": "Take a Message out from behind a Spoiler",
+        "description": "Needs `ManageMessages`.",
+        "operationId": "message_spoiler_unspoiler_message",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "msg",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/channels/{channel_id}/webhooks": {
       "get": {
         "tags": [
@@ -2919,6 +3023,168 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Webhook"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/channels/{target}/threads": {
+      "get": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Fetch Threads",
+        "description": "Fetch the threads of a channel, archived ones too.",
+        "operationId": "threads_fetch_threads",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Channel"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Start a Thread",
+        "description": "Start a thread in a server channel, from one of its messages or, without one, from a new `thread_created` system message. Needs `SendMessage`.",
+        "operationId": "threads_create_thread",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataCreateThread"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Channel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
+    "/channels/{target}/thread": {
+      "patch": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Edit a Thread",
+        "description": "Rename or archive a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back.",
+        "operationId": "threads_edit_thread",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataEditThread"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Channel"
                 }
               }
             }
@@ -7928,6 +8194,66 @@
         ]
       }
     },
+    "/admin/import/channels/{target}/embeds": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Import Link Previews",
+        "description": "Set the link previews of messages imported before, up to 100 messages at a time (dur.io fork, elevated instance admins only, no UI). The previews of a message are replaced; files of previews must be uploaded to autumn first (`attachments`).",
+        "operationId": "import_import_embeds",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataImportEmbeds"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportEmbedsResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          },
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/webhooks/{webhook_id}/{token}/{message_id}": {
       "delete": {
         "tags": [
@@ -11433,6 +11759,15 @@
                 "format": "uint64",
                 "minimum": 0,
                 "nullable": true
+              },
+              "thread": {
+                "description": "Set when this channel is a thread of another channel (dur.io fork)",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ThreadInfo"
+                  }
+                ],
+                "nullable": true
               }
             }
           }
@@ -11515,6 +11850,40 @@
             "format": "uint",
             "minimum": 1,
             "nullable": true
+          }
+        }
+      },
+      "ThreadInfo": {
+        "description": "What makes a server channel a thread (dur.io fork)\n\nA thread is not in the server's channel list; it takes the permissions of its parent channel.",
+        "type": "object",
+        "required": [
+          "message",
+          "owner",
+          "parent"
+        ],
+        "properties": {
+          "parent": {
+            "description": "Id of the channel the thread belongs to",
+            "type": "string"
+          },
+          "message": {
+            "description": "Id of the message in the parent channel the thread hangs off",
+            "type": "string"
+          },
+          "owner": {
+            "description": "Id of the user who started the thread",
+            "type": "string"
+          },
+          "archived": {
+            "description": "Whether the thread was archived; a new message in it brings it back",
+            "type": "boolean"
+          },
+          "message_count": {
+            "description": "Number of messages in the thread",
+            "default": 0,
+            "type": "integer",
+            "format": "uint64",
+            "minimum": 0
           }
         }
       },
@@ -12280,6 +12649,20 @@
             ],
             "nullable": true
           },
+          "thread": {
+            "description": "Id of the thread started from this message (dur.io fork)",
+            "type": "string",
+            "nullable": true
+          },
+          "spoiler": {
+            "description": "Set when a moderator hid this message behind a spoiler (dur.io fork)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MessageSpoiler"
+              }
+            ],
+            "nullable": true
+          },
           "system": {
             "description": "System message",
             "allOf": [
@@ -12597,6 +12980,47 @@
           }
         }
       },
+      "MessageSpoiler": {
+        "description": "A moderator hid a message behind a spoiler (dur.io fork)",
+        "type": "object",
+        "required": [
+          "by",
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "description": "What it is hidden behind",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpoilerKind"
+              }
+            ]
+          },
+          "by": {
+            "description": "Id of the user who hid it",
+            "type": "string"
+          }
+        }
+      },
+      "SpoilerKind": {
+        "description": "What a message is hidden behind (dur.io fork)",
+        "oneOf": [
+          {
+            "description": "\"Spoiler alert!\"",
+            "type": "string",
+            "enum": [
+              "spoiler"
+            ]
+          },
+          {
+            "description": "Not safe for work",
+            "type": "string",
+            "enum": [
+              "nsfw"
+            ]
+          }
+        ]
+      },
       "SystemMessage": {
         "description": "System Event",
         "oneOf": [
@@ -12899,6 +13323,29 @@
                 ]
               },
               "by": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "description": "A thread was started without a message to hang off (dur.io fork)",
+            "type": "object",
+            "required": [
+              "by",
+              "name",
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "thread_created"
+                ]
+              },
+              "by": {
+                "type": "string"
+              },
+              "name": {
                 "type": "string"
               }
             }
@@ -14116,6 +14563,23 @@
           }
         }
       },
+      "DataMessageSpoiler": {
+        "description": "Hide a message behind a spoiler (dur.io fork)",
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "description": "What to hide it behind",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpoilerKind"
+              }
+            ]
+          }
+        }
+      },
       "Webhook": {
         "description": "Webhook",
         "type": "object",
@@ -14181,6 +14645,44 @@
             "type": "string",
             "maxLength": 128,
             "minLength": 1,
+            "nullable": true
+          }
+        }
+      },
+      "DataCreateThread": {
+        "description": "Start a thread (dur.io fork)",
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "description": "Thread name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "message": {
+            "description": "Id of the message in the channel to start the thread from; without one the thread hangs off a new system message",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "DataEditThread": {
+        "description": "Rename or archive a thread (dur.io fork)",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Thread name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "nullable": true
+          },
+          "archived": {
+            "description": "Whether the thread is archived",
+            "type": "boolean",
             "nullable": true
           }
         }
@@ -15913,6 +16415,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ChannelEncryption"
+              }
+            ],
+            "nullable": true
+          },
+          "thread": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ThreadInfo"
               }
             ],
             "nullable": true
@@ -17996,6 +18506,176 @@
                 "$ref": "#/components/schemas/ISO8601 Timestamp"
               }
             ]
+          }
+        }
+      },
+      "ImportEmbedsResult": {
+        "description": "Result of an import of previews (dur.io fork)",
+        "type": "object",
+        "required": [
+          "missing",
+          "updated"
+        ],
+        "properties": {
+          "updated": {
+            "description": "Messages whose previews were set",
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          },
+          "missing": {
+            "description": "Messages not found among the imported messages of the channel",
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          }
+        }
+      },
+      "DataImportEmbeds": {
+        "description": "Link previews for messages imported before, e.g. Discord's own previews from an export (dur.io fork, instance admins); they replace the previews the messages have",
+        "type": "object",
+        "required": [
+          "messages",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "description": "Source the messages were imported from",
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1
+          },
+          "messages": {
+            "description": "The messages, 1 to 100",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportMessageEmbeds"
+            },
+            "maxItems": 100,
+            "minItems": 1
+          }
+        }
+      },
+      "ImportMessageEmbeds": {
+        "description": "The previews of one imported message (dur.io fork)",
+        "type": "object",
+        "required": [
+          "original_id",
+          "timestamp"
+        ],
+        "properties": {
+          "original_id": {
+            "description": "Id of the message in the source",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "When it was sent, as given when it was imported",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ISO8601 Timestamp"
+              }
+            ]
+          },
+          "embeds": {
+            "description": "Its previews (up to 10; empty removes them)",
+            "default": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportEmbed"
+            }
+          }
+        }
+      },
+      "ImportEmbed": {
+        "description": "One preview: a card with a title, or just a picture or a video (dur.io fork)",
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "Address the preview is for",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "description": "Title (up to 256 characters)",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "description": "Description (up to 2000 characters)",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "site_name": {
+            "description": "Site name (up to 100 characters)",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "colour": {
+            "description": "CSS colour, e.g. `#ff0000`",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
+            "description": "Picture: a large one under the card, or a small one beside it",
+            "default": null,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImportEmbedMedia"
+              }
+            ],
+            "nullable": true
+          },
+          "video": {
+            "description": "Video",
+            "default": null,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImportEmbedMedia"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "ImportEmbedMedia": {
+        "description": "The picture or video of an imported preview: a file uploaded to autumn with the tag `attachments`, or an address on the web (dur.io fork)",
+        "type": "object",
+        "properties": {
+          "file": {
+            "description": "Id of the uploaded file",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "description": "Address of the picture or video, when no file",
+            "default": null,
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "description": "Width",
+            "default": 0,
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          },
+          "height": {
+            "description": "Height",
+            "default": 0,
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0
+          },
+          "small": {
+            "description": "Small beside the card instead of large under it (pictures only)",
+            "default": false,
+            "type": "boolean"
           }
         }
       },

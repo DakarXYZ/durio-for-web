@@ -5482,3 +5482,79 @@ msgstr "Your session ended, possibly because you logged out on another device. L
 #: components/i18n/errors.tsx
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Your user has already been created? Try logging in again or refreshing the app."
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "{0, plural, one {# message} other {# messages}}"
+msgstr "{0, plural, one {# message} other {# messages}}"
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "archived"
+msgstr "archived"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Bring the thread back"
+msgstr "Bring the thread back"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Archive the thread"
+msgstr "Archive the thread"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Open as a page"
+msgstr "Open as a page"
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Threads"
+msgstr "Threads"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "New thread"
+msgstr "New thread"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "No threads yet. Start one from a message, or with \"New thread\"."
+msgstr "No threads yet. Start one from a message, or with \"New thread\"."
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Archived"
+msgstr "Archived"
+
+#: components/modal/modals/CreateThread.tsx
+msgid "Thread name"
+msgstr "Thread name"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Open thread"
+msgstr "Open thread"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Create thread"
+msgstr "Create thread"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Hide behind a spoiler"
+msgstr "Hide behind a spoiler"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Spoiler Alert!"
+msgstr "Spoiler Alert!"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "NSFW"
+msgstr "NSFW"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Remove the spoiler"
+msgstr "Remove the spoiler"
+
+#: components/ui/components/features/messaging/elements/SpoilerCover.tsx
+msgid "Click to show"
+msgstr "Click to show"
+
+#: components/ui/components/features/messaging/elements/SystemMessage.tsx
+msgid "<0/> started a thread: <1>{0}</1>"
+msgstr "<0/> started a thread: <1>{0}</1>"
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Frequently used"
+msgstr "Frequently used"

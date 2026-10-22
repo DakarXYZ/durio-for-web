@@ -1,5 +1,6 @@
 import {
   BiRegularAlignLeft,
+  BiRegularConversation,
   BiRegularLeftArrowAlt,
   BiRegularMinus,
   BiRegularPhone,
@@ -102,6 +103,9 @@ export function SystemMessageIcon(props: {
           <Match when={props.systemMessage.type === "encryption_enabled"}>
             <BiSolidLock size={16} />
           </Match>
+          <Match when={props.systemMessage.type === "thread_created"}>
+            <BiRegularConversation size={16} />
+          </Match>
         </Switch>
       </Tooltip>
     </Base>
@@ -160,6 +164,10 @@ const Base = styled("div", {
         color: "var(--md-sys-color-primary)",
       },
       call_started: {
+        color: "var(--md-sys-color-primary)",
+      },
+      // dur.io: a thread started without a message
+      thread_created: {
         color: "var(--md-sys-color-primary)",
       },
     },

@@ -155,6 +155,12 @@ export type Modals =
       channel: Channel;
     }
   | {
+      /** dur.io: start a thread, from a message or on its own */
+      type: "create_thread";
+      channel: Channel;
+      message?: Message;
+    }
+  | {
       type: "delete_server";
       server: Server;
     }

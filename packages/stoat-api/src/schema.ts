@@ -230,11 +230,27 @@ export interface paths {
     /** Stop the poll of a message from taking votes. Its author, or anyone with `ManageMessages`, may close it. */
     post: operations["message_poll_close_poll"];
   };
+  "/channels/{target}/messages/{msg}/spoiler": {
+    /** Hide any message behind a "spoiler alert" or an NSFW cover; everyone sees the cover until they open it. Needs `ManageMessages`. */
+    put: operations["message_spoiler_spoiler_message"];
+    /** Needs `ManageMessages`. */
+    delete: operations["message_spoiler_unspoiler_message"];
+  };
   "/channels/{channel_id}/webhooks": {
     /** Gets all webhooks inside the channel */
     get: operations["webhook_fetch_all_fetch_webhooks"];
     /** Creates a webhook which 3rd party platforms can use to send messages */
     post: operations["webhook_create_create_webhook"];
+  };
+  "/channels/{target}/threads": {
+    /** Fetch the threads of a channel, archived ones too. */
+    get: operations["threads_fetch_threads"];
+    /** Start a thread in a server channel, from one of its messages or, without one, from a new `thread_created` system message. Needs `SendMessage`. */
+    post: operations["threads_create_thread"];
+  };
+  "/channels/{target}/thread": {
+    /** Rename or archive a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back. */
+    patch: operations["threads_edit_thread"];
   };
   "/servers/create": {
     /** Create a new server. */
@@ -583,6 +599,10 @@ export interface paths {
   "/admin/import/channels/{target}/messages": {
     /** Import messages from another chat into a server text channel, oldest first, up to 100 at a time (dur.io fork, elevated instance admins only). Messages already imported are skipped. Files must be uploaded to autumn first (`attachments`, author avatars `avatars`). */
     post: operations["import_import_messages"];
+  };
+  "/admin/import/channels/{target}/embeds": {
+    /** Set the link previews of messages imported before, up to 100 messages at a time (dur.io fork, elevated instance admins only, no UI). The previews of a message are replaced; files of previews must be uploaded to autumn first (`attachments`). */
+    post: operations["import_import_embeds"];
   };
   "/webhooks/{webhook_id}/{token}/{message_id}": {
     /** Deletes a message sent by a webhook */
@@ -1586,6 +1606,8 @@ export interface components {
            * @description The channel's slowmode delay in seconds
            */
           slowmode?: number | null;
+          /** @description Set when this channel is a thread of another channel (dur.io fork) */
+          thread?: components["schemas"]["ThreadInfo"] | null;
         };
     /**
      * @description Encryption settings of a direct message or group
@@ -1636,6 +1658,27 @@ export interface components {
        * @description Maximium amount of users allowed in the voice channel at once
        */
       max_users?: number | null;
+    };
+    /**
+     * @description What makes a server channel a thread (dur.io fork)
+     *
+     * A thread is not in the server's channel list; it takes the permissions of its parent channel.
+     */
+    ThreadInfo: {
+      /** @description Id of the channel the thread belongs to */
+      parent: string;
+      /** @description Id of the message in the parent channel the thread hangs off */
+      message: string;
+      /** @description Id of the user who started the thread */
+      owner: string;
+      /** @description Whether the thread was archived; a new message in it brings it back */
+      archived?: boolean;
+      /**
+       * Format: uint64
+       * @description Number of messages in the thread
+       * @default 0
+       */
+      message_count?: number;
     };
     /** @description Mutual friends, servers, groups and DMs response */
     MutualResponse: {
@@ -1949,6 +1992,10 @@ export interface components {
       poll?: components["schemas"]["Poll"] | null;
       /** @description Where this message was imported from, if it was (dur.io fork) */
       imported?: components["schemas"]["MessageImport"] | null;
+      /** @description Id of the thread started from this message (dur.io fork) */
+      thread?: string | null;
+      /** @description Set when a moderator hid this message behind a spoiler (dur.io fork) */
+      spoiler?: components["schemas"]["MessageSpoiler"] | null;
       /** @description System message */
       system?: components["schemas"]["SystemMessage"] | null;
       /** @description Array of attachments */
@@ -2062,6 +2109,15 @@ export interface components {
       /** @description Source of the import, e.g. `discord` */
       source: string;
     };
+    /** @description A moderator hid a message behind a spoiler (dur.io fork) */
+    MessageSpoiler: {
+      /** @description What it is hidden behind */
+      kind: components["schemas"]["SpoilerKind"];
+      /** @description Id of the user who hid it */
+      by: string;
+    };
+    /** @description What a message is hidden behind (dur.io fork) */
+    SpoilerKind: "spoiler" | "nsfw";
     /** @description System Event */
     SystemMessage:
       | {
@@ -2145,6 +2201,12 @@ export interface components {
           /** @enum {string} */
           type: "encryption_enabled";
           by: string;
+        }
+      | {
+          /** @enum {string} */
+          type: "thread_created";
+          by: string;
+          name: string;
         };
     /** @description Embed */
     Embed:
@@ -2590,6 +2652,11 @@ export interface components {
       /** @description Ids of the picked answers */
       answers: string[];
     };
+    /** @description Hide a message behind a spoiler (dur.io fork) */
+    DataMessageSpoiler: {
+      /** @description What to hide it behind */
+      kind: components["schemas"]["SpoilerKind"];
+    };
     /** @description Webhook */
     Webhook: {
       /** @description Webhook Id */
@@ -2614,6 +2681,20 @@ export interface components {
     CreateWebhookBody: {
       name: string;
       avatar?: string | null;
+    };
+    /** @description Start a thread (dur.io fork) */
+    DataCreateThread: {
+      /** @description Thread name */
+      name: string;
+      /** @description Id of the message in the channel to start the thread from; without one the thread hangs off a new system message */
+      message?: string | null;
+    };
+    /** @description Rename or archive a thread (dur.io fork) */
+    DataEditThread: {
+      /** @description Thread name */
+      name?: string | null;
+      /** @description Whether the thread is archived */
+      archived?: boolean | null;
     };
     /** @description Information returned when creating server */
     CreateServerLegacyResponse: {
@@ -3216,6 +3297,7 @@ export interface components {
       /** Format: uint64 */
       slowmode?: number | null;
       encryption?: components["schemas"]["ChannelEncryption"] | null;
+      thread?: components["schemas"]["ThreadInfo"] | null;
     };
     PartialMember: {
       id?: components["schemas"]["MemberCompositeKey"] | null;
@@ -3925,6 +4007,106 @@ export interface components {
       original_id: string;
       /** @description When it was sent, as given when it was imported */
       timestamp: components["schemas"]["ISO8601 Timestamp"];
+    };
+    /** @description Result of an import of previews (dur.io fork) */
+    ImportEmbedsResult: {
+      /**
+       * Format: uint
+       * @description Messages whose previews were set
+       */
+      updated: number;
+      /**
+       * Format: uint
+       * @description Messages not found among the imported messages of the channel
+       */
+      missing: number;
+    };
+    /** @description Link previews for messages imported before, e.g. Discord's own previews from an export (dur.io fork, instance admins); they replace the previews the messages have */
+    DataImportEmbeds: {
+      /** @description Source the messages were imported from */
+      source: string;
+      /** @description The messages, 1 to 100 */
+      messages: components["schemas"]["ImportMessageEmbeds"][];
+    };
+    /** @description The previews of one imported message (dur.io fork) */
+    ImportMessageEmbeds: {
+      /** @description Id of the message in the source */
+      original_id: string;
+      /** @description When it was sent, as given when it was imported */
+      timestamp: components["schemas"]["ISO8601 Timestamp"];
+      /**
+       * @description Its previews (up to 10; empty removes them)
+       * @default []
+       */
+      embeds?: components["schemas"]["ImportEmbed"][];
+    };
+    /** @description One preview: a card with a title, or just a picture or a video (dur.io fork) */
+    ImportEmbed: {
+      /**
+       * @description Address the preview is for
+       * @default null
+       */
+      url?: string | null;
+      /**
+       * @description Title (up to 256 characters)
+       * @default null
+       */
+      title?: string | null;
+      /**
+       * @description Description (up to 2000 characters)
+       * @default null
+       */
+      description?: string | null;
+      /**
+       * @description Site name (up to 100 characters)
+       * @default null
+       */
+      site_name?: string | null;
+      /**
+       * @description CSS colour, e.g. `#ff0000`
+       * @default null
+       */
+      colour?: string | null;
+      /**
+       * @description Picture: a large one under the card, or a small one beside it
+       * @default null
+       */
+      image?: components["schemas"]["ImportEmbedMedia"] | null;
+      /**
+       * @description Video
+       * @default null
+       */
+      video?: components["schemas"]["ImportEmbedMedia"] | null;
+    };
+    /** @description The picture or video of an imported preview: a file uploaded to autumn with the tag `attachments`, or an address on the web (dur.io fork) */
+    ImportEmbedMedia: {
+      /**
+       * @description Id of the uploaded file
+       * @default null
+       */
+      file?: string | null;
+      /**
+       * @description Address of the picture or video, when no file
+       * @default null
+       */
+      url?: string | null;
+      /**
+       * Format: uint
+       * @description Width
+       * @default 0
+       */
+      width?: number;
+      /**
+       * Format: uint
+       * @description Height
+       * @default 0
+       */
+      height?: number;
+      /**
+       * @description Small beside the card instead of large under it (pictures only)
+       * @default false
+       */
+      small?: boolean;
     };
     /** @description New webhook information */
     DataEditWebhook: {
@@ -5231,6 +5413,49 @@ export interface operations {
       };
     };
   };
+  /** Hide any message behind a "spoiler alert" or an NSFW cover; everyone sees the cover until they open it. Needs `ManageMessages`. */
+  message_spoiler_spoiler_message: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        msg: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataMessageSpoiler"];
+      };
+    };
+  };
+  /** Needs `ManageMessages`. */
+  message_spoiler_unspoiler_message: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        msg: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      /** Success */
+      204: never;
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
   /** Gets all webhooks inside the channel */
   webhook_fetch_all_fetch_webhooks: {
     parameters: {
@@ -5279,6 +5504,79 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["CreateWebhookBody"];
+      };
+    };
+  };
+  /** Fetch the threads of a channel, archived ones too. */
+  threads_fetch_threads: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Channel"][];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /** Start a thread in a server channel, from one of its messages or, without one, from a new `thread_created` system message. Needs `SendMessage`. */
+  threads_create_thread: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Channel"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataCreateThread"];
+      };
+    };
+  };
+  /** Rename or archive a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back. */
+  threads_edit_thread: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Channel"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataEditThread"];
       };
     };
   };
@@ -7429,6 +7727,32 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["DataImportMessages"];
+      };
+    };
+  };
+  /** Set the link previews of messages imported before, up to 100 messages at a time (dur.io fork, elevated instance admins only, no UI). The previews of a message are replaced; files of previews must be uploaded to autumn first (`attachments`). */
+  import_import_embeds: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ImportEmbedsResult"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataImportEmbeds"];
       };
     };
   };

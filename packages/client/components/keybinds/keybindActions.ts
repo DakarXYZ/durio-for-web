@@ -111,7 +111,9 @@ export function keybindFilter(
     if (
       target instanceof HTMLInputElement ||
       target instanceof HTMLTextAreaElement ||
-      target?.nodeName === "MDUI-TEXT-FIELD"
+      target?.nodeName === "MDUI-TEXT-FIELD" ||
+      // dur.io: an editor (a thread's composer next to the channel's)
+      target?.isContentEditable
     )
       return false;
 

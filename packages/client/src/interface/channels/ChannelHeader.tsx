@@ -9,6 +9,7 @@ import { useClient } from "@revolt/client";
 import { getChannelIcon, useDevice } from "@revolt/common";
 import { TextWithEmoji } from "@revolt/markdown";
 import { useModals } from "@revolt/modal";
+import { useNavigate } from "@revolt/routing";
 import { useVoice } from "@revolt/rtc";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
@@ -60,6 +61,7 @@ export function ChannelHeader(props: Props) {
   const state = useState();
   const voice = useVoice();
   const { layout } = useDevice();
+  const navigate = useNavigate();
 
   const searchValue = () => {
     if (!props.sidebarState) return null;
@@ -79,8 +81,21 @@ export function ChannelHeader(props: Props) {
           }
         >
           <HeaderIcon>
-            <Symbol>{getChannelIcon(props.channel)}</Symbol>
+            <Symbol>
+              {props.channel.isThread ? "forum" : getChannelIcon(props.channel)}
+            </Symbol>
           </HeaderIcon>
+          {/* dur.io: a thread opened as a page: its channel first, back to it */}
+          <Show when={props.channel.parent}>
+            {(parent) => (
+              <>
+                <a class={parentLink} onClick={() => navigate(parent().path)}>
+                  <TextWithEmoji content={parent().name} />
+                </a>
+                <Symbol>chevron_right</Symbol>
+              </>
+            )}
+          </Show>
           <NonBreakingText
             class={
               typography({ class: "title", size: "medium" }) +
@@ -161,6 +176,8 @@ export function ChannelHeader(props: Props) {
       <Show
         when={
           (props.channel.type === "Group" || props.channel.serverId) &&
+          // dur.io: a thread is renamed and archived from its panel
+          !props.channel.isThread &&
           props.channel.orPermission("ManageChannel", "ManagePermissions")
         }
       >
@@ -203,6 +220,33 @@ export function ChannelHeader(props: Props) {
         >
           <MdPersonAdd />
         </Button>
+      </Show>
+
+      {/* dur.io: the threads of a server text channel */}
+      <Show
+        when={
+          props.sidebarState &&
+          props.channel.type === "TextChannel" &&
+          !props.channel.isThread
+        }
+      >
+        <IconButton
+          use:floating={{
+            tooltip: {
+              placement: "bottom",
+              content: t`Threads`,
+            },
+          }}
+          onPress={() =>
+            props.setSidebarState!(
+              props.sidebarState!().state === "threads"
+                ? { state: "default" }
+                : { state: "threads" },
+            )
+          }
+        >
+          <Symbol>forum</Symbol>
+        </IconButton>
       </Show>
 
       <Show when={props.sidebarState}>
@@ -320,6 +364,19 @@ const Divider = styled("div", {
     paddingLeft: "1px",
     backgroundColor: "var(--md-sys-color-outline-variant)",
   },
+});
+
+/**
+ * dur.io: link back from a thread to its channel
+ */
+const parentLink = css({
+  cursor: "pointer",
+  minWidth: 0,
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
+  color: "var(--md-sys-color-on-surface-variant)",
+  _hover: { textDecoration: "underline" },
 });
 
 /**
