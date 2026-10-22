@@ -23,11 +23,13 @@ const Base = styled("div", {
     maxWidth: "calc(min(100%, 420px))",
     flexDirection: "row",
     gap: "var(--gap-md)",
-    padding: "var(--gap-md)",
+    // dur.io: a thin dark frame with a light shadow; a colour stripe only for a
+    // bot's embed that asks for a colour
+    padding: "var(--gap-sm) var(--gap-sm) var(--gap-md)",
     borderRadius: "var(--borderRadius-md)",
-    color: "var(--md-sys-color-on-primary-container)",
-    background: "var(--md-sys-color-primary-container)",
-    borderInlineStart: "var(--gap-sm) solid var(--md-sys-color-primary)",
+    color: "var(--md-sys-color-on-surface)",
+    background: "var(--md-sys-color-surface-container)",
+    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
   },
 });
 
@@ -62,7 +64,8 @@ const Title = styled("span", {
     minWidth: 0,
     flexShrink: 1,
 
-    fontSize: "16px",
+    fontSize: "14px",
+    fontWeight: 500,
     color: "var(--md-sys-color-primary) !important",
   },
 });
@@ -88,8 +91,35 @@ export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
   const { openModal } = useModals();
 
   return (
-    <Base style={{ "border-color": props.embed.colour }}>
+    <Base
+      style={
+        props.embed.type === "Text" && props.embed.colour
+          ? {
+              "border-inline-start": `var(--gap-sm) solid ${props.embed.colour}`,
+            }
+          : undefined
+      }
+    >
       <Content gap="md" grow>
+        {/* dur.io: the title first, the site name under it */}
+        <Show when={props.embed.title}>
+          <InformationRow>
+            <Show when={props.embed.iconUrl && props.embed.type !== "Website"}>
+              <Favicon
+                loading="lazy"
+                draggable={false}
+                src={props.embed.proxiedIconURL}
+                onError={(e) => (e.currentTarget.style.display = "none")}
+              />
+            </Show>
+            <Title>
+              <RenderAnchor href={props.embed.url}>
+                <OverflowingText>{props.embed.title}</OverflowingText>
+              </RenderAnchor>
+            </Title>
+          </InformationRow>
+        </Show>
+
         <Show
           when={
             props.embed.type === "Website" &&
@@ -118,24 +148,6 @@ export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
                 </Show>
               </Text>
             </OverflowingText>
-          </InformationRow>
-        </Show>
-
-        <Show when={props.embed.title}>
-          <InformationRow>
-            <Show when={props.embed.iconUrl && props.embed.type !== "Website"}>
-              <Favicon
-                loading="lazy"
-                draggable={false}
-                src={props.embed.proxiedIconURL}
-                onError={(e) => (e.currentTarget.style.display = "none")}
-              />
-            </Show>
-            <Title>
-              <RenderAnchor href={props.embed.url}>
-                <OverflowingText>{props.embed.title}</OverflowingText>
-              </RenderAnchor>
-            </Title>
           </InformationRow>
         </Show>
 

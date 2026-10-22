@@ -9,7 +9,17 @@ export function useDurationFormat() {
     duration: Partial<Record<Intl.DurationFormatUnit, number>>,
     options: Intl.DurationFormatOptions = { style: "long" },
     // eslint-disable-next-line solid/reactivity
-  ) => new Intl.DurationFormat(durationLocale(), options).format(duration);
+  ) => {
+    // dur.io: in the language of the interface; a made-up one (owo, bottom…) reads as English
+    try {
+      return new Intl.DurationFormat(
+        durationLocale()?.replace(/_/g, "-"),
+        options,
+      ).format(duration);
+    } catch {
+      return new Intl.DurationFormat("en", options).format(duration);
+    }
+  };
 }
 
 export function updateDurationLocale(key: Language) {

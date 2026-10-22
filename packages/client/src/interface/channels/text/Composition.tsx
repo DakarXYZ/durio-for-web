@@ -500,20 +500,24 @@ export function MessageComposition(props: Props) {
               : t`Message ${props.channel.name}`
         }
         blockedReason={
-          client().e2ee.canSend(props.channel)
-            ? undefined
-            : client().e2ee.status() === "locked"
-              ? t`Encryption is active in another window: write from there.`
-              : client().e2ee.status() === "starting"
-                ? t`Starting encryption…`
-                : client().e2ee.status() === "keyLost"
-                  ? t`The encryption keys of this device are lost: reset encryption in Settings → Devices and encryption.`
-                  : client().e2ee.status() === "updateApp"
-                    ? t`Update the app to write in encrypted chats.`
-                    : t`Encryption is not available on this device.`
+          // dur.io: a closed thread takes messages from its starter and moderators
+          !props.channel.canWriteInThread
+            ? t`This thread is closed.`
+            : client().e2ee.canSend(props.channel)
+              ? undefined
+              : client().e2ee.status() === "locked"
+                ? t`Encryption is active in another window: write from there.`
+                : client().e2ee.status() === "starting"
+                  ? t`Starting encryption…`
+                  : client().e2ee.status() === "keyLost"
+                    ? t`The encryption keys of this device are lost: reset encryption in Settings → Devices and encryption.`
+                    : client().e2ee.status() === "updateApp"
+                      ? t`Update the app to write in encrypted chats.`
+                      : t`Encryption is not available on this device.`
         }
         sendingAllowed={
           props.channel.havePermission("SendMessage") &&
+          props.channel.canWriteInThread &&
           !isTimedOut() &&
           // dur.io: nothing goes to an encrypted channel without the crypto core
           client().e2ee.canSend(props.channel)

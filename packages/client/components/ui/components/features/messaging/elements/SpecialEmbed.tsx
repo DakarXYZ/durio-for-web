@@ -58,6 +58,7 @@ export function SpecialEmbed(props: { embed: WebsiteEmbed }) {
         allowfullscreen
         allowtransparency
         frameborder={0}
+        referrerpolicy="strict-origin-when-cross-origin"
         // style={{ width: getSize()?.width + "px" }}
         src={props.embed.embedURL}
       />

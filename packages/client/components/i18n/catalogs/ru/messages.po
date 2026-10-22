@@ -5470,3 +5470,27 @@ msgstr "<0/> начал тред: <1>{0}</1>"
 #: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
 msgid "Frequently used"
 msgstr "Часто используемые"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "This thread is closed."
+msgstr "Тред закрыт."
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Open the thread again"
+msgstr "Открыть тред снова"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Close the thread"
+msgstr "Закрыть тред"
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "closed"
+msgstr "закрыт"
+
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Delete threads nobody writes in for"
+msgstr "Удалять треды, в которых не пишут"
+
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Never delete threads"
+msgstr "Не удалять треды"

@@ -60,9 +60,17 @@ export function ThreadSummary(props: { message: Message }) {
               {" · "}
               {dayjs(thread().lastMessageAt).fromNow()}
             </Show>
-            <Show when={thread().archived}>
+            <Show
+              when={thread().locked}
+              fallback={
+                <Show when={thread().archived}>
+                  {" · "}
+                  <Trans>archived</Trans>
+                </Show>
+              }
+            >
               {" · "}
-              <Trans>archived</Trans>
+              <Trans>closed</Trans>
             </Show>
           </Meta>
         </Card>

@@ -13,7 +13,7 @@
       "name": "AGPLv3",
       "url": "https://github.com/stoatchat/stoatchat/blob/main/crates/delta/LICENSE"
     },
-    "version": "0.16.0+fork.4"
+    "version": "0.16.0+fork.5"
   },
   "servers": [
     {
@@ -3156,7 +3156,7 @@
           "Channel Information"
         ],
         "summary": "Edit a Thread",
-        "description": "Rename or archive a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back.",
+        "description": "Rename, archive or close a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back, a closed one stays closed until opened again.",
         "operationId": "threads_edit_thread",
         "parameters": [
           {
@@ -11768,6 +11768,13 @@
                   }
                 ],
                 "nullable": true
+              },
+              "thread_auto_delete": {
+                "description": "Threads of this channel are deleted after this many days without a message; kept forever when unset (dur.io fork)",
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 0,
+                "nullable": true
               }
             }
           }
@@ -11876,6 +11883,10 @@
           },
           "archived": {
             "description": "Whether the thread was archived; a new message in it brings it back",
+            "type": "boolean"
+          },
+          "locked": {
+            "description": "Whether the thread was closed: archived, and only its starter or someone with `ManageChannel` may write in it or open it again",
             "type": "boolean"
           },
           "message_count": {
@@ -12391,6 +12402,14 @@
             "minimum": 0,
             "nullable": true
           },
+          "thread_auto_delete": {
+            "description": "Delete threads after this many days without a message, up to a year (dur.io fork)",
+            "type": "integer",
+            "format": "uint32",
+            "maximum": 365,
+            "minimum": 1,
+            "nullable": true
+          },
           "remove": {
             "description": "Fields to remove from channel",
             "default": [],
@@ -12403,13 +12422,24 @@
       },
       "FieldsChannel": {
         "description": "Optional fields on channel object",
-        "type": "string",
-        "enum": [
-          "Description",
-          "Icon",
-          "DefaultPermissions",
-          "Voice",
-          "Slowmode"
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "Description",
+              "Icon",
+              "DefaultPermissions",
+              "Voice",
+              "Slowmode"
+            ]
+          },
+          {
+            "description": "Keep threads forever (dur.io fork)",
+            "type": "string",
+            "enum": [
+              "ThreadAutoDelete"
+            ]
+          }
         ]
       },
       "DataChannelEncryption": {
@@ -14684,6 +14714,11 @@
             "description": "Whether the thread is archived",
             "type": "boolean",
             "nullable": true
+          },
+          "locked": {
+            "description": "Close the thread (archived as well) or open it again",
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -16425,6 +16460,12 @@
                 "$ref": "#/components/schemas/ThreadInfo"
               }
             ],
+            "nullable": true
+          },
+          "thread_auto_delete": {
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0,
             "nullable": true
           }
         }

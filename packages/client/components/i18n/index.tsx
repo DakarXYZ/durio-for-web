@@ -45,7 +45,7 @@ export async function loadAndSwitchLocale(
 
     loadTimeLocale(Languages[key], localeOptions);
 
-    updateDurationLocale(Language.ENGLISH);
+    updateDurationLocale(key);
   }
 }
 

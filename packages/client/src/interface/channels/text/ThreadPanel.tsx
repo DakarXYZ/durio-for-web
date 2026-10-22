@@ -12,7 +12,6 @@ import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
 import { DraftMessages, Messages } from "@revolt/app";
-import { useClient } from "@revolt/client";
 import { useTime } from "@revolt/i18n";
 import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
@@ -30,12 +29,32 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { MessageComposition } from "./Composition";
 
 /**
- * Whether the user may rename or archive a thread: its starter, or `ManageChannel`
+ * Close a thread or open it again: its starter, or `ManageChannel`
  */
-export function canManageThread(thread: Channel, userId?: string) {
+export function ThreadLockButton(props: { thread: Channel }) {
+  const { t } = useLingui();
+  const { showError } = useModals();
+
   return (
-    thread.threadInfo?.owner === userId ||
-    thread.havePermission("ManageChannel")
+    <Show when={props.thread.canManageThread}>
+      <IconButton
+        use:floating={{
+          tooltip: {
+            placement: "bottom",
+            content: props.thread.locked
+              ? t`Open the thread again`
+              : t`Close the thread`,
+          },
+        }}
+        onPress={() =>
+          props.thread
+            .editThread({ locked: !props.thread.locked })
+            .catch(showError)
+        }
+      >
+        <Symbol>{props.thread.locked ? "lock_open" : "lock"}</Symbol>
+      </IconButton>
+    </Show>
   );
 }
 
@@ -44,9 +63,7 @@ export function canManageThread(thread: Channel, userId?: string) {
  */
 export function ThreadPanel(props: { thread: Channel; onClose: () => void }) {
   const { t } = useLingui();
-  const client = useClient();
   const navigate = useNavigate();
-  const { showError } = useModals();
 
   let jumpToBottomRef: ((nearby?: string) => void) | undefined;
   const [atEnd, setEnd] = createSignal(true);
@@ -58,8 +75,6 @@ export function ThreadPanel(props: { thread: Channel; onClose: () => void }) {
       (unread) => unread && document.hasFocus() && props.thread.ack(),
     ),
   );
-
-  const canManage = () => canManageThread(props.thread, client().user?.id);
 
   // the message the thread hangs off, shown on top
   createEffect(
@@ -80,27 +95,7 @@ export function ThreadPanel(props: { thread: Channel; onClose: () => void }) {
         <Symbol>forum</Symbol>
         <Title title={props.thread.name}>{props.thread.name}</Title>
         <Spacer />
-        <Show when={canManage()}>
-          <IconButton
-            use:floating={{
-              tooltip: {
-                placement: "bottom",
-                content: props.thread.threadInfo?.archived
-                  ? t`Bring the thread back`
-                  : t`Archive the thread`,
-              },
-            }}
-            onPress={() =>
-              props.thread
-                .editThread({ archived: !props.thread.threadInfo?.archived })
-                .catch(showError)
-            }
-          >
-            <Symbol>
-              {props.thread.threadInfo?.archived ? "unarchive" : "archive"}
-            </Symbol>
-          </IconButton>
-        </Show>
+        <ThreadLockButton thread={props.thread} />
         <IconButton
           use:floating={{
             tooltip: { placement: "bottom", content: t`Open as a page` },

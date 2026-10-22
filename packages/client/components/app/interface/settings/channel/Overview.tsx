@@ -1,5 +1,5 @@
 import { createFormControl, createFormGroup } from "solid-forms";
-import { Match, Show, Switch } from "solid-js";
+import { For, Match, Show, Switch } from "solid-js";
 
 import { Trans, useLingui } from "@lingui/solid/macro";
 import type { API } from "stoat.js";
@@ -42,6 +42,9 @@ export default function ChannelOverview(props: ChannelSettingsProps) {
     slowmode: createFormControl<string>(
       props.channel.slowmode.toString() ?? "0",
     ),
+    threadAutoDelete: createFormControl<string>(
+      (props.channel.threadAutoDelete ?? 0).toString(),
+    ),
   });
   /* eslint-enable solid/reactivity */
 
@@ -51,6 +54,9 @@ export default function ChannelOverview(props: ChannelSettingsProps) {
     editGroup.controls.icon.setValue(props.channel.animatedIconURL ?? null);
     editGroup.controls.slowmode.setValue(
       props.channel.slowmode.toString() ?? "0",
+    );
+    editGroup.controls.threadAutoDelete.setValue(
+      (props.channel.threadAutoDelete ?? 0).toString(),
     );
   }
 
@@ -95,6 +101,16 @@ export default function ChannelOverview(props: ChannelSettingsProps) {
 
     if (editGroup.controls.slowmode.isDirty) {
       changes.slowmode = Number(editGroup.controls.slowmode.value);
+    }
+
+    // dur.io: 0 keeps threads forever
+    if (editGroup.controls.threadAutoDelete.isDirty) {
+      const days = Number(editGroup.controls.threadAutoDelete.value);
+      if (days) {
+        changes.thread_auto_delete = days;
+      } else {
+        changes.remove!.push("ThreadAutoDelete");
+      }
     }
 
     await props.channel.edit(changes);
@@ -159,6 +175,27 @@ export default function ChannelOverview(props: ChannelSettingsProps) {
               <MenuItem value="3600">{duration({ hours: 1 })}</MenuItem>
               <MenuItem value="7200">{duration({ hours: 2 })}</MenuItem>
               <MenuItem value="21600">{duration({ hours: 6 })}</MenuItem>
+            </Form2.Select>
+          </Show>
+          <Show
+            when={
+              props.channel.type === "TextChannel" && !props.channel.isThread
+            }
+          >
+            <Form2.Select
+              label={t`Delete threads nobody writes in for`}
+              control={editGroup.controls.threadAutoDelete}
+            >
+              <MenuItem value="0">
+                <Trans>Never delete threads</Trans>
+              </MenuItem>
+              <For each={[1, 3, 7, 14, 30, 90, 180, 365]}>
+                {(days) => (
+                  <MenuItem value={days.toString()}>
+                    {duration({ days })}
+                  </MenuItem>
+                )}
+              </For>
             </Form2.Select>
           </Show>
           <Row>

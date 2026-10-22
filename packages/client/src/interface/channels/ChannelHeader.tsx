@@ -33,6 +33,7 @@ import { HeaderIcon } from "../common/CommonHeader";
 
 import { E2eeChannelHeader } from "./E2eeChannelHeader";
 import { canIHasSidebar, SidebarState } from "./text/TextChannel";
+import { ThreadLockButton } from "./text/ThreadPanel";
 
 interface Props {
   /**
@@ -220,6 +221,11 @@ export function ChannelHeader(props: Props) {
         >
           <MdPersonAdd />
         </Button>
+      </Show>
+
+      {/* dur.io: a thread opened as a page is closed from its header */}
+      <Show when={props.channel.isThread}>
+        <ThreadLockButton thread={props.channel} />
       </Show>
 
       {/* dur.io: the threads of a server text channel */}

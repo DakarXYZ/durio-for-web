@@ -1,6 +1,7 @@
 import { BiRegularCheckCircle, BiSolidCheckCircle } from "solid-icons/bi";
 import {
   Accessor,
+  For,
   JSX,
   Match,
   Show,
@@ -447,6 +448,7 @@ function Category(
           <Entry
             channel={entry.item}
             active={entry.item.id === props.channelId}
+            channelId={props.channelId}
             menuGenerator={props.menuGenerator}
           />
         )}
@@ -517,7 +519,11 @@ const CategoryBase = styled("div", {
  * Server channel entry
  */
 function Entry(
-  props: { channel: Channel; active: boolean } & Pick<Props, "menuGenerator">,
+  props: {
+    channel: Channel;
+    active: boolean;
+    channelId: string | undefined;
+  } & Pick<Props, "menuGenerator">,
 ) {
   const state = useState();
   const voice = useVoice();
@@ -634,9 +640,98 @@ function Entry(
       </MenuButton>
 
       <VoiceChannelPreview channel={props.channel} />
+      <ThreadTree channel={props.channel} channelId={props.channelId} />
     </Column>
   );
 }
+
+/**
+ * dur.io: the open threads of a channel, as a tree under it (as on Discord);
+ * a thread opens as a page of its own
+ */
+function ThreadTree(props: {
+  channel: Channel;
+  channelId: string | undefined;
+}) {
+  const state = useState();
+
+  const threads = createMemo(() =>
+    props.channel.isThread
+      ? []
+      : props.channel.threads.filter(
+          (thread) => !thread.archived || thread.id === props.channelId,
+        ),
+  );
+
+  return (
+    <Show when={threads().length}>
+      <ThreadBranches>
+        <For each={threads()}>
+          {(thread) => (
+            <ThreadBranch>
+              <MenuButton
+                href={appPath(
+                  `/server/${thread.serverId}/channel/${thread.id}`,
+                )}
+                size="thin"
+                data-unread={thread.unread ? "" : undefined}
+                alert={
+                  thread.id !== props.channelId &&
+                  thread.unread &&
+                  (thread.mentions?.size || true)
+                }
+                attention={
+                  thread.id === props.channelId
+                    ? "selected"
+                    : state.notifications.isChannelMuted(thread)
+                      ? "muted"
+                      : thread.unread
+                        ? "active"
+                        : "normal"
+                }
+              >
+                <OverflowingText>
+                  <TextWithEmoji content={thread.name!} />
+                </OverflowingText>
+              </MenuButton>
+            </ThreadBranch>
+          )}
+        </For>
+      </ThreadBranches>
+    </Show>
+  );
+}
+
+const ThreadBranches = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "calc(-1 * var(--gap-sm))",
+    paddingInlineStart: "30px",
+  },
+});
+
+/**
+ * A thread with the curved line that ties it to its channel
+ */
+const ThreadBranch = styled("div", {
+  base: {
+    position: "relative",
+
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      insetInlineStart: "-12px",
+      top: "-16px",
+      width: "10px",
+      height: "calc(50% + 16px)",
+      borderInlineStart: "1.5px solid var(--md-sys-color-outline-variant)",
+      borderBottom: "1.5px solid var(--md-sys-color-outline-variant)",
+      borderEndStartRadius: "8px",
+      pointerEvents: "none",
+    },
+  },
+});
 
 /**
  * Channel icon styling

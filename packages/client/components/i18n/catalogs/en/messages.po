@@ -5558,3 +5558,27 @@ msgstr "<0/> started a thread: <1>{0}</1>"
 #: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
 msgid "Frequently used"
 msgstr "Frequently used"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "This thread is closed."
+msgstr "This thread is closed."
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Open the thread again"
+msgstr "Open the thread again"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Close the thread"
+msgstr "Close the thread"
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "closed"
+msgstr "closed"
+
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Delete threads nobody writes in for"
+msgstr "Delete threads nobody writes in for"
+
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Never delete threads"
+msgstr "Never delete threads"

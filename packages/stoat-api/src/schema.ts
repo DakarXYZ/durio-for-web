@@ -249,7 +249,7 @@ export interface paths {
     post: operations["threads_create_thread"];
   };
   "/channels/{target}/thread": {
-    /** Rename or archive a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back. */
+    /** Rename, archive or close a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back, a closed one stays closed until opened again. */
     patch: operations["threads_edit_thread"];
   };
   "/servers/create": {
@@ -1608,6 +1608,11 @@ export interface components {
           slowmode?: number | null;
           /** @description Set when this channel is a thread of another channel (dur.io fork) */
           thread?: components["schemas"]["ThreadInfo"] | null;
+          /**
+           * Format: uint32
+           * @description Threads of this channel are deleted after this many days without a message; kept forever when unset (dur.io fork)
+           */
+          thread_auto_delete?: number | null;
         };
     /**
      * @description Encryption settings of a direct message or group
@@ -1673,6 +1678,8 @@ export interface components {
       owner: string;
       /** @description Whether the thread was archived; a new message in it brings it back */
       archived?: boolean;
+      /** @description Whether the thread was closed: archived, and only its starter or someone with `ManageChannel` may write in it or open it again */
+      locked?: boolean;
       /**
        * Format: uint64
        * @description Number of messages in the thread
@@ -1890,21 +1897,20 @@ export interface components {
        */
       slowmode?: number | null;
       /**
+       * Format: uint32
+       * @description Delete threads after this many days without a message, up to a year (dur.io fork)
+       */
+      thread_auto_delete?: number | null;
+      /**
        * @description Fields to remove from channel
        * @default []
        */
       remove?: components["schemas"]["FieldsChannel"][];
     };
-    /**
-     * @description Optional fields on channel object
-     * @enum {string}
-     */
+    /** @description Optional fields on channel object */
     FieldsChannel:
-      | "Description"
-      | "Icon"
-      | "DefaultPermissions"
-      | "Voice"
-      | "Slowmode";
+      | ("Description" | "Icon" | "DefaultPermissions" | "Voice" | "Slowmode")
+      | "ThreadAutoDelete";
     /** @description Enable encryption in a channel */
     DataChannelEncryption: {
       /** @description Encryption algorithm */
@@ -2695,6 +2701,8 @@ export interface components {
       name?: string | null;
       /** @description Whether the thread is archived */
       archived?: boolean | null;
+      /** @description Close the thread (archived as well) or open it again */
+      locked?: boolean | null;
     };
     /** @description Information returned when creating server */
     CreateServerLegacyResponse: {
@@ -3298,6 +3306,8 @@ export interface components {
       slowmode?: number | null;
       encryption?: components["schemas"]["ChannelEncryption"] | null;
       thread?: components["schemas"]["ThreadInfo"] | null;
+      /** Format: uint32 */
+      thread_auto_delete?: number | null;
     };
     PartialMember: {
       id?: components["schemas"]["MemberCompositeKey"] | null;
@@ -5554,7 +5564,7 @@ export interface operations {
       };
     };
   };
-  /** Rename or archive a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back. */
+  /** Rename, archive or close a thread. Its starter, or anyone with `ManageChannel`, may do so; a new message brings an archived thread back, a closed one stays closed until opened again. */
   threads_edit_thread: {
     parameters: {
       path: {
