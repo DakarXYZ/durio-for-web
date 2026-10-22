@@ -275,6 +275,8 @@ const Actions = styled("div", {
   base: {
     gap: "8px",
     display: "flex",
+    // dur.io: three long actions (the new-device prompt) wrap instead of overflowing
+    flexWrap: "wrap",
     justifyContent: "end",
     marginBlockStart: "24px",
   },
