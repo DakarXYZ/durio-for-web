@@ -1,5 +1,7 @@
 import { createFormControl, createFormGroup } from "solid-forms";
 
+import { Show } from "solid-js";
+
 import { Trans, useLingui } from "@lingui/solid/macro";
 
 import { useNavigate } from "@revolt/routing";
@@ -88,14 +90,17 @@ export function CreateChannelModal(
             label={t`Channel Name`}
           />
 
-          <Form2.Radio control={group.controls.type}>
-            <Radio2.Option value="Text">
-              <Trans>Text Channel</Trans>
-            </Radio2.Option>
-            <Radio2.Option value="Voice">
-              <Trans>Voice Channel</Trans>
-            </Radio2.Option>
-          </Form2.Radio>
+          {/* dur.io: a member's own channel is a text channel */}
+          <Show when={props.server.havePermission("ManageChannel")}>
+            <Form2.Radio control={group.controls.type}>
+              <Radio2.Option value="Text">
+                <Trans>Text Channel</Trans>
+              </Radio2.Option>
+              <Radio2.Option value="Voice">
+                <Trans>Voice Channel</Trans>
+              </Radio2.Option>
+            </Form2.Radio>
+          </Show>
         </Column>
       </form>
     </Dialog>

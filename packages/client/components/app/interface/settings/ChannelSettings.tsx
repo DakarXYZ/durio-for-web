@@ -30,6 +30,19 @@ const Config: SettingsConfiguration<Channel> = {
 
     if (key.startsWith("permissions/")) {
       if (key === "permissions/default") return t`Everyone`;
+      if (key === "permissions/user") return t`Members`;
+      // dur.io: one member's permissions
+      if (key.startsWith("permissions/user/")) {
+        const userId = key.substring(17);
+        return (
+          client().serverMembers.getByKey({
+            server: ctx.context.serverId,
+            user: userId,
+          })?.displayName ??
+          client().users.get(userId)?.displayName ??
+          ""
+        );
+      }
 
       return ctx.context.server?.roles.get(key.substring(12))?.name ?? "";
     }
@@ -57,6 +70,16 @@ const Config: SettingsConfiguration<Channel> = {
       if (id === "permissions/default") {
         return (
           <ChannelPermissionsEditor type="channel_default" context={channel} />
+        );
+      }
+
+      if (id.startsWith("permissions/user/")) {
+        return (
+          <ChannelPermissionsEditor
+            type="channel_user"
+            context={channel}
+            userId={id.substring(17)}
+          />
         );
       }
 

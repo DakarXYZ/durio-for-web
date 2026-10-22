@@ -5582,3 +5582,21 @@ msgstr "Delete threads nobody writes in for"
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "Never delete threads"
 msgstr "Never delete threads"
+
+msgid "Channels of members"
+msgstr "Channels of members"
+
+msgid "Text channels each member may make for themselves"
+msgstr "Text channels each member may make for themselves"
+
+msgid "Member Overrides"
+msgstr "Member Overrides"
+
+msgid "No member has permissions of their own here. Find a member to make the channel read-only for them or take away reactions."
+msgstr "No member has permissions of their own here. Find a member to make the channel read-only for them or take away reactions."
+
+msgid "Find a member"
+msgstr "Find a member"
+
+msgid "Make a channel of your own"
+msgstr "Make a channel of your own"

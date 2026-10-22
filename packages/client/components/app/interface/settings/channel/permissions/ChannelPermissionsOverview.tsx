@@ -1,10 +1,18 @@
-import { For, Show, createMemo } from "solid-js";
+import { For, Show, createMemo, createSignal, onMount } from "solid-js";
 
-import { Trans } from "@lingui/solid/macro";
+import { Trans, useLingui } from "@lingui/solid/macro";
 import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
-import { CategoryButton, Column, Text, typography } from "@revolt/ui";
+import { useClient } from "@revolt/client";
+import {
+  Avatar,
+  CategoryButton,
+  Column,
+  Text,
+  TextField,
+  typography,
+} from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { useSettingsNavigation } from "../../Settings";
@@ -60,6 +68,8 @@ export function ChannelPermissionsOverview(props: { context: Channel }) {
       >
         <Trans>Everyone</Trans>
       </CategoryButton>
+
+      <MemberOverrides channel={props.context} />
 
       <Column gap="sm">
         <Text class="label">
@@ -142,6 +152,114 @@ export function ChannelPermissionsOverview(props: { context: Channel }) {
           </For>
         </Show>
       </Column>
+    </Column>
+  );
+}
+
+/**
+ * dur.io: permissions of single members, for example read-only or no reactions
+ */
+function MemberOverrides(props: { channel: Channel }) {
+  const { t } = useLingui();
+  const client = useClient();
+  const { navigate } = useSettingsNavigation();
+  const [query, setQuery] = createSignal("");
+
+  // the member list, to find members by name
+  onMount(() => void props.channel.server?.fetchMembers().catch(() => {}));
+
+  const member = (userId: string) =>
+    client().serverMembers.getByKey({
+      server: props.channel.serverId,
+      user: userId,
+    });
+
+  const overrides = createMemo(() =>
+    Object.keys(props.channel.userPermissions ?? {}),
+  );
+
+  const matches = createMemo(() => {
+    const search = query().trim().toLowerCase();
+    if (!search) return [];
+
+    return client()
+      .serverMembers.filter(
+        (entry) =>
+          entry.id.server === props.channel.serverId &&
+          !overrides().includes(entry.id.user) &&
+          [entry.displayName, entry.user?.username]
+            .filter(Boolean)
+            .some((name) => name!.toLowerCase().includes(search)),
+      )
+      .slice(0, 8);
+  });
+
+  return (
+    <Column gap="sm">
+      <Text class="label">
+        <Trans>Member Overrides</Trans>
+      </Text>
+      <For
+        each={overrides()}
+        fallback={
+          <EmptyState>
+            <Trans>
+              No member has permissions of their own here. Find a member to make
+              the channel read-only for them or take away reactions.
+            </Trans>
+          </EmptyState>
+        }
+      >
+        {(userId) => (
+          <CategoryButton
+            icon={
+              <Avatar
+                size={24}
+                src={member(userId)?.animatedAvatarURL}
+                fallback={member(userId)?.displayName}
+              />
+            }
+            action="chevron"
+            onClick={() => navigate(`permissions/user/${userId}`)}
+            description={
+              <Trans>
+                Grants {countBits(props.channel.userPermissions![userId].a)}{" "}
+                permissions and denies{" "}
+                {countBits(props.channel.userPermissions![userId].d)}{" "}
+                permissions
+              </Trans>
+            }
+          >
+            {member(userId)?.displayName ??
+              client().users.get(userId)?.displayName ??
+              userId}
+          </CategoryButton>
+        )}
+      </For>
+      <TextField
+        variant="filled"
+        placeholder={t`Find a member`}
+        value={query()}
+        onInput={(event) => setQuery(event.currentTarget.value)}
+      />
+      <For each={matches()}>
+        {(entry) => (
+          <CategoryButton
+            icon={
+              <Avatar
+                size={24}
+                src={entry.animatedAvatarURL}
+                fallback={entry.displayName}
+              />
+            }
+            action="chevron"
+            onClick={() => navigate(`permissions/user/${entry.id.user}`)}
+            description={entry.user?.username}
+          >
+            {entry.displayName}
+          </CategoryButton>
+        )}
+      </For>
     </Column>
   );
 }

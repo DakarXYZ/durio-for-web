@@ -13,7 +13,7 @@
       "name": "AGPLv3",
       "url": "https://github.com/stoatchat/stoatchat/blob/main/crates/delta/LICENSE"
     },
-    "version": "0.16.0+fork.5"
+    "version": "0.16.0+fork.6"
   },
   "servers": [
     {
@@ -2479,6 +2479,124 @@
         ]
       }
     },
+    "/channels/{target}/permissions/users/{member_id}": {
+      "put": {
+        "tags": [
+          "Channel Permissions"
+        ],
+        "summary": "Set Member Permission",
+        "description": "Sets permissions for one member in this channel: for example, read-only, or no reactions. Needs `ManagePermissions`; the member who made the channel for themselves has it there.\n\nChannel must be a `TextChannel`.",
+        "operationId": "permissions_set_user_set_user_permissions",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSetRolePermissions"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Channel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Channel Permissions"
+        ],
+        "summary": "Remove Member Permission",
+        "description": "Drops the permissions set for one member in this channel.",
+        "operationId": "permissions_set_user_remove_user_permissions",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Channel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Session Token": []
+          }
+        ]
+      }
+    },
     "/channels/{target}/permissions/default": {
       "put": {
         "tags": [
@@ -3471,7 +3589,7 @@
           "Server Information"
         ],
         "summary": "Create Channel",
-        "description": "Create a new Text or Voice channel.",
+        "description": "Create a new Text or Voice channel.\n\nWithout `ManageChannel`, members make text channels of their own, as many as the server's `user_channel_limit` allows (dur.io fork).",
         "operationId": "channel_create_create_server_channel",
         "parameters": [
           {
@@ -11775,6 +11893,18 @@
                 "format": "uint32",
                 "minimum": 0,
                 "nullable": true
+              },
+              "owner": {
+                "description": "Id of the member who made this channel for themselves and runs it (dur.io fork)",
+                "type": "string",
+                "nullable": true
+              },
+              "user_permissions": {
+                "description": "Permissions of single members in this channel (dur.io fork)",
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/OverrideField"
+                }
               }
             }
           }
@@ -14848,6 +14978,12 @@
             "description": "Whether this server should be publicly discoverable",
             "type": "boolean"
           },
+          "user_channel_limit": {
+            "description": "How many text channels of their own each member may make (dur.io fork)",
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0
+          },
           "approximate_member_count": {
             "description": "Approximate amount of members in the server",
             "type": "integer",
@@ -15102,6 +15238,12 @@
                 "description": "Whether this server should be publicly discoverable",
                 "type": "boolean"
               },
+              "user_channel_limit": {
+                "description": "How many text channels of their own each member may make (dur.io fork)",
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 0
+              },
               "approximate_member_count": {
                 "description": "Approximate amount of members in the server",
                 "type": "integer",
@@ -15171,6 +15313,14 @@
           "analytics": {
             "description": "Whether analytics should be collected for this server\n\nMust be enabled in order to show up on [Revolt Discover](https://rvlt.gg).",
             "type": "boolean",
+            "nullable": true
+          },
+          "user_channel_limit": {
+            "description": "How many text channels of their own each member may make, up to 3 (dur.io fork)",
+            "type": "integer",
+            "format": "uint32",
+            "maximum": 3,
+            "minimum": 0,
             "nullable": true
           },
           "owner": {
@@ -16467,6 +16617,13 @@
             "format": "uint32",
             "minimum": 0,
             "nullable": true
+          },
+          "user_permissions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/OverrideField"
+            },
+            "nullable": true
           }
         }
       },
@@ -16615,6 +16772,12 @@
           },
           "discoverable": {
             "type": "boolean",
+            "nullable": true
+          },
+          "user_channel_limit": {
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0,
             "nullable": true
           },
           "approximate_member_count": {

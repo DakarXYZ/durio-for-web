@@ -51,6 +51,13 @@ msgstr "(это устройство)"
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
 msgstr "{0, plural, one {# заблокированное сообщение} few {# заблокированных сообщения} many {# заблокированных сообщений} other {# заблокированных сообщений}}"
 
+#. placeholder {0}: rowProps.thread.messageCount
+#. placeholder {0}: thread().messageCount
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "{0, plural, one {# message} other {# messages}}"
+msgstr "{0, plural, one {# сообщение} few {# сообщения} many {# сообщений} other {# сообщения}}"
+
 #. placeholder {0}: mentions()
 #: components/ui/components/features/navigation/UnreadCallout.tsx
 msgid "{0, plural, one {# new mention} other {# new mentions}}"
@@ -287,6 +294,11 @@ msgstr "<0/> начал звонок"
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> started a call that lasted "
 msgstr "<0/> начал звонок, который продлился "
+
+#. placeholder {0}: (sm as ThreadCreatedSystemMessage).name
+#: components/ui/components/features/messaging/elements/SystemMessage.tsx
+msgid "<0/> started a thread: <1>{0}</1>"
+msgstr "<0/> начал тред: <1>{0}</1>"
 
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> transferred group ownership to <1/>"
@@ -585,6 +597,18 @@ msgstr "Любой, у кого есть этот файл и его парол�
 msgid "Appearance"
 msgstr "Внешний вид"
 
+#: src/interface/channels/text/ThreadPanel.tsx
+#~ msgid "Archive the thread"
+#~ msgstr "Убрать тред в архив"
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "archived"
+msgstr "в архиве"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Archived"
+msgstr "Архив"
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "Archived message"
 msgstr "Архивное сообщение"
@@ -749,6 +773,10 @@ msgstr "Оба устройства готовы. Сравните эмодзи,
 msgid "Bots have no sessions."
 msgstr "У ботов нет сеансов."
 
+#: src/interface/channels/text/ThreadPanel.tsx
+#~ msgid "Bring the thread back"
+#~ msgstr "Вернуть тред из архива"
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Browser"
 msgstr "Браузер"
@@ -833,6 +861,7 @@ msgstr "Сейчас не получается проверить статус �
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/CameraCapture.tsx
 #: components/modal/modals/CreatePoll.tsx
+#: components/modal/modals/CreateThread.tsx
 #: components/modal/modals/CropProcess.tsx
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/DeleteCategory.tsx
@@ -988,8 +1017,13 @@ msgid "Channel Slowmode"
 msgstr "Медленный режим канала"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Channels"
 msgstr "Каналы"
+
+#: components/app/interface/settings/server/Overview.tsx
+msgid "Channels of members"
+msgstr "Каналы участников"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Chat Input"
@@ -1047,6 +1081,10 @@ msgstr "Нажмите на что-нибудь снизу чтобы узнат
 msgid "Click to copy username"
 msgstr "Нажмите, чтобы скопировать имя пользователя"
 
+#: components/ui/components/features/messaging/elements/SpoilerCover.tsx
+msgid "Click to show"
+msgstr "Нажмите, чтобы показать"
+
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Click to show full description"
 msgstr "Нажмите для показа всего описания"
@@ -1089,6 +1127,7 @@ msgstr "Настройки клиента"
 #: components/modal/modals/UserProfileMutualFriends.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileRoles.tsx
+#: src/interface/channels/text/ThreadPanel.tsx
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1104,6 +1143,14 @@ msgstr "Закрыть беседу с {0}?"
 #: components/ui/components/features/messaging/elements/PollCard.tsx
 msgid "Close poll"
 msgstr "Закрыть опрос"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Close the thread"
+msgstr "Закрыть тред"
+
+#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
+msgid "closed"
+msgstr "закрыт"
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -1301,6 +1348,7 @@ msgstr "Не удалось загрузить это изображение."
 #: components/modal/modals/CreateGroup.tsx
 #: components/modal/modals/CreateRole.tsx
 #: components/modal/modals/CreateServer.tsx
+#: components/modal/modals/CreateThread.tsx
 #: components/modal/modals/CreateWebhook.tsx
 msgid "Create"
 msgstr "Создать"
@@ -1407,6 +1455,10 @@ msgstr "Создать сервер"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Create server emoji"
 msgstr "Создать эмодзи сервера"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Create thread"
+msgstr "Создать тред"
 
 #: components/app/interface/settings/channel/webhooks/WebhooksList.tsx
 msgid "Create Webhook"
@@ -1620,6 +1672,10 @@ msgstr "Удалить Сервер"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Delete session"
 msgstr "Удалить сессию"
+
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Delete threads nobody writes in for"
+msgstr "Удалять треды, в которых не пишут"
 
 #: components/client/e2ee/ui/views/BackupOff.tsx
 msgid "Deletes the backup of your encryption keys from the server. This device stops backing up its keys, and so do your other devices. Needs your password."
@@ -2125,6 +2181,10 @@ msgstr "Найти"
 msgid "Find a community based on your hobbies or interests."
 msgstr "Найдите сообщество по вашим хобби или интересам."
 
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
+msgid "Find a member"
+msgstr "Найти участника"
+
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "Find a user by id or by name with its number (name#1234) to see where they are signed in. End a session when a device is lost or stolen."
 msgstr "Найдите пользователя по ID или по имени с номером (имя#1234), чтобы увидеть, где выполнен вход. Завершите сеанс, если устройство потеряно или украдено."
@@ -2175,6 +2235,10 @@ msgstr "На 8 часов"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Frequently used"
+msgstr "Часто используемые"
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -2282,7 +2346,9 @@ msgstr "Есть GIF получше? Поделитесь со всеми на G
 msgid "Got it"
 msgstr "Понятно"
 
+#. placeholder {0}: countBits(props.channel.userPermissions![userId].a)
 #. placeholder {0}: countBits(props.context.rolePermissions![role.id].a)
+#. placeholder {1}: countBits(props.channel.userPermissions![userId].d)
 #. placeholder {1}: countBits(props.context.rolePermissions![role.id].d)
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "Grants {0} permissions and denies {1} permissions"
@@ -2327,6 +2393,10 @@ msgstr "Помогите перевести Stoat"
 #: components/modal/modals/CreateInvite.tsx
 msgid "Here is your new invite code: <0>{0}</0>"
 msgstr "Вот ваш новый код приглашения: <0>{0}</0>"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Hide behind a spoiler"
+msgstr "Скрыть под спойлер"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Hide Others"
@@ -2704,6 +2774,10 @@ msgstr "Только строчные буквы, цифры и нижние п�
 msgid "Major Outage"
 msgstr "Критический сбой"
 
+#: src/interface/navigation/channels/ServerSidebar.tsx
+msgid "Make a channel of your own"
+msgstr "Создать свой канал"
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Malware or phishing"
 msgstr "Вредоносное ПО или фишинг"
@@ -2769,6 +2843,10 @@ msgstr "Маскарад"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Maximize call window"
 msgstr "Развернуть окно звонка"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
+msgid "Member Overrides"
+msgstr "Права участников"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/ServerSettings.tsx
@@ -2966,6 +3044,10 @@ msgstr "Имя"
 msgid "Neutral"
 msgstr "Нейтрально"
 
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Never delete threads"
+msgstr "Не удалять треды"
+
 #: components/ui/components/features/messaging/elements/MessageDivider.tsx
 msgid "NEW"
 msgstr "НОВОЕ"
@@ -3007,6 +3089,11 @@ msgstr "Новый опрос"
 #: components/client/e2ee/ui/views/Devices.tsx
 msgid "New recovery key"
 msgstr "Новый ключ восстановления"
+
+#: components/modal/modals/CreateThread.tsx
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "New thread"
+msgstr "Новый тред"
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to dur.io"
@@ -3057,12 +3144,20 @@ msgid "No key backup on this device. Without it, a new device cannot read your e
 msgstr "На этом устройстве нет бэкапа ключей. Без него новое устройство не прочитает прежние зашифрованные сообщения, если не сверить его с другим."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
+msgid "No member has permissions of their own here. Find a member to make the channel read-only for them or take away reactions."
+msgstr "Ни у кого из участников нет здесь своих прав. Найдите участника, чтобы оставить ему только чтение или запретить реакции."
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
 msgstr "Разрешений пока нет"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No role overrides have been configured."
 msgstr "Исключения для ролей не настроены."
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "No threads yet. Start one from a message, or with \"New thread\"."
+msgstr "Тредов пока нет. Начните тред из сообщения или кнопкой «Новый тред»."
 
 #: components/app/interface/settings/user/admin/Administration.tsx
 msgid "No user with this id or name."
@@ -3076,6 +3171,7 @@ msgstr "Пользователь с таким ID или именем не на�
 msgid "Nobody here right now!"
 msgstr "Никого тут нет пока что!"
 
+#: components/app/interface/settings/server/Overview.tsx
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "None"
@@ -3106,6 +3202,10 @@ msgstr "Уведомления"
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Notifications of end-to-end encrypted chats say only \"New message\"."
 msgstr "В уведомлениях из чатов со сквозным шифрованием — только «Новое сообщение»."
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "NSFW"
+msgstr "NSFW"
 
 #: components/ui/components/features/messaging/composition/MessageReplyPreview.tsx
 msgid "Off"
@@ -3185,6 +3285,10 @@ msgstr "Открыть"
 msgid "Open {0}"
 msgstr "Открыть {0}"
 
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Open as a page"
+msgstr "Открыть на всю страницу"
+
 #: components/app/menus/ChannelContextMenu.tsx
 msgid "Open channel settings"
 msgstr "Открыть настройки канала"
@@ -3200,6 +3304,14 @@ msgstr "Открыть настройки сервера"
 #: src/interface/Home.tsx
 msgid "Open settings"
 msgstr "Открыть настройки"
+
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Open the thread again"
+msgstr "Открыть тред снова"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Open thread"
+msgstr "Открыть тред"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -3535,6 +3647,10 @@ msgstr "Убрать аватары других участников"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Remove reaction"
 msgstr "Убрать реакцию"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Remove the spoiler"
+msgstr "Убрать спойлер"
 
 #: components/app/menus/UserContextMenu.tsx
 #: components/modal/modals/RemoveTimeout.tsx
@@ -4117,6 +4233,11 @@ msgstr "Говорить"
 msgid "Spellchecker"
 msgstr "Проверка правописания"
 
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/features/messaging/elements/SpoilerCover.tsx
+msgid "Spoiler Alert!"
+msgstr "Spoiler Alert!"
+
 #: components/app/interface/settings/channel/Overview.tsx
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 #: components/app/interface/settings/server/Overview.tsx
@@ -4286,6 +4407,10 @@ msgstr "Условия"
 #: components/modal/modals/CreateChannel.tsx
 msgid "Text Channel"
 msgstr "Текстовый канал"
+
+#: components/app/interface/settings/server/Overview.tsx
+msgid "Text channels each member may make for themselves"
+msgstr "Сколько своих текстовых каналов может создать участник"
 
 #: components/i18n/errors.tsx
 msgid "That action had no effect."
@@ -4622,6 +4747,10 @@ msgstr "Регистрация помечена как спам."
 #~ msgid "This sign up is marked as spam. Please see <0>this support article.</0>"
 #~ msgstr "Регистрация помечена как спам. Подробнее — в <0>статье поддержки.</0>"
 
+#: src/interface/channels/text/Composition.tsx
+msgid "This thread is closed."
+msgstr "Тред закрыт."
+
 #: components/i18n/errors.tsx
 msgid "This user has blocked you."
 msgstr "Этот пользователь заблокировал вас."
@@ -4641,6 +4770,15 @@ msgstr "Это имя пользователя запрещено."
 #: components/modal/modals/ResetBotToken.tsx
 msgid "This will invalidate the current token and stop any existing instances of the bot from running."
 msgstr "Это сделает текущий токен недействительным и прекратит работу всех запущенных ботов."
+
+#: components/modal/modals/CreateThread.tsx
+msgid "Thread name"
+msgstr "Название треда"
+
+#: src/interface/channels/ChannelHeader.tsx
+#: src/interface/channels/text/ThreadPanel.tsx
+msgid "Threads"
+msgstr "Треды"
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "Time format"
@@ -5394,103 +5532,3 @@ msgstr "Сеанс завершён — возможно, вы вышли из �
 #: components/i18n/errors.tsx
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Ваш пользователь уже создан? Попробуйте войти снова или перезапустите приложение."
-
-#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
-msgid "{0, plural, one {# message} other {# messages}}"
-msgstr "{0, plural, one {# сообщение} few {# сообщения} many {# сообщений} other {# сообщения}}"
-
-#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
-msgid "archived"
-msgstr "в архиве"
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "Bring the thread back"
-msgstr "Вернуть тред из архива"
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "Archive the thread"
-msgstr "Убрать тред в архив"
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "Open as a page"
-msgstr "Открыть на всю страницу"
-
-#: src/interface/channels/ChannelHeader.tsx
-msgid "Threads"
-msgstr "Треды"
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "New thread"
-msgstr "Новый тред"
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "No threads yet. Start one from a message, or with \"New thread\"."
-msgstr "Тредов пока нет. Начните тред из сообщения или кнопкой «Новый тред»."
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "Archived"
-msgstr "Архив"
-
-#: components/modal/modals/CreateThread.tsx
-msgid "Thread name"
-msgstr "Название треда"
-
-#: components/app/menus/MessageContextMenu.tsx
-msgid "Open thread"
-msgstr "Открыть тред"
-
-#: components/app/menus/MessageContextMenu.tsx
-msgid "Create thread"
-msgstr "Создать тред"
-
-#: components/app/menus/MessageContextMenu.tsx
-msgid "Hide behind a spoiler"
-msgstr "Скрыть под спойлер"
-
-#: components/app/menus/MessageContextMenu.tsx
-msgid "Spoiler Alert!"
-msgstr "Spoiler Alert!"
-
-#: components/app/menus/MessageContextMenu.tsx
-msgid "NSFW"
-msgstr "NSFW"
-
-#: components/app/menus/MessageContextMenu.tsx
-msgid "Remove the spoiler"
-msgstr "Убрать спойлер"
-
-#: components/ui/components/features/messaging/elements/SpoilerCover.tsx
-msgid "Click to show"
-msgstr "Нажмите, чтобы показать"
-
-#: components/ui/components/features/messaging/elements/SystemMessage.tsx
-msgid "<0/> started a thread: <1>{0}</1>"
-msgstr "<0/> начал тред: <1>{0}</1>"
-
-#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
-msgid "Frequently used"
-msgstr "Часто используемые"
-
-#: src/interface/channels/text/Composition.tsx
-msgid "This thread is closed."
-msgstr "Тред закрыт."
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "Open the thread again"
-msgstr "Открыть тред снова"
-
-#: src/interface/channels/text/ThreadPanel.tsx
-msgid "Close the thread"
-msgstr "Закрыть тред"
-
-#: components/ui/components/features/messaging/elements/ThreadSummary.tsx
-msgid "closed"
-msgstr "закрыт"
-
-#: components/app/interface/settings/channel/Overview.tsx
-msgid "Delete threads nobody writes in for"
-msgstr "Удалять треды, в которых не пишут"
-
-#: components/app/interface/settings/channel/Overview.tsx
-msgid "Never delete threads"
-msgstr "Не удалять треды"

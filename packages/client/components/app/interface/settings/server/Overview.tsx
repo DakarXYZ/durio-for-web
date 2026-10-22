@@ -48,6 +48,9 @@ export default function ServerOverview(props: ServerSettingsProps) {
     sys_user_banned: createFormControl(
       props.server.systemMessages?.user_banned ?? "none",
     ),
+    userChannelLimit: createFormControl(
+      props.server.userChannelLimit.toString(),
+    ),
   });
 
   const channels = () =>
@@ -116,6 +119,9 @@ export default function ServerOverview(props: ServerSettingsProps) {
     editGroup.controls.sys_user_banned.setValue(
       props.server.systemMessages?.user_banned ?? "none",
     );
+    editGroup.controls.userChannelLimit.setValue(
+      props.server.userChannelLimit.toString(),
+    );
   }
 
   async function onSubmit() {
@@ -163,6 +169,13 @@ export default function ServerOverview(props: ServerSettingsProps) {
           instance.mediaUrl,
         );
       }
+    }
+
+    // dur.io: channels members make for themselves
+    if (editGroup.controls.userChannelLimit.isDirty) {
+      changes.user_channel_limit = Number(
+        editGroup.controls.userChannelLimit.value,
+      );
     }
 
     if (editGroup.controls.sys_user_joined.isDirty) {
@@ -271,6 +284,20 @@ export default function ServerOverview(props: ServerSettingsProps) {
             label={t`Server Description`}
             placeholder={t`This server is about...`}
           />
+          <Text class="title" size="small">
+            <Trans>Channels of members</Trans>
+          </Text>
+          <Form2.Select
+            label={t`Text channels each member may make for themselves`}
+            control={editGroup.controls.userChannelLimit}
+          >
+            <MenuItem value="0">
+              <Trans>None</Trans>
+            </MenuItem>
+            <MenuItem value="1">1</MenuItem>
+            <MenuItem value="2">2</MenuItem>
+            <MenuItem value="3">3</MenuItem>
+          </Form2.Select>
           <Text class="title" size="small">
             <Trans>System message channels</Trans>
           </Text>

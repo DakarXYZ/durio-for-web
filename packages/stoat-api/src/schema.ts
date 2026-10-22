@@ -196,6 +196,16 @@ export interface paths {
      */
     put: operations["permissions_set_set_role_permissions"];
   };
+  "/channels/{target}/permissions/users/{member_id}": {
+    /**
+     * Sets permissions for one member in this channel: for example, read-only, or no reactions. Needs `ManagePermissions`; the member who made the channel for themselves has it there.
+     *
+     * Channel must be a `TextChannel`.
+     */
+    put: operations["permissions_set_user_set_user_permissions"];
+    /** Drops the permissions set for one member in this channel. */
+    delete: operations["permissions_set_user_remove_user_permissions"];
+  };
   "/channels/{target}/permissions/default": {
     /**
      * Sets permissions for the default role in this channel.
@@ -269,7 +279,11 @@ export interface paths {
     put: operations["server_ack_ack"];
   };
   "/servers/{server}/channels": {
-    /** Create a new Text or Voice channel. */
+    /**
+     * Create a new Text or Voice channel.
+     *
+     * Without `ManageChannel`, members make text channels of their own, as many as the server's `user_channel_limit` allows (dur.io fork).
+     */
     post: operations["channel_create_create_server_channel"];
   };
   "/servers/{target}/members": {
@@ -1613,6 +1627,12 @@ export interface components {
            * @description Threads of this channel are deleted after this many days without a message; kept forever when unset (dur.io fork)
            */
           thread_auto_delete?: number | null;
+          /** @description Id of the member who made this channel for themselves and runs it (dur.io fork) */
+          owner?: string | null;
+          /** @description Permissions of single members in this channel (dur.io fork) */
+          user_permissions?: {
+            [key: string]: components["schemas"]["OverrideField"];
+          };
         };
     /**
      * @description Encryption settings of a direct message or group
@@ -2750,6 +2770,11 @@ export interface components {
       /** @description Whether this server should be publicly discoverable */
       discoverable?: boolean;
       /**
+       * Format: uint32
+       * @description How many text channels of their own each member may make (dur.io fork)
+       */
+      user_channel_limit?: number;
+      /**
        * Format: uint
        * @description Approximate amount of members in the server
        */
@@ -2854,6 +2879,11 @@ export interface components {
           /** @description Whether this server should be publicly discoverable */
           discoverable?: boolean;
           /**
+           * Format: uint32
+           * @description How many text channels of their own each member may make (dur.io fork)
+           */
+          user_channel_limit?: number;
+          /**
            * Format: uint
            * @description Approximate amount of members in the server
            */
@@ -2886,6 +2916,11 @@ export interface components {
        * Must be enabled in order to show up on [Revolt Discover](https://rvlt.gg).
        */
       analytics?: boolean | null;
+      /**
+       * Format: uint32
+       * @description How many text channels of their own each member may make, up to 3 (dur.io fork)
+       */
+      user_channel_limit?: number | null;
       /** @description User id of the new owner */
       owner?: string | null;
       /**
@@ -3308,6 +3343,9 @@ export interface components {
       thread?: components["schemas"]["ThreadInfo"] | null;
       /** Format: uint32 */
       thread_auto_delete?: number | null;
+      user_permissions?: {
+        [key: string]: components["schemas"]["OverrideField"];
+      } | null;
     };
     PartialMember: {
       id?: components["schemas"]["MemberCompositeKey"] | null;
@@ -3338,6 +3376,8 @@ export interface components {
       nsfw?: boolean | null;
       analytics?: boolean | null;
       discoverable?: boolean | null;
+      /** Format: uint32 */
+      user_channel_limit?: number | null;
       /** Format: uint */
       approximate_member_count?: number | null;
     };
@@ -5274,6 +5314,59 @@ export interface operations {
     };
   };
   /**
+   * Sets permissions for one member in this channel: for example, read-only, or no reactions. Needs `ManagePermissions`; the member who made the channel for themselves has it there.
+   *
+   * Channel must be a `TextChannel`.
+   */
+  permissions_set_user_set_user_permissions: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        member_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Channel"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DataSetRolePermissions"];
+      };
+    };
+  };
+  /** Drops the permissions set for one member in this channel. */
+  permissions_set_user_remove_user_permissions: {
+    parameters: {
+      path: {
+        target: components["schemas"]["Id"];
+        member_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["Channel"];
+        };
+      };
+      /** An error occurred. */
+      default: {
+        content: {
+          "application/json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  /**
    * Sets permissions for the default role in this channel.
    *
    * Channel must be a `Group` or `TextChannel`.
@@ -5706,7 +5799,11 @@ export interface operations {
       };
     };
   };
-  /** Create a new Text or Voice channel. */
+  /**
+   * Create a new Text or Voice channel.
+   *
+   * Without `ManageChannel`, members make text channels of their own, as many as the server's `user_channel_limit` allows (dur.io fork).
+   */
   channel_create_create_server_channel: {
     parameters: {
       path: {

@@ -18,6 +18,7 @@ type Props = (
   | { type: "server_role"; context: Server; roleId: string }
   | { type: "channel_default"; context: Channel }
   | { type: "channel_role"; context: Channel; roleId: string }
+  | { type: "channel_user"; context: Channel; userId: string }
   | { type: "group"; context: Channel }
 ) & {
   additionalActions?: {
@@ -64,6 +65,11 @@ export function ChannelPermissionsEditor(props: Props) {
         return [
           BigInt(props.context.rolePermissions?.[props.roleId]?.a || 0),
           BigInt(props.context.rolePermissions?.[props.roleId]?.d || 0),
+        ];
+      case "channel_user":
+        return [
+          BigInt(props.context.userPermissions?.[props.userId]?.a || 0),
+          BigInt(props.context.userPermissions?.[props.userId]?.d || 0),
         ];
       case "group":
         return [
@@ -134,6 +140,14 @@ export function ChannelPermissionsEditor(props: Props) {
           allow: Number(value()[0]),
           deny: Number(value()[1]),
         });
+      case "channel_user":
+        // dur.io: nothing set drops the member's override
+        return value()[0] || value()[1]
+          ? props.context.setUserPermissions(props.userId, {
+              allow: value()[0],
+              deny: value()[1],
+            })
+          : props.context.removeUserPermissions(props.userId);
       case "group":
         return props.context.setPermissions(undefined, Number(value()[0]));
     }
@@ -519,6 +533,7 @@ export function ChannelPermissionsEditor(props: Props) {
                 when={[
                   "channel_default",
                   "channel_role",
+                  "channel_user",
                   "server_role",
                 ].includes(props.type)}
               >

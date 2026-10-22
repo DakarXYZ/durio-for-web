@@ -10,10 +10,11 @@ import {
   createSignal,
 } from "solid-js";
 
-import { useLingui } from "@lingui/solid/macro";
+import { Trans, useLingui } from "@lingui/solid/macro";
 import type { Channel, Server, ServerFlags } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
+import { useClient } from "@revolt/client";
 import { getChannelIcon, useDevice } from "@revolt/common";
 import { appPath } from "@revolt/common/lib/env";
 import { KeybindAction, createKeybind } from "@revolt/keybinds";
@@ -23,6 +24,7 @@ import { useNavigate } from "@revolt/routing";
 import { useVoice } from "@revolt/rtc";
 import { useState } from "@revolt/state";
 import {
+  Avatar,
   Column,
   Draggable,
   Header,
@@ -80,7 +82,11 @@ interface Props {
 /**
  * Ordered category data returned from server
  */
-type CategoryData = OrderedCategory & { channels: Channel[] };
+type CategoryData = OrderedCategory & {
+  channels: Channel[];
+  /** dur.io: the member whose own channels these are */
+  ownerId?: string;
+};
 
 type OrderingEvent =
   | {
@@ -100,6 +106,7 @@ type OrderingEvent =
  */
 export const ServerSidebar = (props: Props) => {
   const navigate = useNavigate();
+  const { openModal } = useModals();
   const { isMobile } = useDevice();
 
   // Users can manage certain parts of the server individually, regardless of their ManageServer Permission
@@ -123,14 +130,28 @@ export const ServerSidebar = (props: Props) => {
       ...category,
       channels: category.channelIds
         .map((id) => channels.get(id)!)
-        .filter((channel) => channel),
+        // dur.io: members' own channels are grouped by member below
+        .filter((channel) => channel && !channel.userChannelOwnerId),
     }));
   });
+
+  // dur.io: "Channels of <member>", one group per member
+  const userCategories = createMemo<CategoryData[]>(() =>
+    [...props.server.userChannels.entries()].map(([ownerId, channels]) => ({
+      id: `user:${ownerId}`,
+      title: "",
+      channelIds: channels.map((channel) => channel.id),
+      channels,
+      ownerId,
+    })),
+  );
 
   // TODO: this does not filter visible channels at the moment because the state for categories is not stored anywhere
   /** Gets a list of channels that are currently not hidden inside a closed category */
   const visibleChannels = () =>
-    categories().flatMap((category) => category.channels);
+    [...categories(), ...userCategories()].flatMap(
+      (category) => category.channels,
+    );
 
   // TODO: when navigating channels, we want to add aria-keyshortcuts={localized-shortcut} to the next/previous channels
   // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-keyshortcuts
@@ -301,11 +322,57 @@ export const ServerSidebar = (props: Props) => {
               />
             )}
           </Draggable>
+          <For each={userCategories()}>
+            {(category) => (
+              <Category
+                server={props.server}
+                category={category}
+                channelId={props.channelId}
+                menuGenerator={props.menuGenerator}
+                dragDisabled={() => true}
+                setDragDisabled={() => void 0}
+                noOrdering={() => true}
+                handleOrdering={handleOrdering}
+              />
+            )}
+          </For>
+          <Show when={props.server.canMakeOwnChannel}>
+            <OwnChannelButton
+              onClick={() =>
+                openModal({ type: "create_channel", server: props.server })
+              }
+            >
+              <Symbol size={18}>add</Symbol>
+              <Trans>Make a channel of your own</Trans>
+            </OwnChannelButton>
+          </Show>
         </div>
       </ChannelList>
     </SidebarBase>
   );
 };
+
+const OwnChannelButton = styled("button", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--gap-sm)",
+    width: "100%",
+    marginBlock: "var(--gap-sm)",
+    paddingInline: "calc(var(--gap-lg) + 5px)",
+    paddingBlock: "var(--gap-sm)",
+    border: "none",
+    background: "transparent",
+    cursor: "pointer",
+    color: "var(--md-sys-color-on-surface-variant)",
+    ...typography.raw({ class: "label", size: "small" }),
+    fontSize: "13px",
+
+    "&:hover": {
+      color: "var(--md-sys-color-on-surface)",
+    },
+  },
+});
 
 const ChannelList = styled("div", {
   base: {
@@ -412,7 +479,13 @@ function Category(
   return (
     <CategorySection>
       <Show when={props.category.id !== "default"}>
-        <div use:floating={props.menuGenerator(props.category as never)}>
+        <div
+          use:floating={
+            props.category.ownerId
+              ? {}
+              : props.menuGenerator(props.category as never)
+          }
+        >
           <CategoryBase
             open={isOpen()}
             onClick={() => {
@@ -420,7 +493,11 @@ function Category(
             }}
             {...createDragHandle(props.dragDisabled, props.setDragDisabled)}
           >
-            {props.category.title}
+            <Show when={props.category.ownerId} fallback={props.category.title}>
+              {(ownerId) => (
+                <UserCategoryTitle server={props.server} userId={ownerId()} />
+              )}
+            </Show>
             <MdChevronRight {...iconSize(12)} />
           </CategoryBase>
         </div>
@@ -454,6 +531,37 @@ function Category(
         )}
       </Draggable>
     </CategorySection>
+  );
+}
+
+/**
+ * dur.io: "Channels <avatar> <name>" over a member's own channels
+ */
+function UserCategoryTitle(props: { server: Server; userId: string }) {
+  const client = useClient();
+  const member = () =>
+    client().serverMembers.getByKey({
+      server: props.server.id,
+      user: props.userId,
+    });
+  const name = () =>
+    member()?.displayName ??
+    client().users.get(props.userId)?.displayName ??
+    props.userId;
+
+  return (
+    <>
+      <Trans>Channels</Trans>
+      <Avatar
+        size={16}
+        src={
+          member()?.animatedAvatarURL ??
+          client().users.get(props.userId)?.animatedAvatarURL
+        }
+        fallback={name()}
+      />
+      <OverflowingText>{name()}</OverflowingText>
+    </>
   );
 }
 
@@ -530,9 +638,10 @@ function Entry(
   const { openModal } = useModals();
   const { isMobile } = useDevice();
 
+  // dur.io: in the channel, so a member runs their own channel from here too
   const canEditChannel = createMemo(() =>
     (["ManageChannel", "ManagePermissions", "ManageWebhooks"] as const).some(
-      (perm) => props.channel.server?.havePermission(perm),
+      (perm) => props.channel.havePermission(perm),
     ),
   );
 
