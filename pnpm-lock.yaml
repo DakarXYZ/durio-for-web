@@ -65,8 +65,8 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3(solid-js@1.9.14)
       '@durio/stoat-crypto':
-        specifier: https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.1/durio-stoat-crypto-0.2.1.tgz
-        version: https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.1/durio-stoat-crypto-0.2.1.tgz
+        specifier: https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.2/durio-stoat-crypto-0.2.2.tgz
+        version: https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.2/durio-stoat-crypto-0.2.2.tgz
       '@floating-ui/dom':
         specifier: ^1.7.0
         version: 1.7.0
@@ -1431,9 +1431,9 @@ packages:
     peerDependencies:
       solid-js: 1.9.14
 
-  '@durio/stoat-crypto@https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.1/durio-stoat-crypto-0.2.1.tgz':
-    resolution: {integrity: sha512-kbHh3+yqesPQOgOBuulotF7+wsF7DNU3CubkUUpD3PrqAkTeVnsLHY1yAth3Ta12znAOtwxWTe8F7MXmA4GIhw==, tarball: https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.1/durio-stoat-crypto-0.2.1.tgz}
-    version: 0.2.1
+  '@durio/stoat-crypto@https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.2/durio-stoat-crypto-0.2.2.tgz':
+    resolution: {integrity: sha512-5Yhdt7GNMEd2UddVZRc7qCmApNFmVEttAr3xjv98MJURbGAgM1OWHvKaEveywHc3cK4Mppuo6pYptoJb28k3HA==, tarball: https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.2/durio-stoat-crypto-0.2.2.tgz}
+    version: 0.2.2
     engines: {node: '>=22'}
 
   '@esbuild/aix-ppc64@0.19.12':
@@ -8297,7 +8297,7 @@ snapshots:
     dependencies:
       solid-js: 1.9.14
 
-  '@durio/stoat-crypto@https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.1/durio-stoat-crypto-0.2.1.tgz': {}
+  '@durio/stoat-crypto@https://github.com/DakarXYZ/durio-crypt/releases/download/v0.2.2/durio-stoat-crypto-0.2.2.tgz': {}
 
   '@esbuild/aix-ppc64@0.19.12':
     optional: true
