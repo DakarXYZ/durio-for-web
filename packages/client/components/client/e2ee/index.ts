@@ -110,10 +110,7 @@ async function start(client: Client, instance: Instance) {
   const [
     { StoatCrypto, isStoatCryptoError, lockName, storeName },
     { createStoatCryptoProvider },
-  ] = await Promise.all([
-    import("@durio/crypt"),
-    import("stoat.js/e2ee"),
-  ]);
+  ] = await Promise.all([import("@durio/crypt"), import("stoat.js/e2ee")]);
 
   // a new key for an existing store: the old key is lost (AN-42)
   if (storeKey.created && (await storeExists(storeName(accountKey)))) {
