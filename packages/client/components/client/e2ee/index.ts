@@ -1,5 +1,5 @@
 // E2EE of the logged-in account (dur.io, plan WEB-03, WEB-12): one crypto worker per
-// account and server (`@durio/stoat-crypto`), installed into the SDK as its
+// account and server (`@durio/crypt`), installed into the SDK as its
 // `E2eeProvider`.
 //
 // - Starts lazily after the first `Ready`, if the server has E2EE or the account has an
@@ -111,7 +111,7 @@ async function start(client: Client, instance: Instance) {
     { StoatCrypto, isStoatCryptoError, lockName, storeName },
     { createStoatCryptoProvider },
   ] = await Promise.all([
-    import("@durio/stoat-crypto"),
+    import("@durio/crypt"),
     import("stoat.js/e2ee"),
   ]);
 
@@ -212,7 +212,7 @@ export async function forgetE2eeAccount(
   if (!(await uninstalled)) {
     try {
       const [{ StoatCrypto }, { retryWhileLocked }] = await Promise.all([
-        import("@durio/stoat-crypto"),
+        import("@durio/crypt"),
         import("stoat.js/e2ee"),
       ]);
       const crypto = await StoatCrypto.start(

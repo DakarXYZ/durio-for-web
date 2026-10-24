@@ -141,7 +141,7 @@ export default defineConfig(({ mode }) => {
       format: "es",
     },
     optimizeDeps: {
-      exclude: ["hast", "@durio/stoat-crypto"],
+      exclude: ["hast", "@durio/crypt"],
     },
     resolve: {
       alias: {

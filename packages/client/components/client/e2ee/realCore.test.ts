@@ -1,4 +1,4 @@
-// The real crypto core (`@durio/stoat-crypto`, release wasm) through the SDK: two
+// The real crypto core (`@durio/crypt`, release wasm) through the SDK: two
 // accounts, two in-memory machines, each behind `StoatCrypto` ↔ RPC ↔
 // `serveCryptoWorker` (a MessageChannel stands in for the worker, as in the package's
 // own tests), installed with `createStoatCryptoProvider` into a real `Client`. A small
@@ -10,8 +10,8 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { StoatCrypto } from "@durio/stoat-crypto";
-import { serveCryptoWorker } from "@durio/stoat-crypto/worker";
+import { StoatCrypto } from "@durio/crypt";
+import { serveCryptoWorker } from "@durio/crypt/worker";
 import { Client } from "stoat.js";
 import { createStoatCryptoProvider } from "stoat.js/e2ee";
 import { ulid } from "ulid";
@@ -19,7 +19,7 @@ import { afterAll, describe, expect, it, vi } from "vitest";
 
 const API = "https://api.test";
 const pkgDir = dirname(
-  createRequire(import.meta.url).resolve("@durio/stoat-crypto/package.json"),
+  createRequire(import.meta.url).resolve("@durio/crypt/package.json"),
 );
 const wasmBytes = readFileSync(
   join(pkgDir, "dist/wasm/stoat_crypto_wasm_bg.wasm"),
