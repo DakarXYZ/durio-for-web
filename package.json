@@ -1,7 +1,7 @@
 {
-  "name": "stoat-for-web",
+  "name": "durio-for-web",
   "version": "0.16.3",
-  "description": "Stoat for Web: frontend software for Stoat",
+  "description": "dur.io for Web: the dur.io messenger interface for Windows and the browser (a fork of Stoat for Web)",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "eslint": "^9.26.0",

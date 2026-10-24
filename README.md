@@ -50,9 +50,9 @@ emoji, and removes the original project's trackers and remote services. Licensed
 [durio-crypt](https://github.com/DakarXYZ/durio-crypt) (`…/releases/download/v<версия>/durio-stoat-crypto-<версия>.tgz`),
 целостность в lockfile совпадает с его `.sha256`. Новая версия ядра: поменять ссылку и выполнить `pnpm install`.
 
-Проверить локальную сборку ядра до релиза: клон durio-crypt в `../stoat-crypto`, там
+Проверить локальную сборку ядра до релиза: клон durio-crypt в `../durio-crypt`, там
 `scripts/build-wasm.sh build` (→ `bindings/web/build/durio-stoat-crypto-<версия>.tgz`), и временно указать в
-`packages/client/package.json` `file:../../../stoat-crypto/bindings/web/build/durio-stoat-crypto-<версия>.tgz`.
+`packages/client/package.json` `file:../../../durio-crypt/bindings/web/build/durio-stoat-crypto-<версия>.tgz`.
 Такую правку не коммитить: CI соберёт клиент только с архивом из релиза.
 
 ```bash

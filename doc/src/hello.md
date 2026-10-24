@@ -1,6 +1,6 @@
-# Stoat for Web & Friends
+# dur.io for Web — developer notes
 
-Welcome to the developer documentation for the Stoat for Web project and general guidelines for other platforms we build for.
+Developer documentation of dur.io for Web, a fork of Stoat for Web. Most pages come from the original project and describe its design; the fork's own notes are in the repository README.
 
 This is very much incomplete and needs more work!
 
