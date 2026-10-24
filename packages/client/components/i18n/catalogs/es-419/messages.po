@@ -2609,7 +2609,7 @@ msgid "Learn more"
 msgstr ""
 
 #: components/app/interface/settings/user/bots/MyBots.tsx
-msgid "Learn more about how to create bots on Stoat."
+msgid "Learn more about how to create bots."
 msgstr ""
 
 #: components/modal/modals/DeleteChannel.tsx

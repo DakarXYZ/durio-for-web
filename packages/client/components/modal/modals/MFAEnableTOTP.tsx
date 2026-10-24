@@ -4,6 +4,7 @@ import { QRCodeSVG } from "solid-qr-code";
 import { Trans, useLingui } from "@lingui/solid/macro";
 import { styled } from "styled-system/jsx";
 
+import { useInstance } from "@revolt/instance";
 import { Column, Dialog, DialogProps, Form2, Text } from "@revolt/ui";
 
 import { useModals } from "..";
@@ -41,6 +42,8 @@ export function MFAEnableTOTPModal(
 ) {
   const { t } = useLingui();
   const { showError } = useModals();
+  // dur.io: the authenticator shows "dur.io", Stoat's own instance keeps "Stoat"
+  const issuer = useInstance().isStoat ? "Stoat" : "dur.io";
 
   const group = createFormGroup({
     code: createFormControl("", { required: true }),
@@ -50,7 +53,7 @@ export function MFAEnableTOTPModal(
    * Generate OTP URI
    */
   const uri = () =>
-    `otpauth://totp/Stoat:${props.identifier}?secret=${props.secret}&issuer=Stoat`;
+    `otpauth://totp/${encodeURIComponent(issuer)}:${props.identifier}?secret=${props.secret}&issuer=${encodeURIComponent(issuer)}`;
 
   async function onSubmit() {
     try {

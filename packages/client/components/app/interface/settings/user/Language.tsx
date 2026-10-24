@@ -1,8 +1,11 @@
+import { Show } from "solid-js";
+
 import { Trans, useLingui } from "@lingui/solid/macro";
 
 import { Language, Languages, browserPreferredLanguage } from "@revolt/i18n";
 import type { LanguageEntry } from "@revolt/i18n/Languages";
 import { timeLocale } from "@revolt/i18n/dayjs";
+import { useInstance } from "@revolt/instance";
 import { UnicodeEmoji } from "@revolt/markdown/emoji";
 import { useState } from "@revolt/state";
 import {
@@ -25,6 +28,8 @@ import MdTranslate from "@material-design-icons/svg/outlined/translate.svg?compo
  * Language
  */
 export function LanguageSettings() {
+  const { isStoat } = useInstance();
+
   return (
     <Column gap="lg">
       <CategoryButton.Group>
@@ -35,9 +40,12 @@ export function LanguageSettings() {
         <PickDateFormat />
         <PickTimeFormat />
       </CategoryButton.Group>
-      <CategoryButton.Group>
-        <ContributeLanguageLink />
-      </CategoryButton.Group>
+      {/* dur.io: translations go to Stoat's Weblate, offered on stoat.chat only */}
+      <Show when={isStoat}>
+        <CategoryButton.Group>
+          <ContributeLanguageLink />
+        </CategoryButton.Group>
+      </Show>
     </Column>
   );
 }

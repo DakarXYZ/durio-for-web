@@ -2,6 +2,7 @@ import { createFormControl, createFormGroup } from "solid-forms";
 
 import { Trans, useLingui } from "@lingui/solid/macro";
 
+import { useInstance } from "@revolt/instance";
 import { useNavigate } from "@revolt/routing";
 import { Column, Dialog, DialogProps, Form2, Text } from "@revolt/ui";
 
@@ -19,6 +20,7 @@ export function JoinServerModal(
   const { t } = useLingui();
   const navigate = useNavigate();
   const { showError } = useModals();
+  const instance = useInstance();
 
   const group = createFormGroup({
     link: createFormControl("", { required: true }),
@@ -76,7 +78,11 @@ export function JoinServerModal(
             name="link"
             control={group.controls.link}
             label={t`Code`}
-            placeholder="stt.gg/wVEJDGVs"
+            placeholder={
+              instance.isStoat
+                ? "stt.gg/wVEJDGVs"
+                : instance.href("/invite/wVEJDGVs")
+            }
           />
         </Column>
       </form>

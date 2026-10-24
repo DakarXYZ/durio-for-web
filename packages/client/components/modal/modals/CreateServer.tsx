@@ -1,7 +1,9 @@
 import { createFormControl, createFormGroup } from "solid-forms";
+import { Show } from "solid-js";
 
 import { Trans, useLingui } from "@lingui/solid/macro";
 
+import { useInstance } from "@revolt/instance";
 import { useNavigate } from "@revolt/routing";
 import { Column, Dialog, DialogProps, Form2, Text } from "@revolt/ui";
 
@@ -17,6 +19,7 @@ export function CreateServerModal(
   const { t } = useLingui();
   const navigate = useNavigate();
   const { showError } = useModals();
+  const { isStoat } = useInstance();
 
   const group = createFormGroup({
     name: createFormControl("", { required: true }),
@@ -57,22 +60,25 @@ export function CreateServerModal(
     >
       <form onSubmit={submit}>
         <Column>
-          <Text>
-            <Trans>
-              By creating this server, you agree to the{" "}
-              <a
-                href="https://stoat.chat/legal/community-guidelines"
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  color: "var(--md-sys-color-primary)",
-                }}
-              >
-                <Trans>Community Guidelines</Trans>
-              </a>
-              .
-            </Trans>
-          </Text>
+          {/* dur.io: Stoat's community guidelines apply on stoat.chat only */}
+          <Show when={isStoat}>
+            <Text>
+              <Trans>
+                By creating this server, you agree to the{" "}
+                <a
+                  href="https://stoat.chat/legal/community-guidelines"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    color: "var(--md-sys-color-primary)",
+                  }}
+                >
+                  <Trans>Community Guidelines</Trans>
+                </a>
+                .
+              </Trans>
+            </Text>
+          </Show>
           <Form2.TextField
             minlength={1}
             maxlength={32}
